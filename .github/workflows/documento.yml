@@ -1,0 +1,44 @@
+name: Generar Entrega 1
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'docs/entrega1/**'
+      - '.github/workflows/documento.yml'
+  pull_request:
+    paths:
+      - 'docs/entrega1/**'
+      - '.github/workflows/documento.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  odt:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Obtener fuentes
+        uses: actions/checkout@v4
+      - name: Instalar Pandoc
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y pandoc
+      - name: Generar ODT
+        run: |
+          mkdir -p build
+          pandoc \
+            docs/entrega1/00-portada.md \
+            docs/entrega1/01-requisitos.md \
+            docs/entrega1/02-escenarios.md \
+            docs/entrega1/03-mockups.md \
+            docs/entrega1/04-spike.md \
+            docs/entrega1/05-ia.md \
+            --standalone -o build/Entrega1.odt
+      - name: Publicar ODT de esta versión
+        uses: actions/upload-artifact@v4
+        with:
+          name: Entrega1-ODT
+          path: build/Entrega1.odt
+          if-no-files-found: error

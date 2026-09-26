@@ -1,0 +1,6 @@
+build/
+/Entrega1.odt
+*.env
+.env
+.DS_Store
+Thumbs.db
