@@ -64,7 +64,7 @@ Incluye consulta, alta, edición, favoritos y eliminación de vehículos, con la
 
 **Historias relacionadas** HU-14, HU-18.
 
-Permite elegir origen, destino, modo y criterio. El vehículo es opcional para consultar la ruta. Se muestran los precios de referencia.
+Explorar permite buscar los extremos, elegir puntos en el mapa o usar lugares guardados. Ofrece una referencia de consumo editable y muestra los precios.
 
 **Escenario válido** Centro \(\rightarrow\) UJI devuelve geometría y métricas positivas. El criterio económico compara las alternativas recibidas.
 

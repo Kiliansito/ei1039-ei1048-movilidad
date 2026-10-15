@@ -29,7 +29,7 @@ Las coordenadas de ORS se envían como longitud y latitud. Leaflet utiliza latit
 
 Desde 02_Spike se ejecuta npm ci y se configura ORS_API_KEY en .env. El comando npm run spike:apis realiza ocho comprobaciones con los servicios reales. Pasan las ocho, sin omisiones. MITECO y REE se comprueban por separado para que el fallo de uno no quede oculto por la respuesta del otro. La salida conserva la operación, los datos básicos y el resultado, sin mostrar claves.
 
-Para abrir la demostración se ejecuta npm run spike y se accede a http://localhost:4173. Se puede buscar un lugar, pedir una ruta sin vehículo y consultar los tres precios. El vehículo aporta el consumo para estimar el coste. La guía 02_Spike/SPIKE_APIS.md explica las llamadas y los pasos.
+Para abrir la demostración se ejecuta npm run spike y se accede a http://localhost:4173. Explorar permite buscar los extremos sin guardarlos y calcular con una referencia editable de gasolina de 6 l/100 km, un vehículo propio o sin estimar el coste. La guía 02_Spike/SPIKE_APIS.md explica las llamadas y los pasos.
 
 Las pruebas de aceptación de las historias y sus evidencias ATDD se conservan como comprobaciones adicionales del código disponible. Se describen en 06_Comprobaciones y no se presentan como una condición para dar por válido el spike tecnológico.
 

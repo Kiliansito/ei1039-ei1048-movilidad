@@ -1,6 +1,7 @@
 import React, {
   useEffect,
   useState,
+  useRef,
   type FormEvent,
   type ReactNode,
 } from "react";
@@ -619,15 +620,171 @@ function EnergyPrices() {
     </section>
   );
 }
+type Endpoint = string | GeocodedPlace;
+function ExploreEndpoint({
+  kind,
+  value,
+  places,
+  onChange,
+}: {
+  kind: "origen" | "destino";
+  value: Endpoint;
+  places: Place[];
+  onChange: (value: Endpoint) => void;
+}) {
+  const [query, setQuery] = useState(
+    typeof value === "object" ? value.name : "",
+  );
+  const [results, setResults] = useState<GeocodedPlace[]>([]);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const sequence = useRef(0);
+  useEffect(() => {
+    if (typeof value === "object") setQuery(value.name);
+  }, [value]);
+  useEffect(
+    () => () => {
+      sequence.current++;
+    },
+    [],
+  );
+  async function search() {
+    const current = ++sequence.current;
+    setError("");
+    setResults([]);
+    if (!query.trim()) {
+      setError("Escribe un lugar para buscar.");
+      return;
+    }
+    setLoading(true);
+    try {
+      const found = await api<GeocodedPlace[]>(
+        "/search?q=" + encodeURIComponent(query.trim()),
+      );
+      if (current === sequence.current) {
+        setResults(found);
+        if (!found.length)
+          setError("No se han encontrado lugares. Prueba con otro nombre.");
+      }
+    } catch (e) {
+      if (current === sequence.current)
+        setError(
+          e instanceof Error ? e.message : "No se pudo completar la búsqueda.",
+        );
+    } finally {
+      if (current === sequence.current) setLoading(false);
+    }
+  }
+  return (
+    <section
+      className="explore-endpoint"
+      aria-label={
+        kind === "origen" ? "Origen del trayecto" : "Destino del trayecto"
+      }
+    >
+      <div className="search">
+        <Field label={`Buscar ${kind}`}>
+          <input
+            value={query}
+            maxLength={200}
+            placeholder="Lugar, dirección o ciudad"
+            onChange={(e) => {
+              sequence.current++;
+              setQuery(e.target.value);
+              setResults([]);
+              setError("");
+              setLoading(false);
+              onChange("");
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+                void search();
+              }
+            }}
+          />
+        </Field>
+        <button
+          type="button"
+          onClick={() => void search()}
+          disabled={loading}
+          aria-label={`Buscar ${kind}`}
+        >
+          {loading ? "Buscando" : "Buscar"}
+        </button>
+      </div>
+      {error && <p role="status">{error}</p>}
+      {!!results.length && (
+        <div className="search-results" aria-label={`Resultados de ${kind}`}>
+          {results.map((p, i) => (
+            <button
+              key={i}
+              type="button"
+              onClick={() => {
+                sequence.current++;
+                onChange(p);
+                setQuery(p.name);
+                setResults([]);
+                setError("");
+              }}
+            >
+              {p.name}
+            </button>
+          ))}
+        </div>
+      )}
+      {typeof value === "object" && (
+        <small>Lugar seleccionado {value.name}</small>
+      )}
+      {!!places.length && (
+        <Field
+          label={kind === "origen" ? "Origen guardado" : "Destino guardado"}
+        >
+          <select
+            value={typeof value === "string" ? value : ""}
+            onChange={(e) => {
+              sequence.current++;
+              onChange(e.target.value);
+              setQuery("");
+              setResults([]);
+              setError("");
+              setLoading(false);
+            }}
+          >
+            <option value="">O elige un lugar guardado</option>
+            {places.map((p) => (
+              <option key={p.id} value={p.id}>
+                {p.name}
+              </option>
+            ))}
+          </select>
+        </Field>
+      )}
+    </section>
+  );
+}
 function Calculator({ state }: { state: State }) {
   const app = useApp(),
     p = state.preferences,
     j = p.lastJourney;
-  const [from, setFrom] = useState(j?.fromId ?? ""),
-    [to, setTo] = useState(j?.toId ?? "");
+  const [from, setFrom] = useState<Endpoint>(j?.fromPoint ?? j?.fromId ?? ""),
+    [to, setTo] = useState<Endpoint>(j?.toPoint ?? j?.toId ?? "");
   const [mode, setMode] = useState(j?.mode ?? p.mode),
     [criterion, setCriterion] = useState(j?.preference ?? p.preference),
-    [vehicleId, setVehicle] = useState(j?.vehicleId ?? p.vehicleId ?? "");
+    [vehicleId, setVehicle] = useState(
+      j?.referenceVehicle
+        ? "reference"
+        : j?.vehicleId ||
+            (j?.mode === "car" && j.referenceVehicle === null
+              ? ""
+              : p.vehicleId || "reference"),
+    );
+  const [referenceType, setReferenceType] = useState<Vehicle["type"]>(
+    j?.referenceVehicle?.type ?? "petrol",
+  );
+  const [consumption, setConsumption] = useState(
+    j?.referenceVehicle?.consumption ?? 6,
+  );
   const [pick, setPick] = useState<"from" | "to">("from");
   function changed(action: () => void) {
     action();
@@ -639,39 +796,52 @@ function Calculator({ state }: { state: State }) {
         aria-label="Planificar un trayecto"
         onSubmit={(e) =>
           submit(e, async () => {
+            if (!from || !to)
+              throw new Error(
+                "Selecciona un origen y un destino de la búsqueda o del mapa.",
+              );
             await vm.plan({
               from,
               to,
               mode,
               preference: criterion,
-              vehicleId: mode === "car" ? vehicleId : undefined,
+              vehicleId:
+                mode === "car"
+                  ? vehicleId === "reference"
+                    ? ""
+                    : vehicleId
+                  : undefined,
+              ...(mode === "car" && vehicleId === "reference"
+                ? { referenceVehicle: { type: referenceType, consumption } }
+                : {}),
             });
             navigate("resultado");
           })
         }
       >
         <div className="pair">
-          {[
-            ["Origen guardado", from, setFrom],
-            ["Destino guardado", to, setTo],
-          ].map(([label, value, setter]) => (
-            <Field key={String(label)} label={String(label)}>
-              <select
-                required
-                value={String(value)}
-                onChange={(e) =>
-                  changed(() => (setter as typeof setFrom)(e.target.value))
-                }
-              >
-                <option value="">Selecciona un lugar</option>
-                {state.places.map((place) => (
-                  <option key={place.id} value={place.id}>
-                    {place.name}
-                  </option>
-                ))}
-              </select>
-            </Field>
-          ))}
+          <ExploreEndpoint
+            kind="origen"
+            value={from}
+            places={state.places}
+            onChange={(value) =>
+              changed(() => {
+                setFrom(value);
+                setPick("from");
+              })
+            }
+          />
+          <ExploreEndpoint
+            kind="destino"
+            value={to}
+            places={state.places}
+            onChange={(value) =>
+              changed(() => {
+                setTo(value);
+                setPick("to");
+              })
+            }
+          />
         </div>
         <div className="pair">
           <Field label="Modo de transporte">
@@ -711,6 +881,9 @@ function Calculator({ state }: { state: State }) {
               value={vehicleId}
               onChange={(e) => changed(() => setVehicle(e.target.value))}
             >
+              <option value="reference">
+                Coche de referencia, consumo editable
+              </option>
               <option value="">Sin vehículo, solo la ruta</option>
               {state.vehicles.map((v) => (
                 <option key={v.id} value={v.id}>
@@ -721,18 +894,51 @@ function Calculator({ state }: { state: State }) {
             </select>
           </Field>
         )}
-        {!state.places.length && (
-          <p className="hint">
-            Añade dos lugares antes de calcular un trayecto.{" "}
-            <a href="#alta-lugar">Añadir lugar</a>
-          </p>
-        )}
-        {mode === "car" && !state.vehicles.length && (
-          <p className="hint">
-            Puedes calcular la ruta sin vehículo. Para estimar el coste
-            necesitas el tipo de energía y el consumo de uno de tus vehículos.{" "}
-            <a href="#vehiculos">Añadir un vehículo</a>
-          </p>
+        {mode === "car" && vehicleId === "reference" && (
+          <>
+            <div className="pair">
+              <Field label="Energía de referencia">
+                <select
+                  value={referenceType}
+                  onChange={(e) =>
+                    changed(() => {
+                      const next = e.target.value as Vehicle["type"];
+                      setReferenceType(next);
+                      setConsumption(
+                        next === "electric" ? 15 : next === "diesel" ? 5 : 6,
+                      );
+                    })
+                  }
+                >
+                  {Object.entries(types).map(([key, label]) => (
+                    <option key={key} value={key}>
+                      {label}
+                    </option>
+                  ))}
+                </select>
+              </Field>
+              <Field
+                label={`Consumo de referencia (${referenceType === "electric" ? "kWh" : "l"}/100 km)`}
+              >
+                <input
+                  type="number"
+                  min={0.1}
+                  max={100}
+                  step="any"
+                  required
+                  value={consumption}
+                  onChange={(e) =>
+                    changed(() => setConsumption(e.target.valueAsNumber))
+                  }
+                />
+              </Field>
+            </div>
+            <small>
+              Referencia orientativa, no corresponde a un vehículo real. Puedes
+              editar el consumo o elegir uno de tus vehículos. No se añade nada
+              a Mis vehículos.
+            </small>
+          </>
         )}
         <button>Calcular ruta</button>
       </form>
@@ -748,15 +954,39 @@ function Calculator({ state }: { state: State }) {
           </select>
         </Field>
         <MapView
-          places={state.places}
+          places={[
+            ...state.places,
+            ...[from, to]
+              .filter((p): p is GeocodedPlace => typeof p === "object")
+              .map((p, i) => ({ ...p, id: `search-${i}`, favorite: false })),
+          ]}
+          point={
+            typeof (pick === "from" ? from : to) === "object"
+              ? ((pick === "from" ? from : to) as GeocodedPlace)
+              : undefined
+          }
+          onPick={(lat, lon) =>
+            changed(() => {
+              const point = {
+                name: `Punto del mapa (${number(lat, 4)}, ${number(lon, 4)})`,
+                lat,
+                lon,
+              };
+              pick === "from" ? setFrom(point) : setTo(point);
+            })
+          }
           onPlace={(place) =>
-            changed(() =>
-              pick === "from" ? setFrom(place.id) : setTo(place.id),
-            )
+            changed(() => {
+              const value = place.id.startsWith("search-")
+                ? { name: place.name, lat: place.lat, lon: place.lon }
+                : place.id;
+              pick === "from" ? setFrom(value) : setTo(value);
+            })
           }
         />
         <small>
-          Pulsa un marcador guardado para elegir el origen o el destino.
+          Pulsa en el mapa o en un marcador para elegir el origen o el destino.
+          No hace falta guardar el lugar.
         </small>
       </section>
       {!app.configured && (
@@ -808,11 +1038,16 @@ function Result() {
         <h2>
           {route.mode === "car"
             ? route.vehicle
-              ? types[route.vehicle.type]
+              ? `${types[route.vehicle.type]}${route.vehicle.reference ? " de referencia" : ""}`
               : "Coche sin vehículo seleccionado"
             : modes[route.mode]}
         </h2>
         <RouteSummary route={route} />
+        {route.vehicle?.reference && (
+          <p>
+            Referencia orientativa. Puedes cambiar el consumo desde Explorar.
+          </p>
+        )}
         <p>
           {route.mode === "car"
             ? route.priceSource

@@ -14,7 +14,12 @@ export interface Place {
   lon: number;
   favorite: boolean;
 }
+export interface ReferenceVehicle {
+  type: VehicleType;
+  consumption: number;
+}
 export interface Vehicle {
+  reference?: boolean;
   id: string;
   name: string;
   type: VehicleType;
@@ -44,6 +49,9 @@ export interface Route {
 }
 export interface Preferences {
   lastJourney?: {
+    fromPoint?: GeocodedPlace;
+    toPoint?: GeocodedPlace;
+    referenceVehicle?: ReferenceVehicle | null;
     fromId: string;
     toId: string;
     mode: Mode;

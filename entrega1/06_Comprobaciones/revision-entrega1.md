@@ -53,10 +53,10 @@ Las historias expresan una necesidad, incluyen resultados observables y tienen l
 
 | Comprobación | Resultado |
 | --- | --- |
-| Pruebas locales | 40 superadas |
+| Pruebas locales | 44 superadas |
 | Aceptación | 52 superadas con SQLite en disco y servicios reales, sin omisiones |
 | Integración | 18 superadas con proveedores de prueba |
-| Navegador | 28 recorridos superados, 14 de escritorio y 14 con tamaño móvil emulado |
+| Navegador | 32 recorridos superados, 16 de escritorio y 16 con tamaño móvil emulado |
 | APIs del spike | Ocho comprobaciones superadas, ORS, MITECO, REE y OpenStreetMap, sin omisiones |
 | Compilación TypeScript y Vite | Correcta |
 | Dependencias | Sin vulnerabilidades conocidas según npm audit en esta revisión |
@@ -92,3 +92,11 @@ Las APIs coinciden con las del proyecto anterior. Se revisan las llamadas de ORS
 Se permite consultar y guardar una ruta en coche sin registrar ni seleccionar vehículo. El coste queda como no disponible. Se muestran los precios de gasolina, diésel y electricidad de forma independiente y el vehículo se utiliza solo para aportar el tipo y el consumo. El resultado muestra el precio aplicado. La selección explícita sin vehículo también prevalece sobre un vehículo predeterminado, sin borrarlo de las preferencias.
 
 El commit 688b43b conserva cuatro pruebas nuevas antes de la implementación, con sus fallos. Después pasan esas cuatro y los recorridos de navegador de precios y ruta sin vehículo, tanto en escritorio como en móvil. Los fallos de precios no impiden consultar el trayecto.
+
+## Búsqueda directa y referencia editable
+
+Explorar permite buscar ambos extremos y seleccionar resultados sin guardar lugares. También acepta puntos del mapa y mantiene el acceso a los lugares guardados. Al editar una búsqueda se descarta su selección anterior para evitar calcular con coordenadas antiguas. La consulta y la referencia se recuperan al volver a abrir la planificación.
+
+La referencia inicial de gasolina usa 6 l/100 km y es editable. Se diferencia de un vehículo propio y no crea registros en la lista. Al cambiar a diésel o electricidad se proponen 5 l/100 km o 15 kWh/100 km. El resultado indica que se trata de una referencia y conserva sus datos al guardar la ruta. Los valores no se presentan como consumos reales del usuario.
+
+El commit f602634 conserva las pruebas antes de la implementación. La primera ejecución de las 24 pruebas de core pasa 22 y falla 2. Después pasan las 44 pruebas locales y los 32 recorridos de navegador, junto con las 52 de aceptación y las 18 de integración. Las historias seleccionadas se mantienen y los nuevos casos amplían la comprobación del spike.

@@ -48,7 +48,7 @@ La clave se guarda únicamente en el archivo local `.env`. Las evidencias muestr
 
 El planificador consulta los precios mediante la API local autenticada `GET /api/prices`. El servidor utiliza MITECO y REE y conserva una caché de 30 minutos. La clave de ORS no interviene en la consulta de precios. Si se activan precios manuales en Preferencias, se muestran y utilizan esos valores en su lugar.
 
-Se pueden ver los tres precios sin registrar un vehículo. Para una ruta en coche, el vehículo es opcional. Si se elige uno, su tipo determina si se aplica gasolina, diésel o electricidad. El coste se obtiene con la distancia en kilómetros dividida entre 100, multiplicada por el consumo y el precio. Si no hay vehículo o falta su precio, el coste figura como no disponible y la ruta sigue siendo consultable y guardable.
+Se pueden ver los tres precios sin registrar un vehículo. Explorar permite buscar y seleccionar ambos extremos sin guardarlos. Ofrece por defecto una referencia de gasolina de 6 l/100 km con consumo editable, sin registrarla como vehículo propio. Se puede elegir diésel, electricidad, un vehículo propio o consultar solo la ruta. Si se elige uno, su tipo determina si se aplica gasolina, diésel o electricidad. El coste se obtiene con la distancia en kilómetros dividida entre 100, multiplicada por el consumo y el precio. Si no hay vehículo o falta su precio, el coste figura como no disponible y la ruta sigue siendo consultable y guardable.
 
 ## Demostración de las tecnologías
 
@@ -56,7 +56,7 @@ Se ejecuta `npm run spike` y se abre la dirección local que muestra el servidor
 
 1. Crear una cuenta de prueba para acceder a la demostración de React y Node.js.
 2. Buscar Universitat Jaume I, Castellón y seleccionar un candidato. Elegir también un punto en el mapa y comprobar sus coordenadas.
-3. Guardar Centro y UJI. Pedir un trayecto sin seleccionar vehículo y comprobar que Leaflet dibuja la geometría recibida. Consultar los tres precios y elegir un vehículo solo si se quiere estimar el coste. El comando de APIs comprueba también coche y bicicleta.
+3. Buscar Centro y UJI desde Explorar y confirmar los dos resultados, sin guardarlos. Calcular con la referencia editable y comprobar el trazado, el precio y el coste. También se pueden usar puntos elegidos en el mapa o consultar solo la ruta. El comando de APIs comprueba también coche y bicicleta.
 4. Guardar un dato, reiniciar el servidor y acceder de nuevo. La recuperación comprueba el uso básico de SQLite.
 5. Ejecutar `npm run build` para comprobar TypeScript y la compilación con Vite.
 

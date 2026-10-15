@@ -6,7 +6,7 @@ Cada cuenta accede solo a sus datos. El nombre de usuario admite de 1 a 70 carac
 
 La latitud admite valores entre -90 y 90, y la longitud entre -180 y 180, incluidos los extremos. Solo se aceptan números finitos. Un topónimo es el nombre de un lugar y su búsqueda admite de 1 a 200 caracteres tras quitar espacios exteriores. Los vehículos pueden ser de gasolina, diésel o eléctricos, con consumo entre 0,1 y 100 l/100 km o kWh/100 km.
 
-Para calcular una ruta, los dos lugares deben estar guardados en la cuenta y tener coordenadas distintas. Los modos son coche, bicicleta y a pie. En coche, el vehículo es opcional para consultar la ruta. Para estimar el coste se necesita su tipo de energía y consumo, junto con un precio disponible. Los criterios son más rápida, más corta y más económica. El peso para estimar calorías admite de 20 a 300 kg. Los precios manuales admiten de 0,001 a 20 euros por litro o kWh. Estos límites son decisiones de la propuesta y deberán revisarse con el profesorado.
+Los extremos deben tener coordenadas válidas y distintas. Se eligen desde Explorar sin guardarlos o entre los lugares propios. Los modos son coche, bicicleta y a pie. El coste en coche usa un vehículo propio o una referencia editable, con consumo y precio disponibles. La referencia inicial es de gasolina y 6 l/100 km, marcada como orientativa. Se admite consultar solo la ruta. Los criterios son más rápida, más corta y más económica. El peso admite de 20 a 300 kg y los precios manuales de 0,001 a 20 euros por litro o kWh. Estos límites propuestos deberán revisarse con el profesorado.
 
 
 ## Datos de los escenarios
@@ -24,7 +24,7 @@ Cada escenario empieza con una base de datos de prueba independiente. Solo se cr
 
 ## Criterio de prueba y desarrollo
 
-Cada historia tiene un escenario válido y otro inválido, con justificación, análisis y una prueba Given-When-Then. Válido significa que la operación puede completarse con sus condiciones. Inválido significa que una entrada o condición impide completarla, aunque el sistema responda correctamente al error. Los límites adicionales orientan pruebas futuras y no aumentan las 52 pruebas seleccionadas.
+Cada historia tiene un escenario válido y otro inválido, con justificación, análisis y una prueba Given-When-Then. En el válido se cumplen las condiciones de la operación. En el inválido una entrada o condición impide completarla y el sistema debe informar del error. Las variantes adicionales orientan pruebas futuras y no aumentan las 52 seleccionadas.
 
 Según la metodología docente [2], las pruebas de aceptación se aplican sobre los servicios de la lógica de negocio y utilizan las dependencias reales necesarias. Las pruebas de integración sustituyen al menos una dependencia por un doble de prueba. El dibujo del mapa, los formularios y los mensajes visibles se comprueban aparte en el navegador.
 

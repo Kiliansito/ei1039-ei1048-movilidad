@@ -24,7 +24,11 @@ Reiniciar el servidor tras cambiar la clave. La cuenta, los lugares por coordena
 
 ## Rutas y precios
 
-El vehículo es opcional al consultar una ruta en coche. Sin él se muestran el trazado, la distancia y la duración, y el coste queda como no disponible. La ruta también se puede guardar así. Elegir un vehículo permite usar su consumo y el precio de su tipo de energía para estimar el coste.
+Desde Explorar se pueden buscar el origen y el destino, seleccionar resultados o pulsar en el mapa. También se pueden elegir lugares guardados. Buscar o seleccionar un punto no lo añade a Mis lugares.
+
+Al abrir una consulta nueva sin vehículo propio predeterminado se selecciona un coche de referencia de gasolina con 6 l/100 km. Su consumo se puede editar y se puede cambiar a diésel o electricidad. Al cambiar de energía se proponen 5 l/100 km para diésel y 15 kWh/100 km para electricidad. Son valores orientativos y visibles, no medidas de un vehículo real. La referencia no se añade a Mis vehículos.
+
+Se puede elegir uno de los vehículos propios o la opción sin vehículo para consultar y guardar solo la ruta. El resultado conserva el consumo, el precio aplicado y la indicación de referencia. Al volver a Explorar se recuperan los puntos seleccionados y la referencia de la última consulta.
 
 El planificador muestra gasolina, diésel y electricidad aunque no haya vehículos registrados. Por defecto consulta los servicios públicos. Si se activan los precios manuales en Preferencias, muestra y utiliza esos valores. El resultado indica el consumo y el precio aplicado. Si no se puede comparar el coste, se avisa y se ordenan las alternativas por distancia.
 
@@ -49,13 +53,13 @@ npx playwright install chromium
 npm run test:e2e
 ```
 
-`npm test` ejecuta 40 pruebas locales, 18 de integración y las 52 de aceptación seleccionadas en la memoria. Las de aceptación necesitan la clave ORS y conexión a los servicios reales. Si falta la clave o falla un servicio necesario, el comando falla. No omite esas pruebas.
+`npm test` ejecuta 44 pruebas locales, 18 de integración y las 52 de aceptación seleccionadas en la memoria. Las de aceptación necesitan la clave ORS y conexión a los servicios reales. Si falta la clave o falla un servicio necesario, el comando falla. No omite esas pruebas.
 
 Las pruebas se pueden lanzar por separado con `npm run test:local`, `npm run test:integration` y `npm run test:acceptance`. El [catálogo Gherkin](../04_Pruebas/aceptacion.feature) recoge los escenarios en texto. Su código está en [acceptance.test.ts](tests/acceptance.test.ts) y [support/scenarios.ts](tests/support/scenarios.ts). Se comprueba que los 52 identificadores del catálogo coinciden con los de las pruebas.
 
 Las pruebas de aceptación actúan sobre la lógica de negocio con una base SQLite temporal en disco. Usan los proveedores reales cuando el escenario los necesita. Las de integración sustituyen esos proveedores por dobles con respuestas conocidas para comprobar cálculos y decisiones. Las pruebas locales cubren validaciones, adaptadores, cuentas y persistencia.
 
-Las 28 pruebas de navegador comprueban 14 recorridos en escritorio y móvil. Ejecutan un servidor aislado con SQLite en memoria y proveedores de prueba. No usan la clave ORS ni los datos de trabajo. Guardan capturas de las diez pantallas en `../06_Comprobaciones/capturas` y comprueban que no haya desbordamiento horizontal.
+Las 32 pruebas de navegador comprueban 16 recorridos en escritorio y móvil. Ejecutan un servidor aislado con SQLite en memoria y proveedores de prueba. No usan la clave ORS ni los datos de trabajo. Guardan capturas de las diez pantallas en `../06_Comprobaciones/capturas` y comprueban que no haya desbordamiento horizontal.
 
 Si se utiliza Chrome instalado, ejecutar `PLAYWRIGHT_CHANNEL=chrome npm run test:e2e` en macOS o Linux. En PowerShell se puede establecer `PLAYWRIGHT_CHANNEL` como variable de entorno antes de ejecutar el mismo comando.
 
@@ -86,5 +90,5 @@ Las pantallas consultan un modelo de vista que se comunica por HTTP con el servi
 - El coste es orientativo. El precio REE es mayorista y no incluye el importe final de una tarifa doméstica.
 - Las calorías se estiman por duración, peso y MET. No son una medición personal.
 - Las rutas guardadas conservan geometría y métricas históricas. Borrar un lugar o cambiar el consumo no recalcula el historial.
-- Se recuperan datos confirmados, preferencias y último trayecto. Al guardar preferencias se vacía la selección del trayecto y se usan los nuevos valores predeterminados. Los formularios y resultados sin guardar se descartan al cerrar.
+- Se recuperan datos confirmados, preferencias y último trayecto. Al guardar preferencias se vacía la selección del trayecto y se usan los nuevos valores predeterminados. Los campos que aún no se han utilizado en un cálculo y los resultados sin guardar se descartan al cerrar.
 - Las pruebas de caída usan SIGKILL. No simulan una avería física del disco.

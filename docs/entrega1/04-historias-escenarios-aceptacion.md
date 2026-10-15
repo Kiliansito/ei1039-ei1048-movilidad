@@ -649,9 +649,9 @@ Se seleccionan E-13-V como escenario válido y E-13-I1 como escenario inválido 
 
 ### Reglas de dominio aplicables
 
-**RD-54** Los extremos de la ruta deben ser lugares guardados del usuario y tener coordenadas distintas.
+**RD-54** Los extremos deben tener coordenadas válidas y distintas. Se admiten lugares propios guardados y puntos elegidos desde Explorar sin guardarlos.
 
-**RD-55** Los modos previstos son a pie, bicicleta y coche. El vehículo es opcional para consultar una ruta en coche y necesario para estimar su coste.
+**RD-55** Los modos previstos son a pie, bicicleta y coche. Se puede consultar solo la ruta o estimar su coste con un vehículo propio o una referencia editable.
 
 **RD-56** El cálculo válido devuelve geometría con al menos dos puntos válidos, distancia y duración positivas. El dibujo del trayecto se comprueba por separado en la interfaz.
 
@@ -662,7 +662,7 @@ Se seleccionan E-13-V como escenario válido y E-13-I1 como escenario inválido 
 
 ### Análisis de escenarios
 
-| **Escenario** | **Sesión válida** | **Extremos propios guardados** | **Coordenadas distintas** | **Proveedor disponible** | **Ruta** |
+| **Escenario** | **Sesión válida** | **Extremos válidos** | **Coordenadas distintas** | **Proveedor disponible** | **Ruta** |
 | --- | --- | --- | --- | --- | --- |
 | E-14-V | Sí | Sí | Sí | Sí | Sí |
 | E-14-I1 | Sí | Sí | No | No aplica | No |
@@ -675,7 +675,7 @@ Se seleccionan E-14-V como escenario válido y E-14-I1 como escenario inválido 
 | **E-14-V** | **Escenario válido · Prueba PA-14-V** |
 | --- | --- |
 | **Justificación** | comprueba que el servicio devuelve un trayecto y unas medidas coherentes. |
-| **Análisis** | Repetir en coche y bicicleta, con lugares guardados. |
+| **Análisis** | Repetir en coche y bicicleta, con lugares guardados y puntos directos. |
 | **Given** | Ana tiene Centro (39.9864,-0.0513) y UJI (39.9946,-0.0684), y el servicio real está disponible |
 | **When** | calcula la ruta a pie entre Centro y UJI |
 | **Then** | se devuelve una geometría con al menos dos puntos válidos, distancia positiva menor de 100 km y duración positiva |
@@ -1099,7 +1099,7 @@ Se seleccionan E-22-V como escenario válido y E-22-I1 como escenario inválido 
 
 ### Reglas de dominio aplicables
 
-**RD-55** Los modos previstos son a pie, bicicleta y coche. El vehículo es opcional para consultar una ruta en coche y necesario para estimar su coste.
+**RD-55** Los modos previstos son a pie, bicicleta y coche. Se puede consultar solo la ruta o estimar su coste con un vehículo propio o una referencia editable.
 
 **RD-94** Si se fija un vehículo predeterminado para el modo coche, debe pertenecer al usuario.
 
