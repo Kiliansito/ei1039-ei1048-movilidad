@@ -2,6 +2,7 @@
   "name": "via-ei1039-ei1048",
   "private": true,
   "scripts": {
-    "spike": "npm --prefix entrega1/02_Spike run spike"
+    "spike": "npm --prefix entrega1/02_Spike run spike",
+    "spike:apis": "npm --prefix entrega1/02_Spike run spike:apis"
   }
 }

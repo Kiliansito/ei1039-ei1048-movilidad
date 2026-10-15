@@ -1,0 +1,37 @@
+> via-spike@0.1.0 spike:apis
+> node --import tsx --env-file-if-exists=.env --test tests/live.test.ts
+
+✔ API-01 ORS busca un topónimo y devuelve nombres y coordenadas (285.325291ms)
+ℹ GET api.openrouteservice.org/geocode/search · respuesta JSON recibida · 284 ms
+ℹ 5 candidatos · primer resultado Universidad Jaime I, Castellón de la Plana, VC, España
+✔ API-02 ORS identifica un lugar a partir de coordenadas (185.064084ms)
+ℹ GET api.openrouteservice.org/geocode/reverse · respuesta JSON recibida · 185 ms
+ℹ Lugar recibido Calle Useras 6, Castellón de la Plana, VC, España
+✔ API-03 ORS devuelve una ruta para el modo coche con trazado, distancia y duración (121.93625ms)
+ℹ POST api.openrouteservice.org/v2/directions/driving-car/geojson · respuesta JSON recibida · 61 ms
+ℹ POST api.openrouteservice.org/v2/directions/driving-car/geojson · respuesta JSON recibida · 59 ms
+ℹ 2 alternativas · 2478.7 m · 413.7 s
+✔ API-04 ORS devuelve una ruta para el modo bicicleta con trazado, distancia y duración (129.2835ms)
+ℹ POST api.openrouteservice.org/v2/directions/cycling-regular/geojson · respuesta JSON recibida · 65 ms
+ℹ POST api.openrouteservice.org/v2/directions/cycling-regular/geojson · respuesta JSON recibida · 63 ms
+ℹ 2 alternativas · 2341.5 m · 520.5 s
+✔ API-05 ORS devuelve una ruta para el modo a pie con trazado, distancia y duración (123.768209ms)
+ℹ POST api.openrouteservice.org/v2/directions/foot-walking/geojson · respuesta JSON recibida · 61 ms
+ℹ POST api.openrouteservice.org/v2/directions/foot-walking/geojson · respuesta JSON recibida · 62 ms
+ℹ 2 alternativas · 2151.2 m · 1548.8 s
+GET apidatos.ree.es/es/datos/mercados/precios-mercados-tiempo-real · respuesta JSON recibida · 229 ms
+GET sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/EstacionesTerrestres/ · respuesta JSON recibida · 6355 ms
+✔ API-06 MITECO devuelve gasolina y diésel con fecha y precios en euros por litro (6360.612542ms)
+ℹ 11494 estaciones · fecha 15/10/2026 17:36:40 · gasolina 1.7835030629971778 €/l · diésel 1.889424113475157 €/l
+✔ API-07 REE devuelve precios con fecha y convierte euros por MWh a euros por kWh (0.307208ms)
+ℹ 96 valores con fecha · primer dato 2026-10-15T00:00:00.000+02:00 · media 193.10583333333327 €/MWh · 0.19310583333333325 €/kWh
+✔ API-08 OpenStreetMap entrega una imagen PNG para el mapa de Leaflet (81.156958ms)
+ℹ GET https://tile.openstreetmap.org/12/2047/1550.png · HTTP 200 · PNG de 256 por 256 píxeles · 28346 bytes
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 7377.68075

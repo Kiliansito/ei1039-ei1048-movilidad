@@ -1,6 +1,6 @@
 # Vía · Spike de movilidad
 
-Iteración 0 de EI1039 y EI1048. La interfaz sigue manualmente las capturas de las diez pantallas del diseño. Permite gestionar la cuenta, lugares, vehículos, rutas y preferencias. Utiliza React, TypeScript, Vite, Node.js, SQLite y Leaflet, junto con OpenRouteService, OpenStreetMap, MITECO y REE.
+La iteración 0 comprueba el uso básico de las tecnologías y las APIs elegidas para EI1039 y EI1048. La interfaz sigue manualmente las capturas de las diez pantallas del diseño. Permite gestionar la cuenta, lugares, vehículos, rutas y preferencias. Utiliza React, TypeScript, Vite, Node.js, SQLite y Leaflet, junto con OpenRouteService, OpenStreetMap, MITECO y REE.
 
 ## Ejecutar
 
@@ -22,7 +22,19 @@ ORS_API_KEY=tu_clave
 
 Reiniciar el servidor tras cambiar la clave. La cuenta, los lugares por coordenadas, los vehículos y las preferencias funcionan sin ella. Los mapas necesitan conexión. La clave no se envía al navegador.
 
-## Pruebas
+## Comprobación básica de las APIs
+
+Después de configurar la clave ORS se ejecuta el siguiente comando.
+
+```sh
+npm run spike:apis
+```
+
+Hace ocho comprobaciones reales de búsqueda, búsqueda inversa, rutas en tres modos, carburantes, electricidad y una imagen del mapa. Cada operación tiene su propio resultado. No omite pruebas si falta la clave o un servicio falla. `npm run test:live` ejecuta la misma comprobación.
+
+La [guía del spike](SPIKE_APIS.md) recoge las peticiones, los parámetros, las respuestas y una demostración breve. El objetivo es conocer el uso básico de las tecnologías. No requiere implementar todas las historias de usuario.
+
+## Pruebas adicionales del código
 
 ```sh
 npm test
@@ -44,14 +56,6 @@ Si se utiliza Chrome instalado, ejecutar `PLAYWRIGHT_CHANNEL=chrome npm run test
 La compilación comprueba los tipos del código, de las pruebas y de la configuración del navegador. GitHub ejecuta las pruebas locales, de integración y de navegador y la compilación. Las 52 de aceptación con servicios reales se han ejecutado localmente. No se ha subido una clave a GitHub.
 
 El [registro del proceso ATDD](../06_Comprobaciones/metodo-atdd.md) conserva la ejecución con fallos anterior a la implementación y los resultados finales. La evidencia corresponde a esta revisión. No acredita el orden de desarrollo del código que ya existía.
-
-Como comprobación adicional de conexión se pueden ejecutar dos ensayos con servicios públicos.
-
-```sh
-LIVE_APIS=1 npm run test:live
-```
-
-Son ensayos opcionales y no forman parte de las 52 pruebas de aceptación. Sin `LIVE_APIS=1` aparecen omitidos. ORS también necesita su clave.
 
 Para servir la compilación se ejecutan `npm run build` y `npm start`.
 

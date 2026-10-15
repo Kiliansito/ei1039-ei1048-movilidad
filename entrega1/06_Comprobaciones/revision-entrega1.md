@@ -57,7 +57,7 @@ Las historias expresan una necesidad, incluyen resultados observables y tienen l
 | Aceptación | 52 superadas con SQLite en disco y servicios reales, sin omisiones |
 | Integración | 18 superadas con proveedores de prueba |
 | Navegador | 24 recorridos superados, 12 de escritorio y 12 con tamaño móvil emulado |
-| Servicios reales | Dos pruebas superadas, precios públicos y búsqueda y rutas con ORS en los tres modos |
+| APIs del spike | Ocho comprobaciones superadas, ORS, MITECO, REE y OpenStreetMap, sin omisiones |
 | Compilación TypeScript y Vite | Correcta |
 | Dependencias | Sin vulnerabilidades conocidas según npm audit en esta revisión |
 | Memoria | 43 páginas compiladas y revisadas visualmente |
@@ -80,3 +80,9 @@ Se conservan la estructura de siete apartados, las reglas de dominio, las tablas
 Se corrigen tres diferencias entre las versiones. Los cálculos seleccionados usan las medidas devueltas por el servicio real, las cifras fijas de los mockups se presentan como ejemplos aritméticos y la escritura interrumpida antes de confirmar ya cuenta con una comprobación local. La tabla distingue las variantes analizadas de las 52 pruebas seleccionadas.
 
 La interfaz del spike se adapta manualmente a las capturas de los diez diseños. Se añade validación del vehículo utilizado, se guarda un resultado calculado mediante un identificador propio de la cuenta y se conserva el último trayecto cuando un cálculo falla. Se comprueban también los valores predeterminados y su sustitución al planificar.
+
+## Alcance del spike tecnológico
+
+El objetivo básico consiste en probar el uso de las tecnologías y comprobar las respuestas de las APIs. Se añade un comando específico con ocho consultas comprobadas por separado. La memoria centra el apartado del spike en esas operaciones. La implementación y las pruebas de aceptación disponibles se mantienen como trabajo adicional, sin presentarlas como requisito de la iteración 0.
+
+Las APIs coinciden con las del proyecto anterior. Se revisan las llamadas de ORS para búsqueda, búsqueda inversa y rutas en tres modos, los precios de MITECO y REE y una imagen de OpenStreetMap. Las ocho comprobaciones pasan. La guía de uso está en 02_Spike/SPIKE_APIS.md y la salida en spike-apis.txt.
