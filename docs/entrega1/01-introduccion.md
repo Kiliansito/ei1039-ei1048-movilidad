@@ -1,1 +1,9 @@
 # 1. Introducción
+
+Vía es una propuesta de aplicación de movilidad desarrollada en el marco del proyecto conjunto de las asignaturas EI1039, Diseño de Software, y EI1048, Paradigmas de Software, del Grado en Ingeniería Informática de la Universitat Jaume I. Su objetivo es facilitar la planificación de desplazamientos a partir de lugares de interés guardados por el usuario y de distintos modos de transporte.
+
+La aplicación prevista permitirá gestionar cuentas, lugares, vehículos y rutas. A partir de un origen y un destino, el usuario podrá visualizar el trayecto y consultar su distancia y duración, así como estimaciones del coste de combustible, del coste eléctrico o de las calorías, según el modo de transporte seleccionado. También se contempla la gestión de favoritos y preferencias, junto con la recuperación de los datos confirmados tras el cierre de la aplicación.
+
+Este documento recoge el análisis de requisitos y la propuesta inicial de interfaz correspondientes a la Entrega 1. Los requisitos se descomponen en 26 historias de usuario. Para cada historia se identifican las reglas de dominio aplicables, se analizan distintos escenarios y se detallan dos pruebas de aceptación, una para un escenario válido y otra para uno inválido, mediante la estructura Given–When–Then. Estas especificaciones sirven como base para orientar el desarrollo mediante ATDD.
+
+Los diez mockups elaborados en Figma relacionan las historias con las pantallas y muestran las acciones, los resultados y los estados de error previstos. El conjunto proporciona una base para revisar la coherencia entre requisitos, escenarios e interfaz antes de avanzar en la implementación. La especificación de un comportamiento o su representación en un mockup no implica que ya esté implementado o que su prueba de aceptación se haya superado.

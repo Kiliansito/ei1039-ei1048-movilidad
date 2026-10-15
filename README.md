@@ -15,6 +15,10 @@ La entrega está organizada en [`entrega1/`](entrega1/README.md):
 - [Mockups editables](entrega1/03_Mockups/), [escenarios de aceptación](entrega1/04_Pruebas/aceptacion.feature) y [trazabilidad](entrega1/04_Pruebas/trazabilidad.md).
 - [Material docente](entrega1/05_Material_docente/) y [resultados de comprobación](entrega1/06_Comprobaciones/).
 
+Los apartados 1–5 de la memoria recogen el contenido de la segunda pestaña del documento de Drive: Introducción; Requisitos; Reglas y método de prueba; Historias, escenarios y aceptación; y Del escenario a la pantalla. Se incluyen diez mockups de Figma. Las fuentes que compila el PDF están en `entrega1/01_Memoria/apartados/`; `docs/entrega1/` conserva una copia en Markdown de esos cinco apartados.
+
+El apartado del spike queda pendiente de la revisión y aportación de Rubén. Su contenido existente se conserva en la memoria.
+
 ## Ejecutar
 
 Requiere Node.js 24.16 o superior. Desde la raíz:

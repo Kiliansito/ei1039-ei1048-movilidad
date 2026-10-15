@@ -1,0 +1,13 @@
+% Contenido de la segunda pestaña del documento de Drive.
+\clearpage\section{Reglas y método de prueba}\label{sec3}
+
+\begingroup\fontsize{9.5}{11}\selectfont\setlength{\tabcolsep}{3pt}
+\begin{tabularx}{\linewidth}{@{}p{0.24\linewidth}Y@{}}\toprule
+\textbf{Objeto} & \textbf{Reglas propuestas}\\\midrule
+Cuenta & Correo normalizado, único y de hasta 254 caracteres; nombre de 1 a 70; contraseña de 10 a 128. No se muestran contraseñas en respuestas.\\[3pt]
+Lugar & Nombre de 1 a 120 caracteres; latitud entre -90 y 90 y longitud entre -180 y 180; valores finitos. El usuario confirma el resultado del topónimo.\\[3pt]
+Vehículo & Gasolina, diésel o eléctrico; consumo entre 0.1 y 100 en su unidad; nombre de 1 a 70 caracteres.\\[3pt]
+Cálculo & Distancia en km, duración en minutos para las fórmulas; \texteuro{}/l o \texteuro{}/kWh; precio manual entre 0.001 y 20; peso entre 20 y 300 kg.\\[3pt]
+Propiedad & Cada usuario solo consulta o modifica sus elementos. Una operación inválida no altera el estado confirmado.\\[3pt]
+Persistencia & Escrituras atómicas; favoritos, preferencias y contenidos confirmados recuperables. Rutas guardadas como instantáneas históricas.\\[3pt]
+\bottomrule\end{tabularx}\endgroup\par

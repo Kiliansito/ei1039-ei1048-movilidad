@@ -12,7 +12,7 @@ Repositorio: [Kiliansito/ei1039-ei1048-movilidad](https://github.com/Kiliansito/
 
 - **01_Memoria**: informe en PDF compilado con LaTeX y fuente `.tex` editable.
 - **02_Spike**: código de la iteración 0 e instrucciones de ejecución.
-- **03_Mockups**: nueve pantallas en SVG editable y PNG; `index.html` permite verlas juntas.
+- **03_Mockups/figma**: diez imágenes de los mockups actuales de Figma, utilizadas en el apartado 5 de la memoria. Los diseños anteriores en SVG, PNG e `index.html` se conservan como antecedentes.
 - **04_Pruebas**: escenarios Given-When-Then y matriz de trazabilidad.
 - **05_Material_docente**: cuatro PDF originales de clase, con nombres descriptivos.
 - **06_Comprobaciones**: resultados de las pruebas locales, del navegador y de la compilación.
@@ -46,3 +46,5 @@ tectonic Informe_Entrega1_Via.tex
 ```
 
 Los esquemas se cargan desde `03_Mockups`, por lo que ambas carpetas deben conservar su posición.
+
+Los puntos 1–5 se incluyen desde `01_Memoria/apartados/` y corresponden a la segunda pestaña del documento de Drive. Su copia en Markdown está en `../docs/entrega1/`. El contenido existente del spike y de la declaración de IA se mantiene; la revisión del spike queda pendiente de Rubén.

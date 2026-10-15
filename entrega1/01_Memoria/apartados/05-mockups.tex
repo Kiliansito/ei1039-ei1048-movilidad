@@ -1,0 +1,170 @@
+% Contenido de la segunda pestaña del documento de Drive.
+\clearpage\section{Del escenario a la pantalla}\label{sec5}
+
+Los mockups proponen la interfaz de Vía a partir de las historias y escenarios del apartado 4. Se han elaborado en Figma y se organizan en diez pantallas, M01--M10, que cubren las 26 historias de usuario.\par
+
+\href{https://www.figma.com/design/0X0JpvayI4WsF0QyywWWbs}{Abrir mockups editables en Figma}\par
+
+Las imágenes siguientes muestran la propuesta actual. Los mapas son esquemáticos y los valores de las estimaciones son datos de prueba. Los estados alternativos reunidos en una figura no tienen por qué aparecer simultáneamente en el producto. Los límites y decisiones pendientes de validar mantienen ese carácter.\par
+
+\clearpage\subsection*{M01. Registro e inicio de sesión}
+
+\textbf{Historias relacionadas:} HU-01, HU-02.\par
+
+Permite crear una cuenta o acceder con una cuenta existente.\par
+
+\begin{center}\includegraphics[width=\linewidth,height=0.59\textheight,keepaspectratio]{figma/M01.png}\end{center}
+
+\begin{center}\small\textit{Figura 5.1. Registro e inicio de sesión.}\end{center}
+
+\textbf{Escenario válido:} El registro crea una sola cuenta; el acceso recupera únicamente los datos de su titular.\par
+
+\textbf{Escenario inválido:} Correo duplicado o credenciales incorrectas: se informa del error sin crear una cuenta o sesión adicional.\par
+
+\href{https://www.figma.com/design/0X0JpvayI4WsF0QyywWWbs?node-id=4-344}{Abrir M01 en Figma}\par
+
+\clearpage\subsection*{M02. Mi cuenta y cierre de sesión}
+
+\textbf{Historias relacionadas:} HU-03, HU-04.\par
+
+Reúne los datos de la cuenta, el cierre de sesión y la confirmación de su eliminación.\par
+
+\begin{center}\includegraphics[width=\linewidth,height=0.59\textheight,keepaspectratio]{figma/M02.png}\end{center}
+
+\begin{center}\small\textit{Figura 5.2. Mi cuenta y cierre de sesión.}\end{center}
+
+\textbf{Escenario válido:} Cerrar sesión revoca el acceso; eliminar la cuenta con la contraseña correcta borra sus datos asociados.\par
+
+\textbf{Escenario inválido:} Un token inexistente no permite acceder; una contraseña incorrecta impide eliminar la cuenta.\par
+
+\href{https://www.figma.com/design/0X0JpvayI4WsF0QyywWWbs?node-id=4-437}{Abrir M02 en Figma}\par
+
+\clearpage\subsection*{M03. Añadir un lugar}
+
+\textbf{Historias relacionadas:} HU-05, HU-06, HU-09.\par
+
+Ofrece alta por coordenadas, búsqueda de topónimo con confirmación y selección de un punto en el mapa.\par
+
+\begin{center}\includegraphics[width=\linewidth,height=0.59\textheight,keepaspectratio]{figma/M03.png}\end{center}
+
+\begin{center}\small\textit{Figura 5.3. Añadir un lugar.}\end{center}
+
+\textbf{Escenario válido:} Se guarda el lugar con las coordenadas introducidas, el candidato confirmado o el punto elegido.\par
+
+\textbf{Escenario inválido:} Latitud 91, topónimo vacío o ausencia de punto seleccionado: no se crea ningún lugar.\par
+
+\href{https://www.figma.com/design/0X0JpvayI4WsF0QyywWWbs?node-id=4-514}{Abrir M03 en Figma}\par
+
+\clearpage\subsection*{M04. Mis lugares}
+
+\textbf{Historias relacionadas:} HU-07, HU-08, HU-22.\par
+
+Muestra los lugares propios, su selección para rutas, los favoritos y la confirmación de borrado.\par
+
+\begin{center}\includegraphics[width=\linewidth,height=0.59\textheight,keepaspectratio]{figma/M04.png}\end{center}
+
+\begin{center}\small\textit{Figura 5.4. Mis lugares.}\end{center}
+
+\textbf{Escenario válido:} Ana consulta Centro y UJI; borrar Centro conserva UJI. Los favoritos aparecen primero.\par
+
+\textbf{Escenario inválido:} Sin sesión no se muestran lugares; los elementos ajenos no se pueden eliminar ni marcar como favoritos.\par
+
+\href{https://www.figma.com/design/0X0JpvayI4WsF0QyywWWbs?node-id=4-620}{Abrir M04 en Figma}\par
+
+\clearpage\subsection*{M05. Mis vehículos}
+
+\textbf{Historias relacionadas:} HU-10, HU-11, HU-12, HU-13, HU-22.\par
+
+Incluye consulta, alta, edición, favoritos y eliminación de vehículos, con las unidades del consumo.\par
+
+\begin{center}\includegraphics[width=\linewidth,height=0.59\textheight,keepaspectratio]{figma/M05.png}\end{center}
+
+\begin{center}\small\textit{Figura 5.5. Mis vehículos.}\end{center}
+
+\textbf{Escenario válido:} Se registra Compacto; editar su consumo conserva el identificador. Borrarlo limpia la referencia predeterminada.\par
+
+\textbf{Escenario inválido:} Consumo inválido, sesión caducada o vehículo ajeno: la operación se rechaza y se conserva el estado anterior.\par
+
+\href{https://www.figma.com/design/0X0JpvayI4WsF0QyywWWbs?node-id=5-179}{Abrir M05 en Figma}\par
+
+\clearpage\subsection*{M06. Planificar un trayecto}
+
+\textbf{Historias relacionadas:} HU-14, HU-18.\par
+
+Permite elegir origen y destino guardados, modo, vehículo y criterio, y visualizar el trayecto.\par
+
+\begin{center}\includegraphics[width=\linewidth,height=0.59\textheight,keepaspectratio]{figma/M06.png}\end{center}
+
+\begin{center}\small\textit{Figura 5.6. Planificar un trayecto.}\end{center}
+
+\textbf{Escenario válido:} Centro \(\rightarrow\) UJI devuelve geometría y métricas positivas; el criterio económico compara las alternativas recibidas.\par
+
+\textbf{Escenario inválido:} Extremos coincidentes o criterio no admitido: se rechaza la solicitud. Los fallos del proveedor permiten reintentar.\par
+
+\href{https://www.figma.com/design/0X0JpvayI4WsF0QyywWWbs?node-id=5-325}{Abrir M06 en Figma}\par
+
+\clearpage\subsection*{M07. Resultado y estimaciones}
+
+\textbf{Historias relacionadas:} HU-15, HU-16, HU-17, HU-19.\par
+
+Reúne estados alternativos de coste de combustible, electricidad y calorías, y la acción de guardar una ruta.\par
+
+\begin{center}\includegraphics[width=\linewidth,height=0.59\textheight,keepaspectratio]{figma/M07.png}\end{center}
+
+\begin{center}\small\textit{Figura 5.7. Resultado y estimaciones.}\end{center}
+
+\textbf{Escenario válido:} Los ejemplos de aceptación producen 9.60 \texteuro{}, 3.00 \texteuro{} y 128.625 kcal antes de redondear; un resultado propio puede guardarse.\par
+
+\textbf{Escenario inválido:} Precio o peso inválido conserva el valor anterior; un resultado inventado no se guarda. Cada estimación corresponde a un modo distinto.\par
+
+\href{https://www.figma.com/design/0X0JpvayI4WsF0QyywWWbs?node-id=5-445}{Abrir M07 en Figma}\par
+
+\clearpage\subsection*{M08. Rutas guardadas}
+
+\textbf{Historias relacionadas:} HU-20, HU-21, HU-22.\par
+
+Permite consultar instantáneas históricas, gestionar favoritos y confirmar la eliminación de una ruta.\par
+
+\begin{center}\includegraphics[width=\linewidth,height=0.59\textheight,keepaspectratio]{figma/M08.png}\end{center}
+
+\begin{center}\small\textit{Figura 5.8. Rutas guardadas.}\end{center}
+
+\textbf{Escenario válido:} Consultar conserva geometría y métricas históricas; borrar Camino a clase mantiene Paseo, lugares y vehículos.\par
+
+\textbf{Escenario inválido:} Sin sesión no se revela el historial; una ruta ajena no se elimina ni se cambia de favorito.\par
+
+\href{https://www.figma.com/design/0X0JpvayI4WsF0QyywWWbs?node-id=5-517}{Abrir M08 en Figma}\par
+
+\clearpage\subsection*{M09. Preferencias}
+
+\textbf{Historias relacionadas:} HU-23, HU-24; configuración de HU-15, HU-16 y HU-17.\par
+
+Presenta modo, vehículo y criterio predeterminados, peso y precios manuales con sus unidades.\par
+
+\begin{center}\includegraphics[width=\linewidth,height=0.59\textheight,keepaspectratio]{figma/M09.png}\end{center}
+
+\begin{center}\small\textit{Figura 5.9. Preferencias.}\end{center}
+
+\textbf{Escenario válido:} Una nueva planificación usa coche, Compacto y más corta, permitiendo cambios puntuales.\par
+
+\textbf{Escenario inválido:} Un vehículo ajeno o un criterio desconocido se rechaza sin sustituir la preferencia guardada; se validan también precios y peso.\par
+
+\href{https://www.figma.com/design/0X0JpvayI4WsF0QyywWWbs?node-id=5-627}{Abrir M09 en Figma}\par
+
+\clearpage\subsection*{M10. Volver a la aplicación}
+
+\textbf{Historias relacionadas:} HU-25, HU-26.\par
+
+Representa recuperación tras cierre normal o interrupción, y el fallo al abrir el almacenamiento.\par
+
+\begin{center}\includegraphics[width=\linewidth,height=0.59\textheight,keepaspectratio]{figma/M10.png}\end{center}
+
+\begin{center}\small\textit{Figura 5.10. Volver a la aplicación.}\end{center}
+
+\textbf{Escenario válido:} Se recuperan contenidos confirmados, identificadores, favoritos, tema y último trayecto.\par
+
+\textbf{Escenario inválido:} Un fallo de carga no se presenta como colección vacía; una transacción sin COMMIT no debe aparecer como alta confirmada.\par
+
+\href{https://www.figma.com/design/0X0JpvayI4WsF0QyywWWbs?node-id=5-743}{Abrir M10 en Figma}\par
+
+La relación con las historias permite revisar cada pantalla junto con sus pruebas de aceptación. Los mockups describen el comportamiento previsto de la interfaz; su representación no acredita que las funcionalidades o las pruebas ya estén implementadas o superadas.\par
