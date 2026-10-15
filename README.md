@@ -2,6 +2,10 @@
 
 Repositorio privado de trabajo del equipo. La Entrega 1 está **vacía y pendiente de revisión**: todavía no se ha aprobado ninguna historia, escenario, pantalla o decisión técnica.
 
+## Nota sobre la trazabilidad del trabajo
+
+Debido a problemas de acceso al repositorio de GitHub, algunas aportaciones se incorporaron después de haber sido elaboradas y revisadas fuera del repositorio. Por ello, las fechas de los commits indican cuándo se registraron los cambios en GitHub y no necesariamente cuándo se realizó el trabajo correspondiente.
+
 ## Documento fuente
 
 El texto editable vive en `docs/entrega1/`. Cada archivo corresponde a un apartado; se pueden revisar y atribuir sus cambios por separado. El ODT se **genera** a partir de esos Markdown. No se edita el ODT como fuente.
