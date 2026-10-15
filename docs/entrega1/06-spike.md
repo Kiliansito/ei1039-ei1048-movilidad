@@ -1,8 +1,8 @@
 # Iteración 0
 
-El spike integra React y TypeScript en la interfaz, Vite para la compilación, Node.js 24.16 o superior en el servidor, SQLite para el almacenamiento y Leaflet con OpenStreetMap para el mapa. Se comprueban la comunicación entre estas piezas y la recuperación de datos guardados.
+El spike integra React y TypeScript en la interfaz, Vite para la compilación, Node.js 24.16 o superior en el servidor, SQLite para el almacenamiento y Leaflet con OpenStreetMap para el mapa.
 
-La interfaz usa un modelo de vista observable. MobilityService coordina los casos de uso. RepositoryPort separa el almacenamiento y RoutingPort, GeocodingPort y PricePort aíslan los servicios externos. Estos contratos permiten usar dobles de prueba.
+La interfaz usa un modelo de vista observable. MobilityService coordina los casos de uso. RepositoryPort separa el almacenamiento y RoutingPort, GeocodingPort y PricePort aíslan los servicios externos.
 
 | **Servicio** | **Uso en el spike** |
 | --- | --- |
@@ -21,7 +21,7 @@ MET es un factor de actividad y las calorías son orientativas. El criterio econ
 
 ## Ejecución y resultados
 
-Desde 02_Spike se ejecutan npm ci, npm run build y npm run spike. La aplicación se abre en http://localhost:4173. OpenRouteService necesita una clave propia en ORS_API_KEY dentro de .env. El resto de proveedores no necesita clave. El README del spike detalla la instalación y los comandos de prueba.
+Desde 02_Spike se ejecutan npm ci, npm run build y npm run spike. La aplicación se abre en http://localhost:4173. OpenRouteService necesita una clave propia en ORS_API_KEY dentro de .env. El resto de proveedores no necesita clave.
 
 La interfaz sigue manualmente las capturas de las diez pantallas. Rutas, precios y mapas se obtienen al usar la aplicación. Las cifras de los mockups son ejemplos.
 

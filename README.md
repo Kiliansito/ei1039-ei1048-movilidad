@@ -6,6 +6,7 @@ Aplicación de movilidad del proyecto conjunto de la Universitat Jaume I.
 - Kilian Escudero Vizcaino
 - Ismael Ferrando Paulo
 
+
 ## Entrega 1
 
 La entrega está organizada en [`entrega1/`](entrega1/README.md).

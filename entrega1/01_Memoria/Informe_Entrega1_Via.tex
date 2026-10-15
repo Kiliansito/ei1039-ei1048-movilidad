@@ -65,8 +65,8 @@ Vía es una aplicación de movilidad para gestionar lugares y vehículos y calcu
 \input{apartados/05-mockups}
 \clearpage
 \section{Spike tecnológico}\label{sec6}
-El spike integra React y TypeScript en la interfaz, Vite para la compilación, Node.js 24.16 o superior en el servidor, SQLite para el almacenamiento y Leaflet con OpenStreetMap para el mapa. Se comprueban la comunicación entre estas piezas y la recuperación de datos guardados.\par
-La interfaz usa un modelo de vista observable. MobilityService coordina los casos de uso. RepositoryPort separa el almacenamiento y RoutingPort, GeocodingPort y PricePort aíslan los servicios externos. Estos contratos permiten usar dobles de prueba.\par
+El spike integra React y TypeScript en la interfaz, Vite para la compilación, Node.js 24.16 o superior en el servidor, SQLite para el almacenamiento y Leaflet con OpenStreetMap para el mapa.\par
+La interfaz usa un modelo de vista observable. MobilityService coordina los casos de uso. RepositoryPort separa el almacenamiento y RoutingPort, GeocodingPort y PricePort aíslan los servicios externos.\par
 \begingroup\fontsize{9.25}{11.7}\selectfont\begin{tabularx}{\linewidth}{@{}p{3.2cm}Y@{}}\arrayrulecolor{black}\toprule
 \textbf{Servicio} & \textbf{Uso en el spike}\\[2pt]\midrule
 \textbf{OpenRouteService} & Geocodificación y rutas en coche, bicicleta y a pie. Clave solo en el servidor.\\[2pt]\arrayrulecolor{black!25}\midrule[0.25pt]
@@ -78,7 +78,7 @@ La interfaz usa un modelo de vista observable. MobilityService coordina los caso
 El coste se calcula multiplicando distancia en km / 100 por el consumo medio y por el precio de la energía. El consumo se expresa en l/100 km o kWh/100 km, y el precio en \texteuro{}/l o \texteuro{}/kWh. Para caminar o ir en bicicleta se estiman kcal con MET \ensuremath{\times} 3,5 \ensuremath{\times} peso en kg / 200 \ensuremath{\times} duración en minutos. Se usan MET de 3,5 y 6,8, respectivamente.\par
 MET es un factor de actividad y las calorías son orientativas. El criterio económico compara las alternativas del proveedor. Rapidez y distancia pueden dar la misma opción. Con el mismo vehículo y precio positivo, la ruta más corta también cuesta menos. A pie y en bicicleta el coste monetario es cero y se desempata por distancia. Si falta un precio, el coste figura como no disponible. Las rutas guardadas conservan trazado, métricas y fuente del cálculo. Se recuperan datos confirmados, favoritos, preferencias y último trayecto.\par
 \subsection*{Ejecución y resultados}
-Desde 02\_Spike se ejecutan npm ci, npm run build y npm run spike. La aplicación se abre en http://localhost:4173. OpenRouteService necesita una clave propia en ORS\_API\_KEY dentro de .env. El resto de proveedores no necesita clave. El README del spike detalla la instalación y los comandos de prueba.\par
+Desde 02\_Spike se ejecutan npm ci, npm run build y npm run spike. La aplicación se abre en http://localhost:4173. OpenRouteService necesita una clave propia en ORS\_API\_KEY dentro de .env. El resto de proveedores no necesita clave.\par
 La interfaz sigue manualmente las capturas de las diez pantallas. Rutas, precios y mapas se obtienen al usar la aplicación. Las cifras de los mockups son ejemplos.\par
 Pasan las 52 pruebas de aceptación seleccionadas, una válida y una inválida por historia. Actúan sobre la lógica de negocio con SQLite en disco y los servicios reales necesarios, sin omisiones. npm test las incluye junto con 36 pruebas locales y 18 de integración con dobles. La clave se conserva solo en .env.\par
 Pasan 24 recorridos de navegador, 12 de escritorio y 12 de móvil emulado. Comprueban formularios, mapa, cálculos, favoritos, historial, preferencias y errores con datos y proveedores de prueba. La compilación comprueba los tipos del código y de las pruebas.\par
