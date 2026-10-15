@@ -1,0 +1,23 @@
+✖ Given a password with surrounding spaces When logging in Then only the exact password works (78.287958ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 196.322458
+
+✖ failing tests:
+
+test at tests/security.test.ts:1:576
+✖ Given a password with surrounding spaces When logging in Then only the exact password works (78.287958ms)
+  Error: Credenciales incorrectas.
+      at MobilityService.login (entrega1/02_Spike/src/services.ts:93:13)
+      at TestContext.<anonymous> (entrega1/02_Spike/tests/security.test.ts:26:27)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.start (node:internal/test_runner/test:1177:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:385:17) {
+    status: 401
+  }

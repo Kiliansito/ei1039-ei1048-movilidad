@@ -93,3 +93,53 @@ test("Given a committed place When the process is killed without closing SQLite 
     rmSync(dir, { recursive: true, force: true });
   }
 });
+
+test("Given an uncommitted place When the process is killed Then only committed records survive", async () => {
+  const { spawnSync } = await import("node:child_process");
+  const dir = mkdtempSync(join(tmpdir(), "via-rollback-"));
+  const path = join(dir, "db.sqlite");
+  try {
+    const repo = new SqliteRepository(path);
+    const app = new MobilityService({ repo });
+    const user = app.register({
+      name: "Ana",
+      email: "rollback@example.com",
+      password: "RutaSegura2026",
+    });
+    const place = app.addPlace(user.id, {
+      name: "Centro",
+      lat: 39.9864,
+      lon: -0.0513,
+    });
+    repo.close();
+    const child = spawnSync(
+      process.execPath,
+      [
+        "--input-type=module",
+        "-e",
+        `
+      import { DatabaseSync } from 'node:sqlite';
+      const db = new DatabaseSync(process.argv[1]);
+      db.exec('PRAGMA synchronous=FULL; BEGIN IMMEDIATE');
+      db.prepare('INSERT INTO records VALUES(?,?,?,?)').run('pending-uji', process.argv[2], 'places', JSON.stringify({id:'pending-uji',name:'UJI',lat:39.9946,lon:-0.0684,favorite:false}));
+      process.stdout.write('written-without-commit');
+      process.kill(process.pid, 'SIGKILL');
+    `,
+        path,
+        user.id,
+      ],
+      { encoding: "utf8" },
+    );
+    assert.equal(child.signal, "SIGKILL");
+    assert.equal(child.stdout, "written-without-commit");
+    const reopened = new SqliteRepository(path);
+    try {
+      assert.deepEqual(reopened.list(user.id, "places"), [place]);
+      assert.equal(reopened.get(user.id, "places", "pending-uji"), null);
+    } finally {
+      reopened.close();
+    }
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});

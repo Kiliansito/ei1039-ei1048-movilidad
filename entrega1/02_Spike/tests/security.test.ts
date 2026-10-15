@@ -17,6 +17,25 @@ const setup = () => {
   });
   return { repo, app, a, b };
 };
+test("Given a password with surrounding spaces When logging in Then only the exact password works", () => {
+  const repo = new SqliteRepository(":memory:");
+  try {
+    const app = new MobilityService({ repo });
+    const password = " RutaSegura2026 ";
+    const user = app.register({
+      name: "Ana",
+      email: "spaces@example.com",
+      password,
+    });
+    const { token } = app.login({ email: user.email, password });
+    assert.equal(app.session(token)?.id, user.id);
+    assert.throws(() =>
+      app.login({ email: user.email, password: password.trim() }),
+    );
+  } finally {
+    repo.close();
+  }
+});
 test("Given another account When editing or deleting its records Then access denied", () => {
   const { repo, app, a, b } = setup();
   const v = app.saveVehicle(a.id, {
