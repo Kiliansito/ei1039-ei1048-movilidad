@@ -14,7 +14,7 @@ Se han revisado los cuatro PDF docentes completos, la memoria, los ocho document
 | --- | --- | --- |
 | Descripción y requisitos, 8 páginas | Seis requisitos, mapa obligatorio, vehículos eléctricos, favoritos y persistencia | El catálogo mantiene la cobertura del enunciado. Se explica por qué contiene 26 historias |
 | Metodología y criterios, 12 páginas | INVEST, dos escenarios por historia, análisis por escenario y pruebas sobre la lógica de negocio | Se añade el análisis de los 52 escenarios y se separan las comprobaciones de interfaz |
-| Instrucciones de la Entrega 1, 17 diapositivas | Datos concretos, reglas de dominio, consistencia de interfaces, spike y GAIDeT | Se completan los datos comunes, las reglas y los ejemplos de uso de IA. Se utiliza el generador GAIDeT |
+| Instrucciones de la Entrega 1, 17 diapositivas | Datos concretos, reglas de dominio, consistencia de interfaces, spike y GAIDeT | Se completan los datos comunes, las reglas y la declaración de uso de IA. Se utiliza el generador GAIDeT |
 | Presentación del proyecto, 31 diapositivas | Alcance básico, finalidad de la iteración 0 y diferencias entre las pruebas | Se aclara que las especificaciones del proyecto y las comprobaciones del spike tienen distinto alcance |
 
 Los originales están en `05_Material_docente`. La entrega consiste en el PDF que se presenta en Aula Virtual, junto con el acceso al repositorio del spike. La documentación docente fija el 16 de octubre de 2026 a las 23.59 para la Entrega 1.
@@ -43,7 +43,7 @@ Las historias expresan una necesidad, incluyen resultados observables y tienen l
 - Se explica cómo comprobar resultados de API reales que cambian y cómo distinguir una prueba de integración con un doble.
 - Se corrigen las relaciones entre historias y pantallas. Preferencias también interviene en precios manuales y peso.
 - Se simplifican las frases y se eliminan los dos puntos, el punto y coma y las rayas largas de la prosa revisada. Se conservan la sintaxis del código, las direcciones y el texto original del generador GAIDeT.
-- Se añaden fragmentos reales de esta revisión, resúmenes de respuestas y una valoración crítica del uso de IA.
+- Se conserva la reflexión sobre el uso de IA y se completa la declaración GAIDeT.
 - Se corrige el acceso con contraseñas que contienen espacios exteriores. La prueba reproduce el fallo antes del cambio y lo supera después.
 - Se añade una prueba que interrumpe una escritura antes de confirmar la transacción y comprueba que solo se conserva el dato anterior.
 - Se actualiza la dependencia indirecta source-map-js de 1.2.1 a 1.2.2. La revisión de dependencias ya no informa de vulnerabilidades conocidas.
@@ -58,7 +58,7 @@ Las historias expresan una necesidad, incluyen resultados observables y tienen l
 | Servicios reales | Dos pruebas superadas, precios públicos y búsqueda y rutas con ORS en los tres modos |
 | Compilación TypeScript y Vite | Correcta |
 | Dependencias | Sin vulnerabilidades conocidas según npm audit en esta revisión |
-| Memoria | 22 páginas compiladas y revisadas visualmente |
+| Memoria | 21 páginas compiladas y revisadas visualmente |
 | Documentos y catálogo | 26 historias, 52 escenarios con sus cinco campos completos y nueve pantallas |
 
 Los archivos de esta carpeta conservan las salidas de las ejecuciones. Las pruebas locales y de navegador no representan 52 pruebas de aceptación ya terminadas.
