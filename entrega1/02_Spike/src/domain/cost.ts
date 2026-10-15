@@ -5,11 +5,11 @@ const strategies = {
     distance: number,
     duration: number,
     weight: number,
-    vehicle: Vehicle,
+    vehicle: Vehicle | undefined,
     prices: Prices,
   ) => ({
     cost:
-      prices[vehicle.type] == null
+      !vehicle || prices[vehicle.type] == null
         ? null
         : Math.round(
             (distance / 1000 / 100) *
@@ -33,7 +33,7 @@ export function estimate(
   distance: number,
   duration: number,
   weight: number,
-  vehicle: Vehicle,
+  vehicle: Vehicle | undefined,
   prices: Prices,
 ) {
   return strategies[mode](distance, duration, weight, vehicle, prices);

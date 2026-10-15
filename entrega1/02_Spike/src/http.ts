@@ -102,6 +102,10 @@ export function createApi(app: MobilityService, configured: boolean) {
       }
       if (path === "/api/state" && method === "GET")
         return reply(res, 200, app.stateForSession(token(req)));
+      if (path === "/api/prices" && method === "GET") {
+        rate("prices:" + id, 30);
+        return reply(res, 200, await app.energyPrices(id));
+      }
       if (path === "/api/search" && method === "GET") {
         rate("search:" + id, 30);
         return reply(

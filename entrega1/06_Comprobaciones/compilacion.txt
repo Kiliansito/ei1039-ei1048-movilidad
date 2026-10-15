@@ -1,3 +1,4 @@
+
 > via-spike@0.1.0 build
 > tsc --noEmit && npm run check:tests && vite build
 
@@ -10,7 +11,7 @@ transforming...
 ✓ 35 modules transformed.
 rendering chunks...
 computing gzip size...
-dist/index.html                                              0.45 kB │ gzip:   0.31 kB
+dist/index.html                                              0.45 kB │ gzip:   0.32 kB
 dist/assets/inter-vietnamese-wght-normal-CBcvBZtf.woff2     10.25 kB
 dist/assets/inter-greek-ext-wght-normal-DlzME5K_.woff2      11.23 kB
 dist/assets/inter-cyrillic-wght-normal-DqGufNeO.woff2       18.75 kB
@@ -18,6 +19,6 @@ dist/assets/inter-greek-wght-normal-CkhJZR-_.woff2          19.00 kB
 dist/assets/inter-cyrillic-ext-wght-normal-BOeWTOD4.woff2   25.96 kB
 dist/assets/inter-latin-wght-normal-Dx4kXJAl.woff2          48.26 kB
 dist/assets/inter-latin-ext-wght-normal-DO1Apj_S.woff2      85.07 kB
-dist/assets/index-BwWc4_h0.css                              24.15 kB │ gzip:   8.91 kB
-dist/assets/index-DRyP9T5U.js                              399.98 kB │ gzip: 120.98 kB
-✓ built in 545ms
+dist/assets/index-BVmKGW2Y.css                              24.28 kB │ gzip:   8.94 kB
+dist/assets/index-CH5p1iWP.js                              402.44 kB │ gzip: 121.76 kB
+✓ built in 574ms

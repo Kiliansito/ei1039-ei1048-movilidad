@@ -1,0 +1,76 @@
+✔ Given new email When registering Then account is created; duplicate rejected (23.396417ms)
+✔ invalid email and weak password rejected (17.79425ms)
+✔ Given account When login Then authenticated; wrong password rejected (35.755542ms)
+✔ Given session When logout Then token invalidated (35.26925ms)
+✔ Given owned records When deleting account Then cascade removes all data (37.149667ms)
+✔ Given coordinates When saving place Then persisted; invalid coordinates rejected (18.405625ms)
+✔ Given a toponym When searching Then geocoder result can become registered place (18.659583ms)
+✔ Given a place When deleting Then absent; unknown record rejected (17.782833ms)
+✔ Given vehicle When updating and deleting Then lifecycle persists (18.347416ms)
+✔ Given registered endpoints When calculating Then fastest and shortest differ (19.019041ms)
+✔ Given bicycle or walk When planning Then kcal estimated (18.754292ms)
+✔ Given calculated route When saving Then reloadable and deletable (18.843583ms)
+✔ Given favorite When listing Then appears first; cross-account access denied (36.254292ms)
+✔ Given preferences When reopening Then defaults preserved; invalid enum rejected (17.723209ms)
+✔ Provider failure propagates honestly without invented routes (18.25825ms)
+✔ Editing a place preserves identity and favorites, validates coordinates and isolates owners (35.715042ms)
+✖ Sin vehículo se calcula y guarda una ruta en coche sin inventar el coste (17.691542ms)
+✖ Se pueden consultar los tres precios sin tener vehículos y elegir precios manuales (17.90775ms)
+✖ Sin proveedor de precios no se inventan importes ni se bloquea una ruta sin vehículo (17.542ms)
+✖ Se puede omitir un vehículo predeterminado y se utiliza el precio de cada tipo de energía (18.054167ms)
+ℹ tests 20
+ℹ suites 0
+ℹ pass 16
+ℹ fail 4
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 569.040458
+
+✖ failing tests:
+
+test at tests/core.test.ts:1:7742
+✖ Sin vehículo se calcula y guarda una ruta en coche sin inventar el coste (17.691542ms)
+  Error: Selecciona uno de tus vehículos para calcular la ruta.
+      at MobilityService.plan (/Users/ruben/prTODO/tmp/publicacion-movilidad/entrega1/02_Spike/src/services.ts:295:13)
+      at TestContext.<anonymous> (/Users/ruben/prTODO/tmp/publicacion-movilidad/entrega1/02_Spike/tests/core.test.ts:301:30)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    status: 400
+  }
+
+test at tests/core.test.ts:1:8603
+✖ Se pueden consultar los tres precios sin tener vehículos y elegir precios manuales (17.90775ms)
+  TypeError: app.energyPrices is not a function
+      at TestContext.<anonymous> (/Users/ruben/prTODO/tmp/publicacion-movilidad/entrega1/02_Spike/tests/core.test.ts:320:28)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7)
+
+test at tests/core.test.ts:1:9314
+✖ Sin proveedor de precios no se inventan importes ni se bloquea una ruta sin vehículo (17.542ms)
+  TypeError: app.energyPrices is not a function
+      at TestContext.<anonymous> (/Users/ruben/prTODO/tmp/publicacion-movilidad/entrega1/02_Spike/tests/core.test.ts:339:30)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7)
+
+test at tests/core.test.ts:1:10023
+✖ Se puede omitir un vehículo predeterminado y se utiliza el precio de cada tipo de energía (18.054167ms)
+  Error: Selecciona uno de tus vehículos para calcular la ruta.
+      at MobilityService.plan (/Users/ruben/prTODO/tmp/publicacion-movilidad/entrega1/02_Spike/src/services.ts:295:13)
+      at TestContext.<anonymous> (/Users/ruben/prTODO/tmp/publicacion-movilidad/entrega1/02_Spike/tests/core.test.ts:362:33)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    status: 400
+  }

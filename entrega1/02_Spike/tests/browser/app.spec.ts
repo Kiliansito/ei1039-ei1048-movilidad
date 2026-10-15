@@ -77,7 +77,7 @@ async function plan(page: Page, mode = "foot") {
     .selectOption(mode);
   if (mode === "car")
     await page
-      .getByLabel("Vehículo", { exact: true })
+      .getByLabel("Vehículo opcional", { exact: true })
       .selectOption({ label: "Compacto · Gasolina · 6 l/100 km" });
   await page
     .getByRole("button", { name: "Calcular ruta", exact: true })
@@ -368,5 +368,72 @@ test("un fallo de carga muestra un error recuperable y no una colección vacía"
   await page.getByRole("button", { name: "Reintentar", exact: true }).click();
   await expect(
     page.getByRole("form", { name: "Crear una cuenta", exact: true }),
+  ).toBeVisible();
+});
+
+test("los precios se muestran sin vehículos y el coche puede calcularse y guardarse sin estimar coste", async ({
+  page,
+}, info) => {
+  await register(page, info);
+  await endpoints(page);
+  await page.getByRole("link", { name: "Explorar", exact: true }).click();
+  const prices = page.getByRole("region", { name: "Precios de la energía" });
+  await expect(prices.getByText("1,6 €/l", { exact: true })).toBeVisible();
+  await expect(prices.getByText("1,5 €/l", { exact: true })).toBeVisible();
+  await expect(prices.getByText("0,2 €/kWh", { exact: true })).toBeVisible();
+  await page.getByLabel("Origen guardado").selectOption({ label: "Centro" });
+  await page.getByLabel("Destino guardado").selectOption({ label: "UJI" });
+  await page.getByLabel("Modo de transporte").selectOption("car");
+  await expect(page.getByLabel("Vehículo opcional")).toHaveValue("");
+  await page.getByLabel("Criterio", { exact: true }).selectOption("cheapest");
+  await page
+    .getByRole("button", { name: "Calcular ruta", exact: true })
+    .click();
+  await expect(
+    page.getByRole("heading", { name: "Resultado del trayecto", exact: true }),
+  ).toBeVisible();
+  await expect(page.locator(".summary")).toContainText("Coste no disponible");
+  await expect(
+    page.getByText(
+      "No se puede comparar el coste sin un vehículo y un precio disponible. Las alternativas se ordenan por distancia.",
+    ),
+  ).toBeVisible();
+  await expect(
+    page.getByText(
+      "Selecciona un vehículo para estimar el coste con su consumo.",
+    ),
+  ).toBeVisible();
+  await save(page);
+  await page.getByRole("link", { name: "Rutas", exact: true }).click();
+  await expect(page.getByRole("listitem")).toContainText("Coste no disponible");
+  const state = await page.request.get("/api/state").then((r) => r.json());
+  expect(state.vehicles).toHaveLength(0);
+  expect(state.routes[0].cost).toBeNull();
+  await shot(page, "Vehiculo-opcional", info);
+});
+
+test("un fallo al consultar los precios permite seguir calculando sin vehículo", async ({
+  page,
+}, info) => {
+  await register(page, info);
+  await endpoints(page);
+  await page.route("**/api/prices", (route) =>
+    route.fulfill({
+      status: 503,
+      contentType: "application/json",
+      body: JSON.stringify({ error: "Precios no disponibles." }),
+    }),
+  );
+  await page.getByRole("link", { name: "Explorar", exact: true }).click();
+  await expect(
+    page.getByRole("region", { name: "Precios de la energía" }),
+  ).toContainText("Precios no disponibles.");
+  await page.getByLabel("Origen guardado").selectOption({ label: "Centro" });
+  await page.getByLabel("Destino guardado").selectOption({ label: "UJI" });
+  await page
+    .getByRole("button", { name: "Calcular ruta", exact: true })
+    .click();
+  await expect(
+    page.getByRole("heading", { name: "Resultado del trayecto", exact: true }),
   ).toBeVisible();
 });

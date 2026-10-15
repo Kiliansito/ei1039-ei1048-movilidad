@@ -82,7 +82,7 @@ Se utilizan OpenRouteService, MITECO, REE y OpenStreetMap. La tabla recoge la co
 Las coordenadas de ORS se envían como longitud y latitud. Leaflet utiliza latitud y longitud. Los adaptadores realizan ese cambio al mostrar el trazado. Los precios y las rutas pueden variar, por lo que se comprueban sus campos y unidades sin exigir cifras fijas.\par
 \subsection*{Ejecución y resultado}
 Desde 02\_Spike se ejecuta npm ci y se configura ORS\_API\_KEY en .env. El comando npm run spike:apis realiza ocho comprobaciones con los servicios reales. Pasan las ocho, sin omisiones. MITECO y REE se comprueban por separado para que el fallo de uno no quede oculto por la respuesta del otro. La salida conserva la operación, los datos básicos y el resultado, sin mostrar claves.\par
-Para abrir la demostración se ejecuta npm run spike y se accede a http://localhost:4173. Se puede buscar un lugar, elegirlo en el mapa, pedir una ruta y guardar y recuperar datos. La guía 02\_Spike/SPIKE\_APIS.md explica las llamadas y los pasos.\par
+Para abrir la demostración se ejecuta npm run spike y se accede a http://localhost:4173. Se puede buscar un lugar, pedir una ruta sin vehículo y consultar los tres precios. El vehículo aporta el consumo para estimar el coste. La guía 02\_Spike/SPIKE\_APIS.md explica las llamadas y los pasos.\par
 Las pruebas de aceptación de las historias y sus evidencias ATDD se conservan como comprobaciones adicionales del código disponible. Se describen en 06\_Comprobaciones y no se presentan como una condición para dar por válido el spike tecnológico.\par
 \clearpage
 \section{Experiencia con Codex}\label{sec7}

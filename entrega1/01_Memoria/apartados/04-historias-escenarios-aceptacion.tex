@@ -655,7 +655,7 @@ Se seleccionan E-12-V como escenario válido y E-12-I1 como escenario inválido 
 \textbf{Then} & se rechaza la operación y no cambian ni Furgoneta ni las preferencias de Ana\\[1pt]\arrayrulecolor{black!25}\midrule[0.25pt]
 \end{tabularx}\endgroup\par
 \end{minipage}\par\vspace{5pt}
-{\fontsize{9}{11.8}\selectfont\textbf{Límites y variantes.} La cancelación conserva el vehículo. Al eliminar el predeterminado se deberá elegir otro para una nueva ruta en coche. El historial no se modifica.\par}\vspace{4pt}
+{\fontsize{9}{11.8}\selectfont\textbf{Límites y variantes.} La cancelación conserva el vehículo. Al eliminar el predeterminado se puede consultar la ruta sin coste o elegir otro vehículo para estimarlo. El historial no se modifica.\par}\vspace{4pt}
 \clearpage\subsection*{HU-13. Modificar un vehículo}
 
 \textbf{Requisito} R3\par
@@ -722,7 +722,7 @@ Se seleccionan E-13-V como escenario válido y E-13-I1 como escenario inválido 
 
 \textbf{RD-54} Los extremos de la ruta deben ser lugares guardados del usuario y tener coordenadas distintas.\par
 
-\textbf{RD-55} Los modos previstos son a pie, bicicleta y coche.\par
+\textbf{RD-55} Los modos previstos son a pie, bicicleta y coche. El vehículo es opcional para consultar una ruta en coche y necesario para estimar su coste.\par
 
 \textbf{RD-56} El cálculo válido devuelve geometría con al menos dos puntos válidos, distancia y duración positivas. El dibujo del trayecto se comprueba por separado en la interfaz.\par
 
@@ -946,7 +946,7 @@ Se seleccionan E-17-V como escenario válido y E-17-I1 como escenario inválido 
 
 \textbf{RD-74} El criterio se aplica a las alternativas realmente recibidas, sin afirmar una optimización global.\par
 
-\textbf{RD-75} Más económica requiere precios disponibles y selecciona un coste menor o igual al de las otras alternativas obtenidas.\par
+\textbf{RD-75} En coche, más económica requiere vehículo y precio. Si faltan, se avisa y se ordena por distancia sin afirmar un coste menor. A pie y en bicicleta el coste monetario es cero.\par
 
 \textbf{RD-76} Los empates deben resolverse con un orden estable. Con una sola alternativa se evalúa esa opción.\par
 
@@ -1215,7 +1215,7 @@ Se seleccionan E-22-V como escenario válido y E-22-I1 como escenario inválido 
 
 \subsubsection*{Reglas de dominio aplicables}
 
-\textbf{RD-55} Los modos previstos son a pie, bicicleta y coche.\par
+\textbf{RD-55} Los modos previstos son a pie, bicicleta y coche. El vehículo es opcional para consultar una ruta en coche y necesario para estimar su coste.\par
 
 \textbf{RD-94} Si se fija un vehículo predeterminado para el modo coche, debe pertenecer al usuario.\par
 

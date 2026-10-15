@@ -53,10 +53,10 @@ Las historias expresan una necesidad, incluyen resultados observables y tienen l
 
 | Comprobación | Resultado |
 | --- | --- |
-| Pruebas locales | 36 superadas |
+| Pruebas locales | 40 superadas |
 | Aceptación | 52 superadas con SQLite en disco y servicios reales, sin omisiones |
 | Integración | 18 superadas con proveedores de prueba |
-| Navegador | 24 recorridos superados, 12 de escritorio y 12 con tamaño móvil emulado |
+| Navegador | 28 recorridos superados, 14 de escritorio y 14 con tamaño móvil emulado |
 | APIs del spike | Ocho comprobaciones superadas, ORS, MITECO, REE y OpenStreetMap, sin omisiones |
 | Compilación TypeScript y Vite | Correcta |
 | Dependencias | Sin vulnerabilidades conocidas según npm audit en esta revisión |
@@ -86,3 +86,9 @@ La interfaz del spike se adapta manualmente a las capturas de los diez diseños.
 El objetivo básico consiste en probar el uso de las tecnologías y comprobar las respuestas de las APIs. Se añade un comando específico con ocho consultas comprobadas por separado. La memoria centra el apartado del spike en esas operaciones. La implementación y las pruebas de aceptación disponibles se mantienen como trabajo adicional, sin presentarlas como requisito de la iteración 0.
 
 Las APIs coinciden con las del proyecto anterior. Se revisan las llamadas de ORS para búsqueda, búsqueda inversa y rutas en tres modos, los precios de MITECO y REE y una imagen de OpenStreetMap. Las ocho comprobaciones pasan. La guía de uso está en 02_Spike/SPIKE_APIS.md y la salida en spike-apis.txt.
+
+## Consulta de precios y vehículo opcional
+
+Se permite consultar y guardar una ruta en coche sin registrar ni seleccionar vehículo. El coste queda como no disponible. Se muestran los precios de gasolina, diésel y electricidad de forma independiente y el vehículo se utiliza solo para aportar el tipo y el consumo. El resultado muestra el precio aplicado. La selección explícita sin vehículo también prevalece sobre un vehículo predeterminado, sin borrarlo de las preferencias.
+
+El commit 688b43b conserva cuatro pruebas nuevas antes de la implementación, con sus fallos. Después pasan esas cuatro y los recorridos de navegador de precios y ruta sin vehículo, tanto en escritorio como en móvil. Los fallos de precios no impiden consultar el trayecto.

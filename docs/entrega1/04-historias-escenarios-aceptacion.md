@@ -651,7 +651,7 @@ Se seleccionan E-13-V como escenario válido y E-13-I1 como escenario inválido 
 
 **RD-54** Los extremos de la ruta deben ser lugares guardados del usuario y tener coordenadas distintas.
 
-**RD-55** Los modos previstos son a pie, bicicleta y coche.
+**RD-55** Los modos previstos son a pie, bicicleta y coche. El vehículo es opcional para consultar una ruta en coche y necesario para estimar su coste.
 
 **RD-56** El cálculo válido devuelve geometría con al menos dos puntos válidos, distancia y duración positivas. El dibujo del trayecto se comprueba por separado en la interfaz.
 
@@ -855,7 +855,7 @@ Se seleccionan E-17-V como escenario válido y E-17-I1 como escenario inválido 
 
 **RD-74** El criterio se aplica a las alternativas realmente recibidas, sin afirmar una optimización global.
 
-**RD-75** Más económica requiere precios disponibles y selecciona un coste menor o igual al de las otras alternativas obtenidas.
+**RD-75** En coche, más económica requiere vehículo y precio. Si faltan, se avisa y se ordena por distancia sin afirmar un coste menor. A pie y en bicicleta el coste monetario es cero.
 
 **RD-76** Los empates deben resolverse con un orden estable. Con una sola alternativa se evalúa esa opción.
 
@@ -1099,7 +1099,7 @@ Se seleccionan E-22-V como escenario válido y E-22-I1 como escenario inválido 
 
 ### Reglas de dominio aplicables
 
-**RD-55** Los modos previstos son a pie, bicicleta y coche.
+**RD-55** Los modos previstos son a pie, bicicleta y coche. El vehículo es opcional para consultar una ruta en coche y necesario para estimar su coste.
 
 **RD-94** Si se fija un vehículo predeterminado para el modo coche, debe pertenecer al usuario.
 
