@@ -23,3 +23,9 @@ El commit 831f1d1 conserva las pruebas y sus ejecuciones con fallos antes de los
 La ejecución final supera las 52 pruebas de aceptación, las 18 de integración, las 36 locales y los 24 recorridos de navegador. No se omite ninguna de las 52 seleccionadas. Las salidas están en todas-las-pruebas.txt, integracion.txt, pruebas-locales.txt y navegador.txt. Las capturas muestran las diez pantallas en escritorio y móvil.
 
 El archivo aceptacion.feature es el catálogo de lectura. Las pruebas ejecutables están en tests/acceptance.test.ts y tests/support/scenarios.ts. El registro comprueba que los identificadores coinciden y que no falta ninguno. Las otras variantes de las tablas de análisis no se presentan como pruebas ejecutadas.
+
+## Vehículo opcional y precios visibles
+
+El commit 688b43b añade las pruebas antes de cambiar la implementación. Las cuatro pruebas nuevas fallan porque el vehículo era obligatorio y no existía una consulta independiente de precios. La salida está en vehiculo-opcional-antes.txt. Los cambios posteriores permiten consultar precios y rutas sin registrar un vehículo y calcular el coste solo con consumo y precio disponibles.
+
+La nueva ejecución pasa 40 pruebas locales y 28 de navegador. Las 52 pruebas de aceptación y las 18 de integración mantienen sus identificadores y cobertura. Los nuevos casos comprueban también precios manuales, fallo del proveedor, prioridad sobre el vehículo predeterminado y uso del precio correcto para gasolina, diésel y electricidad.

@@ -22,6 +22,12 @@ ORS_API_KEY=tu_clave
 
 Reiniciar el servidor tras cambiar la clave. La cuenta, los lugares por coordenadas, los vehículos y las preferencias funcionan sin ella. Los mapas necesitan conexión. La clave no se envía al navegador.
 
+## Rutas y precios
+
+El vehículo es opcional al consultar una ruta en coche. Sin él se muestran el trazado, la distancia y la duración, y el coste queda como no disponible. La ruta también se puede guardar así. Elegir un vehículo permite usar su consumo y el precio de su tipo de energía para estimar el coste.
+
+El planificador muestra gasolina, diésel y electricidad aunque no haya vehículos registrados. Por defecto consulta los servicios públicos. Si se activan los precios manuales en Preferencias, muestra y utiliza esos valores. El resultado indica el consumo y el precio aplicado. Si no se puede comparar el coste, se avisa y se ordenan las alternativas por distancia.
+
 ## Comprobación básica de las APIs
 
 Después de configurar la clave ORS se ejecuta el siguiente comando.
@@ -43,13 +49,13 @@ npx playwright install chromium
 npm run test:e2e
 ```
 
-`npm test` ejecuta 36 pruebas locales, 18 de integración y las 52 de aceptación seleccionadas en la memoria. Las de aceptación necesitan la clave ORS y conexión a los servicios reales. Si falta la clave o falla un servicio necesario, el comando falla. No omite esas pruebas.
+`npm test` ejecuta 40 pruebas locales, 18 de integración y las 52 de aceptación seleccionadas en la memoria. Las de aceptación necesitan la clave ORS y conexión a los servicios reales. Si falta la clave o falla un servicio necesario, el comando falla. No omite esas pruebas.
 
 Las pruebas se pueden lanzar por separado con `npm run test:local`, `npm run test:integration` y `npm run test:acceptance`. El [catálogo Gherkin](../04_Pruebas/aceptacion.feature) recoge los escenarios en texto. Su código está en [acceptance.test.ts](tests/acceptance.test.ts) y [support/scenarios.ts](tests/support/scenarios.ts). Se comprueba que los 52 identificadores del catálogo coinciden con los de las pruebas.
 
 Las pruebas de aceptación actúan sobre la lógica de negocio con una base SQLite temporal en disco. Usan los proveedores reales cuando el escenario los necesita. Las de integración sustituyen esos proveedores por dobles con respuestas conocidas para comprobar cálculos y decisiones. Las pruebas locales cubren validaciones, adaptadores, cuentas y persistencia.
 
-Las 24 pruebas de navegador comprueban 12 recorridos en escritorio y móvil. Ejecutan un servidor aislado con SQLite en memoria y proveedores de prueba. No usan la clave ORS ni los datos de trabajo. Guardan capturas de las diez pantallas en `../06_Comprobaciones/capturas` y comprueban que no haya desbordamiento horizontal.
+Las 28 pruebas de navegador comprueban 14 recorridos en escritorio y móvil. Ejecutan un servidor aislado con SQLite en memoria y proveedores de prueba. No usan la clave ORS ni los datos de trabajo. Guardan capturas de las diez pantallas en `../06_Comprobaciones/capturas` y comprueban que no haya desbordamiento horizontal.
 
 Si se utiliza Chrome instalado, ejecutar `PLAYWRIGHT_CHANNEL=chrome npm run test:e2e` en macOS o Linux. En PowerShell se puede establecer `PLAYWRIGHT_CHANNEL` como variable de entorno antes de ejecutar el mismo comando.
 

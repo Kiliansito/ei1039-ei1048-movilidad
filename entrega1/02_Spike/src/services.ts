@@ -276,6 +276,27 @@ export class MobilityService {
     this.repo.setPreferences(id, p);
     return p;
   }
+  async energyPrices(id: string) {
+    this.user(id);
+    const p = this.prefs(id);
+    if (p.useManualPrices)
+      return {
+        ...p.manualPrices,
+        source: "Precio manual",
+        date: new Date().toISOString(),
+        estimated: true,
+      };
+    const unavailable = {
+      petrol: null,
+      diesel: null,
+      electric: null,
+      source: "Precios no disponibles",
+      estimated: true,
+    } as import("./domain/types.ts").Prices;
+    return (
+      (await this.prices?.current().catch(() => unavailable)) ?? unavailable
+    );
+  }
   async plan(id: string, input: any) {
     this.user(id);
     const p = this.prefs(id);
@@ -291,12 +312,8 @@ export class MobilityService {
     if (from.id === to.id || (from.lat === to.lat && from.lon === to.lon))
       throw new AppError("Elige dos lugares diferentes.");
     const vid = input.vehicleId ?? p.vehicleId;
-    if (mode === "car" && !vid)
-      throw new AppError(
-        "Selecciona uno de tus vehículos para calcular la ruta.",
-      );
     const vehicle: Vehicle | undefined =
-      mode === "car" ? this.owned(id, "vehicles", vid) : undefined;
+      mode === "car" && vid ? this.owned(id, "vehicles", vid) : undefined;
     if (!this.routing)
       throw new AppError(
         "Añade ORS_API_KEY en .env y reinicia Vía para calcular rutas reales.",
@@ -309,15 +326,7 @@ export class MobilityService {
       source: "Precio no disponible",
       estimated: true,
     } as import("./domain/types.ts").Prices;
-    if (mode === "car")
-      price = p.useManualPrices
-        ? {
-            ...p.manualPrices,
-            source: "Precio manual",
-            date: new Date().toISOString(),
-            estimated: true,
-          }
-        : ((await this.prices?.current().catch(() => price)) ?? price);
+    if (mode === "car") price = await this.energyPrices(id);
     const raw = await this.routing.routes(from, to, mode);
     if (!raw.length)
       throw new AppError(
@@ -340,12 +349,12 @@ export class MobilityService {
         throw new AppError("El proveedor ha devuelto una ruta no válida.", 502);
       return {
         ...r,
-        ...estimate(mode, r.distance, r.duration, p.weight, vehicle!, price),
+        ...estimate(mode, r.distance, r.duration, p.weight, vehicle, price),
         mode,
         from,
         to,
         vehicle: mode === "car" ? vehicle : undefined,
-        price: mode === "car" ? (price[vehicle!.type] ?? undefined) : undefined,
+        price: vehicle ? (price[vehicle.type] ?? undefined) : undefined,
         priceSource: price.source,
         priceDate: price.date,
         estimated: true,

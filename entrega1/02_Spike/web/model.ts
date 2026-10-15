@@ -4,6 +4,8 @@ import type {
   Route,
   Preferences,
   Collection,
+  Prices,
+  Preference,
 } from "../src/domain/types";
 export async function api<T = any>(
   path: string,
@@ -30,7 +32,12 @@ type Snapshot = {
   busy: boolean;
   error: string;
   notice: string;
-  plan: { routes: Route[]; planId: string } | null;
+  plan: {
+    routes: Route[];
+    planId: string;
+    price: Prices;
+    preference: Preference;
+  } | null;
 };
 // Modelo observable. La vista no conoce SQLite ni los proveedores externos.
 class ViewModel {

@@ -11,6 +11,7 @@ import type {
   Collection,
   GeocodedPlace,
   Place,
+  Prices,
   Preferences,
   Route,
   State,
@@ -536,6 +537,88 @@ function RouteSummary({ route }: { route: Route }) {
     </p>
   );
 }
+function PriceDetails({ prices }: { prices: Prices }) {
+  return (
+    <>
+      <div className="three energy-prices">
+        {(
+          [
+            ["petrol", "Gasolina", "€/l"],
+            ["diesel", "Diésel", "€/l"],
+            ["electric", "Electricidad", "€/kWh"],
+          ] as const
+        ).map(([key, label, unit]) => (
+          <div className="record" key={key}>
+            <h3>{label}</h3>
+            <p>
+              {prices[key] == null
+                ? "No disponible"
+                : `${number(prices[key]!, 4)} ${unit}`}
+            </p>
+          </div>
+        ))}
+      </div>
+      <p>{prices.source}</p>
+      {prices.date && <small>{prices.date}</small>}
+      <small>
+        {prices.source === "Precio manual"
+          ? "Usas los precios que has introducido en Preferencias."
+          : "Los carburantes son medias de estaciones. La electricidad es una referencia mayorista, sin impuestos ni peajes. Puedes usar tus propios precios en Preferencias."}{" "}
+        El vehículo aporta el consumo y determina qué precio se aplica al coste.
+      </small>
+    </>
+  );
+}
+function EnergyPrices() {
+  const [prices, setPrices] = useState<Prices | null>(null);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [attempt, setAttempt] = useState(0);
+  useEffect(() => {
+    let active = true;
+    setLoading(true);
+    setError("");
+    void api<Prices>("/prices")
+      .then((value) => {
+        if (active) setPrices(value);
+      })
+      .catch((error: unknown) => {
+        if (active) {
+          setPrices(null);
+          setError(
+            error instanceof Error ? error.message : "Precios no disponibles.",
+          );
+        }
+      })
+      .finally(() => {
+        if (active) setLoading(false);
+      });
+    return () => {
+      active = false;
+    };
+  }, [attempt]);
+  return (
+    <section aria-label="Precios de la energía" className="energy-panel">
+      <h2>Precios de la energía</h2>
+      {loading ? (
+        <p role="status">Consultando los precios de referencia.</p>
+      ) : prices ? (
+        <PriceDetails prices={prices} />
+      ) : (
+        <p>{error}</p>
+      )}
+      {!loading &&
+        (error ||
+          prices?.petrol == null ||
+          prices?.diesel == null ||
+          prices?.electric == null) && (
+          <button type="button" onClick={() => setAttempt(attempt + 1)}>
+            Reintentar consulta de precios
+          </button>
+        )}
+    </section>
+  );
+}
 function Calculator({ state }: { state: State }) {
   const app = useApp(),
     p = state.preferences,
@@ -544,7 +627,7 @@ function Calculator({ state }: { state: State }) {
     [to, setTo] = useState(j?.toId ?? "");
   const [mode, setMode] = useState(j?.mode ?? p.mode),
     [criterion, setCriterion] = useState(j?.preference ?? p.preference),
-    [vehicleId, setVehicle] = useState(j?.vehicleId || p.vehicleId || "");
+    [vehicleId, setVehicle] = useState(j?.vehicleId ?? p.vehicleId ?? "");
   const [pick, setPick] = useState<"from" | "to">("from");
   function changed(action: () => void) {
     action();
@@ -623,13 +706,12 @@ function Calculator({ state }: { state: State }) {
           </Field>
         </div>
         {mode === "car" && (
-          <Field label="Vehículo">
+          <Field label="Vehículo opcional">
             <select
-              required
               value={vehicleId}
               onChange={(e) => changed(() => setVehicle(e.target.value))}
             >
-              <option value="">Selecciona un vehículo</option>
+              <option value="">Sin vehículo, solo la ruta</option>
               {state.vehicles.map((v) => (
                 <option key={v.id} value={v.id}>
                   {v.name} · {types[v.type]} · {number(v.consumption)}{" "}
@@ -647,12 +729,14 @@ function Calculator({ state }: { state: State }) {
         )}
         {mode === "car" && !state.vehicles.length && (
           <p className="hint">
-            Añade un vehículo para utilizar su consumo.{" "}
-            <a href="#vehiculos">Mis vehículos</a>
+            Puedes calcular la ruta sin vehículo. Para estimar el coste
+            necesitas el tipo de energía y el consumo de uno de tus vehículos.{" "}
+            <a href="#vehiculos">Añadir un vehículo</a>
           </p>
         )}
         <button>Calcular ruta</button>
       </form>
+      <EnergyPrices />
       <section className="planner-map">
         <Field label="Al seleccionar un lugar en el mapa">
           <select
@@ -723,7 +807,9 @@ function Result() {
       <section className="record">
         <h2>
           {route.mode === "car"
-            ? types[route.vehicle!.type]
+            ? route.vehicle
+              ? types[route.vehicle.type]
+              : "Coche sin vehículo seleccionado"
             : modes[route.mode]}
         </h2>
         <RouteSummary route={route} />
@@ -735,12 +821,40 @@ function Result() {
         {route.mode === "car" && route.priceDate && (
           <small>{route.priceDate}</small>
         )}
-        {route.mode === "car" && route.cost === null && (
+        {route.mode === "car" && route.vehicle && (
           <p>
-            No hay un precio disponible para estimar el coste de este trayecto.
+            Consumo del vehículo {number(route.vehicle.consumption)}{" "}
+            {route.vehicle.type === "electric" ? "kWh" : "l"}/100 km.
           </p>
         )}
+        {route.mode === "car" && route.price != null && (
+          <p>
+            Precio aplicado {number(route.price, 4)}{" "}
+            {route.vehicle?.type === "electric" ? "€/kWh" : "€/l"}.
+          </p>
+        )}
+        {route.mode === "car" && route.cost === null && (
+          <p>
+            {route.vehicle
+              ? "No hay un precio disponible para estimar el coste de este trayecto."
+              : "Selecciona un vehículo para estimar el coste con su consumo."}
+          </p>
+        )}
+        {route.mode === "car" &&
+          route.cost === null &&
+          app.plan?.preference === "cheapest" && (
+            <p>
+              No se puede comparar el coste sin un vehículo y un precio
+              disponible. Las alternativas se ordenan por distancia.
+            </p>
+          )}
       </section>
+      {route.mode === "car" && app.plan?.price && (
+        <section aria-label="Precios utilizados en la consulta">
+          <h2>Precios consultados</h2>
+          <PriceDetails prices={app.plan.price} />
+        </section>
+      )}
       <form
         className="save-route"
         onSubmit={(e) =>

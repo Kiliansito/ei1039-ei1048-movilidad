@@ -298,7 +298,12 @@ test("Sin vehículo se calcula y guarda una ruta en coche sin inventar el coste"
   try {
     const a = app.addPlace(user.id, { name: "Centro", lat: 39, lon: 0 });
     const b = app.addPlace(user.id, { name: "UJI", lat: 39.1, lon: 0.1 });
-    const result = await app.plan(user.id, { from: a.id, to: b.id, mode: "car", vehicleId: "" });
+    const result = await app.plan(user.id, {
+      from: a.id,
+      to: b.id,
+      mode: "car",
+      vehicleId: "",
+    });
     assert.ok(result.routes.length > 0);
     assert.equal(result.routes[0].cost, null);
     assert.equal(result.routes[0].vehicle, undefined);
@@ -306,11 +311,17 @@ test("Sin vehículo se calcula y guarda una ruta en coche sin inventar el coste"
     assert.equal(result.price.petrol, 1.6);
     assert.equal(result.price.diesel, 1.5);
     assert.equal(result.price.electric, 0.2);
-    const saved = app.saveRoute(user.id, { planId: result.planId, index: 0, name: "Trayecto sin vehículo" });
+    const saved = app.saveRoute(user.id, {
+      planId: result.planId,
+      index: 0,
+      name: "Trayecto sin vehículo",
+    });
     assert.equal(saved.cost, null);
     assert.equal(app.state(user.id).routes[0].cost, null);
     assert.deepEqual(app.state(user.id).vehicles, []);
-  } finally { repo.close(); }
+  } finally {
+    repo.close();
+  }
 });
 
 test("Se pueden consultar los tres precios sin tener vehículos y elegir precios manuales", async () => {
@@ -322,30 +333,47 @@ test("Se pueden consultar los tres precios sin tener vehículos y elegir precios
     assert.equal(live.diesel, 1.5);
     assert.equal(live.electric, 0.2);
     assert.deepEqual(app.state(user.id), before);
-    app.preferences(user.id, { useManualPrices: true, manualPrices: { petrol: 1.9, diesel: 1.8, electric: 0.25 } });
+    app.preferences(user.id, {
+      useManualPrices: true,
+      manualPrices: { petrol: 1.9, diesel: 1.8, electric: 0.25 },
+    });
     const manual = await app.energyPrices(user.id);
     assert.equal(manual.source, "Precio manual");
     assert.equal(manual.petrol, 1.9);
     assert.equal(manual.diesel, 1.8);
     assert.equal(manual.electric, 0.25);
     await assert.rejects(() => app.energyPrices("unknown"));
-  } finally { repo.close(); }
+  } finally {
+    repo.close();
+  }
 });
 
 test("Sin proveedor de precios no se inventan importes ni se bloquea una ruta sin vehículo", async () => {
   const { app, user, repo } = fixture();
   try {
-    app.prices = { current: async () => { throw new Error("Sin conexión"); } };
+    app.prices = {
+      current: async () => {
+        throw new Error("Sin conexión");
+      },
+    };
     const prices = await app.energyPrices(user.id);
     assert.equal(prices.petrol, null);
     assert.equal(prices.diesel, null);
     assert.equal(prices.electric, null);
     const a = app.addPlace(user.id, { name: "Centro", lat: 39, lon: 0 });
     const b = app.addPlace(user.id, { name: "UJI", lat: 39.1, lon: 0.1 });
-    const result = await app.plan(user.id, { from: a.id, to: b.id, mode: "car", preference: "cheapest", vehicleId: "" });
+    const result = await app.plan(user.id, {
+      from: a.id,
+      to: b.id,
+      mode: "car",
+      preference: "cheapest",
+      vehicleId: "",
+    });
     assert.equal(result.routes[0].distance, 8000);
     assert.ok(result.routes.every((r) => r.cost === null));
-  } finally { repo.close(); }
+  } finally {
+    repo.close();
+  }
 });
 
 test("Se puede omitir un vehículo predeterminado y se utiliza el precio de cada tipo de energía", async () => {
@@ -353,19 +381,43 @@ test("Se puede omitir un vehículo predeterminado y se utiliza el precio de cada
   try {
     const a = app.addPlace(user.id, { name: "Centro", lat: 39, lon: 0 });
     const b = app.addPlace(user.id, { name: "UJI", lat: 39.1, lon: 0.1 });
-    for (const [type, consumption, price, cost] of [["petrol", 6, 1.6, 0.96], ["diesel", 5, 1.5, 0.75], ["electric", 15, 0.2, 0.3]] as const) {
-      const vehicle = app.saveVehicle(user.id, { name: type, type, consumption });
+    for (const [type, consumption, price, cost] of [
+      ["petrol", 6, 1.6, 0.96],
+      ["diesel", 5, 1.5, 0.75],
+      ["electric", 15, 0.2, 0.3],
+    ] as const) {
+      const vehicle = app.saveVehicle(user.id, {
+        name: type,
+        type,
+        consumption,
+      });
       app.preferences(user.id, { mode: "car", vehicleId: vehicle.id });
       const result = await app.plan(user.id, { from: a.id, to: b.id });
       assert.equal(result.routes[0].price, price);
       assert.equal(result.routes[0].cost, cost);
-      const without = await app.plan(user.id, { from: a.id, to: b.id, vehicleId: "" });
+      const without = await app.plan(user.id, {
+        from: a.id,
+        to: b.id,
+        vehicleId: "",
+      });
       assert.equal(without.routes[0].vehicle, undefined);
       assert.equal(without.routes[0].cost, null);
       assert.equal(app.state(user.id).preferences.vehicleId, vehicle.id);
     }
-    const foreign = app.register({ name: "Luis", email: "other-price@example.com", password: "TestingPrice123" });
-    const v = app.saveVehicle(foreign.id, { name: "Ajeno", type: "petrol", consumption: 6 });
-    await assert.rejects(() => app.plan(user.id, { from: a.id, to: b.id, vehicleId: v.id }));
-  } finally { repo.close(); }
+    const foreign = app.register({
+      name: "Luis",
+      email: "other-price@example.com",
+      password: "TestingPrice123",
+    });
+    const v = app.saveVehicle(foreign.id, {
+      name: "Ajeno",
+      type: "petrol",
+      consumption: 6,
+    });
+    await assert.rejects(() =>
+      app.plan(user.id, { from: a.id, to: b.id, vehicleId: v.id }),
+    );
+  } finally {
+    repo.close();
+  }
 });

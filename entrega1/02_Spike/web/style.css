@@ -507,3 +507,16 @@ h1:focus {
     gap: 20px;
   }
 }
+
+.energy-panel {
+  margin: 35px 0;
+}
+.energy-prices {
+  gap: 12px;
+}
+.energy-prices .record {
+  margin: 0 0 12px;
+}
+.energy-prices h3 {
+  font-size: 14px;
+}

@@ -1,0 +1,8 @@
+Ruta real en coche sin vehículo registrada correctamente
+Distancia 2478.7 metros
+Duración 413.7 segundos
+Coste no disponible sin vehículo, sin inventar consumo
+Gasolina 1.7835030629971778 €/l
+Diésel 1.889424113475157 €/l
+Electricidad 0.19310583333333325 €/kWh
+Fuente MITECO · media nacional de estaciones / REE · media diaria mayorista, sin impuestos ni peajes
