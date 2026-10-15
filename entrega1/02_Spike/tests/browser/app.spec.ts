@@ -437,3 +437,55 @@ test("un fallo al consultar los precios permite seguir calculando sin vehículo"
     page.getByRole("heading", { name: "Resultado del trayecto", exact: true }),
   ).toBeVisible();
 });
+
+test("Explorar busca ambos extremos y calcula con el coche de referencia sin guardar lugares ni vehículos", async ({ page }, info) => {
+  await register(page, info);
+  await page.getByRole("link", { name: "Explorar", exact: true }).click();
+  await page.route("**/api/search?*", (route) => {
+    const q = new URL(route.request().url()).searchParams.get("q");
+    return route.fulfill({ contentType: "application/json", body: JSON.stringify(q === "Centro" ? [{ name: "Centro de Castellón", lat: 39.9864, lon: -0.0513 }] : [{ name: "Universitat Jaume I", lat: 39.9946, lon: -0.0684 }]) });
+  });
+  await expect(page.getByLabel("Vehículo opcional")).toHaveValue("reference");
+  await expect(page.getByLabel("Consumo de referencia (l/100 km)")).toHaveValue("6");
+  await page.getByLabel("Buscar origen", { exact: true }).fill("Centro");
+  await page.getByRole("button", { name: "Buscar origen", exact: true }).click();
+  await page.getByRole("button", { name: "Centro de Castellón", exact: true }).click();
+  await page.getByLabel("Buscar destino", { exact: true }).fill("Universitat Jaume I");
+  await page.getByLabel("Buscar destino", { exact: true }).press("Enter");
+  await page.getByRole("button", { name: "Universitat Jaume I", exact: true }).click();
+  await page.getByRole("button", { name: "Calcular ruta", exact: true }).click();
+  await expect(page.getByRole("heading", { name: "Centro de Castellón a Universitat Jaume I" })).toBeVisible();
+  await expect(page.locator(".summary")).toContainText("0,96 €");
+  await expect(page.getByText("Referencia orientativa. Puedes cambiar el consumo desde Explorar.")).toBeVisible();
+  await save(page);
+  await page.reload();
+  const state = await page.request.get("/api/state").then((r) => r.json());
+  expect(state.places).toHaveLength(0);
+  expect(state.vehicles).toHaveLength(0);
+  expect(state.routes[0].vehicle.reference).toBe(true);
+  await page.getByRole("link", { name: "Explorar", exact: true }).click();
+  await expect(page.getByLabel("Buscar origen", { exact: true })).toHaveValue("Centro de Castellón");
+  await expect(page.getByLabel("Buscar destino", { exact: true })).toHaveValue("Universitat Jaume I");
+  await page.getByLabel("Energía de referencia").selectOption("diesel");
+  await expect(page.getByLabel("Consumo de referencia (l/100 km)")).toHaveValue("5");
+  await page.getByRole("button", { name: "Calcular ruta", exact: true }).click();
+  await expect(page.locator(".summary")).toContainText("0,75 €");
+  await shot(page, "Explorar-directo", info);
+});
+
+test("editar una búsqueda invalida el resultado seleccionado y el mapa permite elegir puntos sin guardarlos", async ({ page }, info) => {
+  await register(page, info);
+  await page.getByRole("link", { name: "Explorar", exact: true }).click();
+  const map = page.locator(".map");
+  await map.click({ position: { x: 110, y: 110 } });
+  await expect(page.getByLabel("Buscar origen", { exact: true })).toHaveValue(/Punto del mapa/);
+  await page.getByLabel("Al seleccionar un lugar en el mapa").selectOption("to");
+  await map.click({ position: { x: 190, y: 170 } });
+  await expect(page.getByLabel("Buscar destino", { exact: true })).toHaveValue(/Punto del mapa/);
+  await page.getByLabel("Buscar origen", { exact: true }).fill("Otro sitio sin seleccionar");
+  await page.getByRole("button", { name: "Calcular ruta", exact: true }).click();
+  await expect(page.getByRole("alert")).toContainText("Selecciona un origen y un destino");
+  const state = await page.request.get("/api/state").then((r) => r.json());
+  expect(state.places).toHaveLength(0);
+  expect(state.preferences.lastJourney).toBeUndefined();
+});
