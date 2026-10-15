@@ -87,6 +87,7 @@ test("Given a committed place When the process is killed without closing SQLite 
     assert.equal(child.signal, "SIGKILL");
     const repo = new SqliteRepository(path);
     const user = repo.findUser("crash@example.com");
+    assert.ok(user);
     assert.equal(repo.list(String(user.id), "places")[0].name, "Durable");
     repo.close();
   } finally {

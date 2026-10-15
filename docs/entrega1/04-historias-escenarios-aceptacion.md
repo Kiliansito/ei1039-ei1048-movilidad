@@ -1215,7 +1215,7 @@ Se seleccionan E-24-V como escenario válido y E-24-I1 como escenario inválido 
 | E-25-V | Sí | Sí | Sí | Sí. Tras iniciar sesión | Estado recuperado |
 | E-25-I1 | Sí | Sí | No | No aplica | Error. No lista vacía ficticia |
 | E-25-I2 | Sí | Sí | Sí | No. Caducada | Solicitar acceso |
-| E-25-V2 | Colecciones vacías guardadas | Sí | Sí | Sí | Estado vacío real |
+| E-25-V2 | Listas vacías guardadas | Sí | Sí | Sí | Estado vacío real |
 
 Se seleccionan E-25-V como escenario válido y E-25-I1 como escenario inválido para las pruebas de aceptación.
 
@@ -1247,13 +1247,11 @@ Se seleccionan E-25-V como escenario válido y E-25-I1 como escenario inválido 
 
 **RD-105** Tras una interrupción de proceso deben conservarse íntegros los datos cuya escritura ya se haya confirmado.
 
-**RD-106** Las escrituras se aplican completas o no se aplican. una transacción interrumpida antes del COMMIT no debe producir un alta parcial.
+**RD-106** Las escrituras se aplican completas o no se aplican. Una transacción interrumpida antes del COMMIT no debe producir un alta parcial.
 
 **RD-107** La recuperación se comprueba reabriendo la misma base de datos en disco desde otro proceso.
 
 **RD-108** La caída de proceso no acredita recuperación ante corte eléctrico o daño físico del disco.
-
-**RD-109** El spike comprueba también una escritura interrumpida antes de confirmar la transacción. Esto no demuestra recuperación ante daño físico del disco.
 
 
 ### Análisis de escenarios

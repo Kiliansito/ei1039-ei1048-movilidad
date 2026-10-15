@@ -108,8 +108,8 @@ for code, title, block in screen_blocks:
     links[code] = urls[-1]
 (ROOT / "entrega1/03_Mockups/pantallas.json").write_text(json.dumps(screens, ensure_ascii=False, indent=2) + "\n")
 
-feature = ["Feature: Movilidad de Vía", "  # Catálogo sin definiciones ejecutables de pasos.", "  # Datos comunes en docs/entrega1/03-reglas-metodo-prueba.md."]
-trace = ["# Trazabilidad de requisitos, historias y pantallas\n", "Los códigos PA identifican especificaciones previstas. No indican que todas estén automatizadas o superadas en el spike. Los escenarios elegidos son E-xx-V y E-xx-I1. El resto de las filas de las tablas amplía el análisis sin añadir pruebas seleccionadas.\n", "| Requisito | Historia | Escenarios y pruebas | Pantallas de Figma |", "| --- | --- | --- | --- |"]
+feature = ["Feature: Movilidad de Vía", "  # Catálogo textual. Ejecución en 02_Spike/tests/acceptance.test.ts.", "  # Datos comunes en docs/entrega1/03-reglas-metodo-prueba.md."]
+trace = ["# Trazabilidad de requisitos, historias y pantallas\n", "Los 52 códigos PA corresponden a las pruebas ejecutables de [aceptación](../02_Spike/tests/acceptance.test.ts), definidas por identificador en [scenarios.ts](../02_Spike/tests/support/scenarios.ts). Los escenarios elegidos son E-xx-V y E-xx-I1. El archivo Gherkin es el catálogo de lectura. Las otras filas de las tablas amplían el análisis sin añadir pruebas seleccionadas.\n", "| Requisito | Historia | Escenarios y pruebas | Pantallas de Figma |", "| --- | --- | --- | --- |"]
 for num, title, block in histories:
     requirement = re.search(r"\\textbf\{Requisito\} (R\d)", block)[1]
     tables = re.findall(r"\\begin\{minipage\}.*?\\end\{minipage\}", block, re.S)

@@ -8,7 +8,7 @@ Running 1 test using 1 worker
   ✘  1 [desktop] › tests/browser/app.spec.ts:58:1 › M01 registro y acceso comparten la pantalla y un correo duplicado conserva los campos (5.5s)
 
 
-  1) [desktop] › tests/browser/app.spec.ts:58:1 › M01 registro y acceso comparten la pantalla y un correo duplicado conserva los campos 
+  1) [desktop] › tests/browser/app.spec.ts:58:1 › M01 registro y acceso comparten la pantalla y un correo duplicado conserva los campos
 
     Error: expect(locator).toBeVisible() failed
 
@@ -42,4 +42,4 @@ Running 1 test using 1 worker
     ────────────────────────────────────────────────────────────────────────────────────────────────
 
   1 failed
-    [desktop] › tests/browser/app.spec.ts:58:1 › M01 registro y acceso comparten la pantalla y un correo duplicado conserva los campos 
+    [desktop] › tests/browser/app.spec.ts:58:1 › M01 registro y acceso comparten la pantalla y un correo duplicado conserva los campos

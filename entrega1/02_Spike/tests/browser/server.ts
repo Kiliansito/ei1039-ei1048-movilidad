@@ -43,7 +43,7 @@ const app = new MobilityService({
       petrol: 1.6,
       diesel: 1.5,
       electric: 0.2,
-      source: "Fixture de prueba",
+      source: "Precios de prueba",
       estimated: true,
     }),
   },
@@ -73,6 +73,7 @@ createServer(async (req, res) => {
           ".webmanifest": "application/manifest+json",
           ".svg": "image/svg+xml",
           ".png": "image/png",
+          ".woff2": "font/woff2",
         } as any
       )[extname(file)] ?? "application/octet-stream",
     );

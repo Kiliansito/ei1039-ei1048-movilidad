@@ -1,5 +1,5 @@
 Feature: Movilidad de Vía
-  # Catálogo sin definiciones ejecutables de pasos.
+  # Catálogo textual. Ejecución en 02_Spike/tests/acceptance.test.ts.
   # Datos comunes en docs/entrega1/03-reglas-metodo-prueba.md.
 
   Scenario: PA-01-V Registrar una cuenta, escenario válido

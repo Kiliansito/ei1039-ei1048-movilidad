@@ -60,8 +60,12 @@ test("Given deleted account When using old session Then invalid; wrong password 
 });
 test("Given persisted password When inspected Then salted hash and no secret in state", () => {
   const { repo, app, a, b } = setup();
-  assert.notEqual(repo.getUser(a.id).password, "longpassword");
-  assert.notEqual(repo.getUser(a.id).password, repo.getUser(b.id).password);
+  const first = repo.getUser(a.id),
+    second = repo.getUser(b.id);
+  assert.ok(first);
+  assert.ok(second);
+  assert.notEqual(first.password, "longpassword");
+  assert.notEqual(first.password, second.password);
   assert.equal("password" in app.state(a.id).user, false);
   repo.close();
 });

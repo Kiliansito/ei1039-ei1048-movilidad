@@ -1,0 +1,30 @@
+
+> via-spike@0.1.0 test:integration
+> node --import tsx --test tests/integration.test.ts
+
+✔ PI-06-V Guardar por topónimo, escenario válido (41.382625ms)
+✔ PI-06-I Guardar por topónimo, escenario inválido (39.497792ms)
+✔ PI-14-V Calcular y visualizar una ruta, escenario válido (39.833375ms)
+✔ PI-14-I Calcular y visualizar una ruta, escenario inválido (38.580708ms)
+✔ PI-15-V Estimar coste de combustible, escenario válido (39.3655ms)
+✔ PI-15-I Estimar coste de combustible, escenario inválido (38.07025ms)
+✔ PI-16-V Estimar coste eléctrico, escenario válido (39.985917ms)
+✔ PI-16-I Estimar coste eléctrico, escenario inválido (38.729791ms)
+✔ PI-17-V Estimar calorías, escenario válido (38.387167ms)
+✔ PI-17-I Estimar calorías, escenario inválido (39.272917ms)
+✔ PI-18-V Elegir el criterio de ruta, escenario válido (38.33625ms)
+✔ PI-18-I Elegir el criterio de ruta, escenario inválido (39.432542ms)
+✔ PI-19-V Guardar una ruta, escenario válido (42.51525ms)
+✔ PI-19-I Guardar una ruta, escenario inválido (38.104542ms)
+✔ PI-23-V Fijar transporte predeterminado, escenario válido (40.109917ms)
+✔ PI-23-I Fijar transporte predeterminado, escenario inválido (56.07775ms)
+✔ PI-24-V Fijar criterio predeterminado, escenario válido (39.988833ms)
+✔ PI-24-I Fijar criterio predeterminado, escenario inválido (38.0825ms)
+ℹ tests 18
+ℹ suites 0
+ℹ pass 18
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 807.760375

@@ -1,6 +1,6 @@
 # Trazabilidad de requisitos, historias y pantallas
 
-Los códigos PA identifican especificaciones previstas. No indican que todas estén automatizadas o superadas en el spike. Los escenarios elegidos son E-xx-V y E-xx-I1. El resto de las filas de las tablas amplía el análisis sin añadir pruebas seleccionadas.
+Los 52 códigos PA corresponden a las pruebas ejecutables de [aceptación](../02_Spike/tests/acceptance.test.ts), definidas por identificador en [scenarios.ts](../02_Spike/tests/support/scenarios.ts). Los escenarios elegidos son E-xx-V y E-xx-I1. El archivo Gherkin es el catálogo de lectura. Las otras filas de las tablas amplían el análisis sin añadir pruebas seleccionadas.
 
 | Requisito | Historia | Escenarios y pruebas | Pantallas de Figma |
 | --- | --- | --- | --- |

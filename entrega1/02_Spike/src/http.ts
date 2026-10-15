@@ -1,12 +1,7 @@
 import type { IncomingMessage, ServerResponse } from "node:http";
-import { randomUUID } from "node:crypto";
-import { AppError, type Collection, type Route } from "./domain/types.ts";
+import { AppError, type Collection } from "./domain/types.ts";
 import type { MobilityService } from "./services.ts";
 export function createApi(app: MobilityService, configured: boolean) {
-  const plans = new Map<
-    string,
-    { userId: string; routes: Route[]; expires: number }
-  >();
   const limits = new Map<string, { count: number; expires: number }>();
   function rate(key: string, max: number) {
     const now = Date.now();
@@ -102,12 +97,11 @@ export function createApi(app: MobilityService, configured: boolean) {
       if (path === "/api/account" && method === "DELETE") {
         const input = await body(req);
         app.deleteAccount(id, input.password);
-        for (const [key, p] of plans) if (p.userId === id) plans.delete(key);
         cookie(res, "", 0);
         return reply(res, 200, { ok: true });
       }
       if (path === "/api/state" && method === "GET")
-        return reply(res, 200, app.state(id));
+        return reply(res, 200, app.stateForSession(token(req)));
       if (path === "/api/search" && method === "GET") {
         rate("search:" + id, 30);
         return reply(
@@ -136,34 +130,10 @@ export function createApi(app: MobilityService, configured: boolean) {
       if (path === "/api/plan" && method === "POST") {
         rate("plan:" + id, 10);
         const input = await body(req);
-        const result = await app.plan(id, input);
-        for (const [key, p] of plans)
-          if (p.expires < Date.now()) plans.delete(key);
-        if (plans.size > 1000) plans.delete(plans.keys().next().value!);
-        const planId = randomUUID();
-        plans.set(planId, {
-          userId: id,
-          routes: result.routes,
-          expires: Date.now() + 3600000,
-        });
-        return reply(res, 200, { ...result, planId });
+        return reply(res, 200, await app.plan(id, input));
       }
       if (path === "/api/routes" && method === "POST") {
-        const input = await body(req);
-        const p = plans.get(input.planId);
-        if (
-          !p ||
-          p.userId !== id ||
-          p.expires < Date.now() ||
-          !Number.isInteger(input.index) ||
-          !p.routes[input.index]
-        )
-          throw new AppError("Vuelve a calcular la ruta antes de guardarla.");
-        return reply(
-          res,
-          201,
-          app.saveRoute(id, { ...p.routes[input.index], name: input.name }),
-        );
+        return reply(res, 201, app.saveRoute(id, await body(req)));
       }
       const match = path.match(
         /^\/api\/(places|vehicles|routes)\/([^/]+)(\/favorite)?$/,
