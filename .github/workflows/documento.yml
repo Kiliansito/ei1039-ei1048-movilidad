@@ -1,14 +1,16 @@
-name: Generar Entrega 1
+name: Compilar memoria LaTeX
 
 on:
   push:
     branches: [main]
     paths:
-      - 'docs/entrega1/**'
+      - 'entrega1/01_Memoria/**'
+      - 'entrega1/03_Mockups/**'
       - '.github/workflows/documento.yml'
   pull_request:
     paths:
-      - 'docs/entrega1/**'
+      - 'entrega1/01_Memoria/**'
+      - 'entrega1/03_Mockups/**'
       - '.github/workflows/documento.yml'
   workflow_dispatch:
 
@@ -16,31 +18,23 @@ permissions:
   contents: read
 
 jobs:
-  odt:
+  latex:
     runs-on: ubuntu-latest
     steps:
       - name: Obtener fuentes
         uses: actions/checkout@v4
-      - name: Instalar Pandoc
+      - name: Instalar LaTeX
         run: |
           sudo apt-get update
-          sudo apt-get install -y pandoc
-      - name: Generar ODT
+          sudo apt-get install -y texlive-latex-extra texlive-fonts-recommended texlive-lang-spanish
+      - name: Compilar memoria
+        working-directory: entrega1/01_Memoria
         run: |
-          mkdir -p build
-          pandoc \
-            docs/entrega1/00-portada.md \
-            docs/entrega1/01-introduccion.md \
-            docs/entrega1/02-requisitos.md \
-            docs/entrega1/03-reglas-metodo-prueba.md \
-            docs/entrega1/04-historias-escenarios-aceptacion.md \
-            docs/entrega1/05-mockups.md \
-            docs/entrega1/06-spike.md \
-            docs/entrega1/07-ia.md \
-            --standalone -o build/Entrega1.odt
-      - name: Publicar ODT de esta versión
+          pdflatex -interaction=nonstopmode -halt-on-error Informe_Entrega1_Via.tex
+          pdflatex -interaction=nonstopmode -halt-on-error Informe_Entrega1_Via.tex
+      - name: Publicar PDF de esta versión
         uses: actions/upload-artifact@v4
         with:
-          name: Entrega1-ODT
-          path: build/Entrega1.odt
+          name: Entrega1-PDF-LaTeX
+          path: entrega1/01_Memoria/Informe_Entrega1_Via.pdf
           if-no-files-found: error

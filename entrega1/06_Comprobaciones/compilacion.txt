@@ -1,0 +1,13 @@
+
+> via-spike@0.1.0 build
+> tsc --noEmit && vite build
+
+vite v7.3.6 building client environment for production...
+transforming...
+✓ 34 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.45 kB │ gzip:   0.31 kB
+dist/assets/index-1CTS5zgt.css   20.56 kB │ gzip:   7.99 kB
+dist/assets/index-CddO8mpN.js   395.08 kB │ gzip: 119.76 kB
+✓ built in 557ms

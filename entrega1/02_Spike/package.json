@@ -1,0 +1,37 @@
+{
+  "name": "via-spike",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24.16.0"
+  },
+  "scripts": {
+    "spike": "npm run dev",
+    "dev": "node --import tsx --env-file-if-exists=.env src/server.ts",
+    "build": "tsc --noEmit && vite build",
+    "start": "node --import tsx --env-file-if-exists=.env src/server.ts --production",
+    "test": "node --import tsx --test tests/core.test.ts tests/persistence.test.ts tests/security.test.ts tests/adapters.test.ts",
+    "test:live": "node --import tsx --env-file-if-exists=.env --test tests/live.test.ts",
+    "test:e2e": "playwright test",
+    "check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@fontsource-variable/inter": "^5.3.0",
+    "leaflet": "1.9.4",
+    "lucide-react": "^0.468.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.58.0",
+    "@types/leaflet": "^1.9.21",
+    "@types/node": "^24.0.0",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "prettier": "^3.9.8",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.0",
+    "vite": "^7.3.0"
+  }
+}

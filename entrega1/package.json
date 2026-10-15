@@ -1,0 +1,7 @@
+{
+  "name": "via-entrega-final",
+  "private": true,
+  "scripts": {
+    "spike": "npm --prefix 02_Spike run spike"
+  }
+}

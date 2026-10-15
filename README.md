@@ -1,47 +1,37 @@
-# Proyecto conjunto EI1039 / EI1048
+# Vía · EI1039 / EI1048
 
-Repositorio privado de trabajo del equipo. Los apartados de la Entrega 1 están preparados para incorporar progresivamente el contenido revisado en Google Docs.
+Aplicación de movilidad del proyecto conjunto de la Universitat Jaume I.
 
-## Nota sobre la trazabilidad del trabajo
+- Ruben Andres Szasz Szasz
+- Kilian Escudero Vizcaino
+- Ismael Ferrando Paulo
 
-Debido a problemas de acceso al repositorio de GitHub, algunas aportaciones se incorporaron después de haber sido elaboradas y revisadas fuera del repositorio. Por ello, las fechas de los commits indican cuándo se registraron los cambios en GitHub y no necesariamente cuándo se realizó el trabajo correspondiente.
+## Entrega 1
 
-## Documento fuente
+La entrega está organizada en [`entrega1/`](entrega1/README.md):
 
-El texto editable vive en `docs/entrega1/`. Cada archivo corresponde a un apartado; se pueden revisar y atribuir sus cambios por separado. El ODT se **genera** a partir de esos Markdown. No se edita el ODT como fuente.
+- [Memoria en PDF](entrega1/01_Memoria/Informe_Entrega1_Via.pdf) y [fuente LaTeX editable](entrega1/01_Memoria/Informe_Entrega1_Via.tex).
+- [Spike tecnológico](entrega1/02_Spike/README.md), con nueve pantallas y las integraciones del proyecto.
+- [Mockups editables](entrega1/03_Mockups/), [escenarios de aceptación](entrega1/04_Pruebas/aceptacion.feature) y [trazabilidad](entrega1/04_Pruebas/trazabilidad.md).
+- [Material docente](entrega1/05_Material_docente/) y [resultados de comprobación](entrega1/06_Comprobaciones/).
 
-| Archivo | Apartado |
-| --- | --- |
-| `00-portada.md` | Portada |
-| `01-introduccion.md` | 1. Introducción |
-| `02-requisitos.md` | 2. Requisitos |
-| `03-reglas-metodo-prueba.md` | 3. Reglas y método de prueba |
-| `04-historias-escenarios-aceptacion.md` | 4. Historias, escenarios y aceptación |
-| `05-mockups.md` | 5. Del escenario a la pantalla |
-| `06-spike.md` | 6. Iteración 0 (spike) |
-| `07-ia.md` | 7. Uso de IA generativa |
+## Ejecutar
 
-Los puntos 1–5 siguen los títulos y el orden de la segunda pestaña del documento de Drive. Se reservan a continuación los apartados de spike e IA. La portada se mantiene fuera de la numeración.
-
-Para la primera aportación de Ismael, los puntos 1, 2 y 3 se incorporan a `01-introduccion.md`, `02-requisitos.md` y `03-reglas-metodo-prueba.md`, respectivamente.
-
-## Cómo colaborar
-
-1. Cada integrante usa **su propia cuenta** y crea una rama desde la versión reciente de `main`, por ejemplo `kilian/entrega1` o `<usuario>/historias-r2`.
-2. Realiza commits pequeños con mensajes que expliquen el cambio.
-3. Abre una pull request hacia `main`. Otro integrante revisa el texto y su relación con los requisitos docentes antes de incorporarlo.
-4. Los apartados aceptados entran en `main`; las propuestas sin revisar permanecen en la rama o en la discusión de la pull request.
-
-Cuando comience la implementación se seguirá el flujo de la guía: `main` estable, ramas `it-nn` por iteración y ramas `h-xx` por historia, con revisión mediante pull requests. Los nombres concretos pueden adaptarse sin perder la trazabilidad.
-
-## Generar el ODT
-
-Cada pull request y cada cambio en `main` que afecte al documento ejecuta la acción **Generar Entrega 1**. El ODT se descarga desde los artefactos de esa ejecución; no se guarda como archivo fuente del repositorio.
-
-Si tienes Pandoc instalado, puedes generarlo localmente desde la raíz del repositorio:
+Requiere Node.js 24.16 o superior. Desde la raíz:
 
 ```sh
-pandoc docs/entrega1/00-portada.md docs/entrega1/01-introduccion.md docs/entrega1/02-requisitos.md docs/entrega1/03-reglas-metodo-prueba.md docs/entrega1/04-historias-escenarios-aceptacion.md docs/entrega1/05-mockups.md docs/entrega1/06-spike.md docs/entrega1/07-ia.md --standalone -o Entrega1.odt
+npm ci --prefix entrega1/02_Spike
+npm run spike
 ```
 
-Los PDF docentes permanecen en el Aula Virtual y en las carpetas personales de consulta. No se incluyen aquí. El repositorio del miniproyecto de spike se enlazará cuando el equipo lo haya preparado y validado.
+Abrir http://localhost:4173. La búsqueda de topónimos y el cálculo de rutas requieren una clave de OpenRouteService; la configuración se explica en el [README del spike](entrega1/02_Spike/README.md).
+
+## Compilar la memoria
+
+```sh
+cd entrega1/01_Memoria
+pdflatex -interaction=nonstopmode -halt-on-error Informe_Entrega1_Via.tex
+pdflatex -interaction=nonstopmode -halt-on-error Informe_Entrega1_Via.tex
+```
+
+También se puede usar `tectonic Informe_Entrega1_Via.tex`. GitHub Actions compila el PDF cuando cambian las fuentes o los mockups.
