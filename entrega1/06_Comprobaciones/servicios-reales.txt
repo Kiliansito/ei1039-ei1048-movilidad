@@ -1,0 +1,10 @@
+✔ Acceptance: real public fuel and electricity providers return at least one current price (4620.847458ms)
+✔ Acceptance: search, persist endpoints and route through real ORS (5148.187791ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 9851.538834

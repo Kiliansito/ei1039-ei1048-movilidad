@@ -6,16 +6,16 @@
 
 EI1039 y EI1048 · Universitat Jaume I · Curso 2026-2027
 
-Repositorio: [Kiliansito/ei1039-ei1048-movilidad](https://github.com/Kiliansito/ei1039-ei1048-movilidad).
+Repositorio en [Kiliansito/ei1039-ei1048-movilidad](https://github.com/Kiliansito/ei1039-ei1048-movilidad).
 
 ## Contenido
 
-- **01_Memoria**: informe en PDF compilado con LaTeX y fuente `.tex` editable.
-- **02_Spike**: código de la iteración 0 e instrucciones de ejecución.
-- **03_Mockups**: nueve pantallas en SVG editable y PNG; `index.html` permite verlas juntas.
-- **04_Pruebas**: escenarios Given-When-Then y matriz de trazabilidad.
-- **05_Material_docente**: cuatro PDF originales de clase, con nombres descriptivos.
-- **06_Comprobaciones**: resultados de las pruebas locales, del navegador y de la compilación.
+- **01_Memoria** informe en PDF compilado con LaTeX y fuente `.tex` editable.
+- **02_Spike** código de la iteración 0 e instrucciones de ejecución.
+- **03_Mockups** nueve pantallas en SVG editable y PNG. `index.html` permite verlas juntas.
+- **04_Pruebas** escenarios Given-When-Then y matriz de trazabilidad.
+- **05_Material_docente** cuatro PDF originales de clase, con nombres descriptivos.
+- **06_Comprobaciones** resultados de las pruebas locales, del navegador y de la compilación.
 
 ## Ejecutar el spike
 
@@ -39,10 +39,14 @@ pdflatex -interaction=nonstopmode -halt-on-error Informe_Entrega1_Via.tex
 pdflatex -interaction=nonstopmode -halt-on-error Informe_Entrega1_Via.tex
 ```
 
-También se puede compilar con Tectonic:
+También se puede compilar con Tectonic.
 
 ```sh
 tectonic Informe_Entrega1_Via.tex
 ```
 
 Los esquemas se cargan desde `03_Mockups`, por lo que ambas carpetas deben conservar su posición.
+
+## Documentos de lectura
+
+Los ocho apartados de [docs/entrega1](../docs/entrega1/) recogen el contenido de la memoria. Para actualizarlos tras editar el archivo LaTeX, ejecutar `python3 scripts/exportar_documentacion.py` desde la raíz del repositorio. El mismo comando actualiza el catálogo de aceptación, la trazabilidad y la relación de pantallas.

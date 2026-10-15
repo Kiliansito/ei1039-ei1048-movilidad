@@ -8,7 +8,7 @@ Aplicación de movilidad del proyecto conjunto de la Universitat Jaume I.
 
 ## Entrega 1
 
-La entrega está organizada en [`entrega1/`](entrega1/README.md):
+La entrega está organizada en [`entrega1/`](entrega1/README.md).
 
 - [Memoria en PDF](entrega1/01_Memoria/Informe_Entrega1_Via.pdf) y [fuente LaTeX editable](entrega1/01_Memoria/Informe_Entrega1_Via.tex).
 - [Spike tecnológico](entrega1/02_Spike/README.md), con nueve pantallas y las integraciones del proyecto.
@@ -17,14 +17,14 @@ La entrega está organizada en [`entrega1/`](entrega1/README.md):
 
 ## Ejecutar
 
-Requiere Node.js 24.16 o superior. Desde la raíz:
+Requiere Node.js 24.16 o superior. Desde la raíz.
 
 ```sh
 npm ci --prefix entrega1/02_Spike
 npm run spike
 ```
 
-Abrir http://localhost:4173. La búsqueda de topónimos y el cálculo de rutas requieren una clave de OpenRouteService; la configuración se explica en el [README del spike](entrega1/02_Spike/README.md).
+Abrir http://localhost:4173. La búsqueda de topónimos y el cálculo de rutas requieren una clave de OpenRouteService. La configuración se explica en el [README del spike](entrega1/02_Spike/README.md).
 
 ## Compilar la memoria
 
@@ -35,3 +35,9 @@ pdflatex -interaction=nonstopmode -halt-on-error Informe_Entrega1_Via.tex
 ```
 
 También se puede usar `tectonic Informe_Entrega1_Via.tex`. GitHub Actions compila el PDF cuando cambian las fuentes o los mockups.
+
+## Documentación
+
+Los [apartados de la memoria](docs/entrega1/00-portada.md) también se pueden leer en Markdown. La fuente de referencia es el archivo LaTeX. Ejecutar `python3 scripts/exportar_documentacion.py` para actualizar las copias después de editarlo.
+
+La [revisión completa de la Entrega 1](entrega1/06_Comprobaciones/revision-entrega1.md) recoge las correcciones, las comprobaciones y las cuestiones que debe cerrar el equipo.

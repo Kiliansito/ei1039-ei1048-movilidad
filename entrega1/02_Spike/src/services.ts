@@ -87,7 +87,13 @@ export class MobilityService {
   }
   login(input: any) {
     const email = text(input.email, 254).toLowerCase();
-    const password = text(input.password, 128);
+    const password = input.password;
+    if (
+      typeof password !== "string" ||
+      password.length < 10 ||
+      password.length > 128
+    )
+      throw new AppError("Credenciales incorrectas.", 401);
     const u = this.repo.findUser(email);
     if (!u || !verify(password, u.password))
       throw new AppError("Credenciales incorrectas.", 401);
