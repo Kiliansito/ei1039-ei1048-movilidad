@@ -926,7 +926,7 @@ function Calculator({ state }: { state: State }) {
                   max={100}
                   step="any"
                   required
-                  value={consumption}
+                  value={Number.isNaN(consumption) ? "" : consumption}
                   onChange={(e) =>
                     changed(() => setConsumption(e.target.valueAsNumber))
                   }
