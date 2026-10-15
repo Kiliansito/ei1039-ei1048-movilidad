@@ -1,6 +1,6 @@
 # Proyecto conjunto EI1039 / EI1048
 
-Repositorio privado de trabajo del equipo. La Entrega 1 está **vacía y pendiente de revisión**: todavía no se ha aprobado ninguna historia, escenario, pantalla o decisión técnica.
+Repositorio privado de trabajo del equipo. Los apartados de la Entrega 1 están preparados para incorporar progresivamente el contenido revisado en Google Docs.
 
 ## Nota sobre la trazabilidad del trabajo
 
@@ -13,11 +13,17 @@ El texto editable vive en `docs/entrega1/`. Cada archivo corresponde a un aparta
 | Archivo | Apartado |
 | --- | --- |
 | `00-portada.md` | Portada |
-| `01-requisitos.md` | Requisitos e historias de usuario |
-| `02-escenarios.md` | Escenarios y pruebas de aceptación |
-| `03-mockups.md` | Propuesta de interfaz |
-| `04-spike.md` | Iteración 0 |
-| `05-ia.md` | Uso de IA generativa |
+| `01-introduccion.md` | 1. Introducción |
+| `02-requisitos.md` | 2. Requisitos |
+| `03-reglas-metodo-prueba.md` | 3. Reglas y método de prueba |
+| `04-historias-escenarios-aceptacion.md` | 4. Historias, escenarios y aceptación |
+| `05-mockups.md` | 5. Del escenario a la pantalla |
+| `06-spike.md` | 6. Iteración 0 (spike) |
+| `07-ia.md` | 7. Uso de IA generativa |
+
+Los puntos 1–5 siguen los títulos y el orden de la segunda pestaña del documento de Drive. Se reservan a continuación los apartados de spike e IA. La portada se mantiene fuera de la numeración.
+
+Para la primera aportación de Ismael, los puntos 1, 2 y 3 se incorporan a `01-introduccion.md`, `02-requisitos.md` y `03-reglas-metodo-prueba.md`, respectivamente.
 
 ## Cómo colaborar
 
@@ -35,7 +41,7 @@ Cada pull request y cada cambio en `main` que afecte al documento ejecuta la acc
 Si tienes Pandoc instalado, puedes generarlo localmente desde la raíz del repositorio:
 
 ```sh
-pandoc docs/entrega1/00-portada.md docs/entrega1/01-requisitos.md docs/entrega1/02-escenarios.md docs/entrega1/03-mockups.md docs/entrega1/04-spike.md docs/entrega1/05-ia.md --standalone -o Entrega1.odt
+pandoc docs/entrega1/00-portada.md docs/entrega1/01-introduccion.md docs/entrega1/02-requisitos.md docs/entrega1/03-reglas-metodo-prueba.md docs/entrega1/04-historias-escenarios-aceptacion.md docs/entrega1/05-mockups.md docs/entrega1/06-spike.md docs/entrega1/07-ia.md --standalone -o Entrega1.odt
 ```
 
 Los PDF docentes permanecen en el Aula Virtual y en las carpetas personales de consulta. No se incluyen aquí. El repositorio del miniproyecto de spike se enlazará cuando el equipo lo haya preparado y validado.

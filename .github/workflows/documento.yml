@@ -30,11 +30,13 @@ jobs:
           mkdir -p build
           pandoc \
             docs/entrega1/00-portada.md \
-            docs/entrega1/01-requisitos.md \
-            docs/entrega1/02-escenarios.md \
-            docs/entrega1/03-mockups.md \
-            docs/entrega1/04-spike.md \
-            docs/entrega1/05-ia.md \
+            docs/entrega1/01-introduccion.md \
+            docs/entrega1/02-requisitos.md \
+            docs/entrega1/03-reglas-metodo-prueba.md \
+            docs/entrega1/04-historias-escenarios-aceptacion.md \
+            docs/entrega1/05-mockups.md \
+            docs/entrega1/06-spike.md \
+            docs/entrega1/07-ia.md \
             --standalone -o build/Entrega1.odt
       - name: Publicar ODT de esta versión
         uses: actions/upload-artifact@v4
