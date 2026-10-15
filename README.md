@@ -12,7 +12,7 @@ Aplicación de movilidad del proyecto conjunto de la Universitat Jaume I.
 La entrega está organizada en [`entrega1/`](entrega1/README.md).
 
 - [Memoria en PDF](entrega1/01_Memoria/Informe_Entrega1_Via.pdf) y [fuente LaTeX editable](entrega1/01_Memoria/Informe_Entrega1_Via.tex).
-- [Spike tecnológico](entrega1/02_Spike/README.md), con las diez pantallas del diseño y las integraciones del proyecto.
+- [Spike tecnológico](entrega1/02_Spike/README.md) y [comprobación básica de las APIs](entrega1/02_Spike/SPIKE_APIS.md).
 - [Mockups editables](entrega1/03_Mockups/), [escenarios de aceptación](entrega1/04_Pruebas/aceptacion.feature) y [trazabilidad](entrega1/04_Pruebas/trazabilidad.md).
 - [Material docente](entrega1/05_Material_docente/) y [resultados de comprobación](entrega1/06_Comprobaciones/).
 

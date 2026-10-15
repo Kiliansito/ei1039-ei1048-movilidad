@@ -19,7 +19,7 @@ Repositorio en [Kiliansito/ei1039-ei1048-movilidad](https://github.com/Kiliansit
 
 ## Ejecutar el spike
 
-Requiere Node.js 24.16 o superior. Desde esta carpeta:
+Requiere Node.js 24.16 o superior. Desde esta carpeta.
 
 ```sh
 npm ci --prefix 02_Spike
@@ -28,11 +28,13 @@ npm run spike
 
 Abrir http://localhost:4173. Para buscar topónimos y calcular rutas, configurar una clave de OpenRouteService en `.env`. El README del código detalla la instalación, las pruebas y los servicios utilizados.
 
+Para comprobar el uso básico de las APIs, ejecutar `npm run spike:apis` desde `02_Spike`. La [guía del spike](02_Spike/SPIKE_APIS.md) explica las ocho consultas y la demostración de las tecnologías.
+
 `04_Pruebas/aceptacion.feature` es el catálogo de especificaciones del proyecto. Las comprobaciones ejecutables del spike se lanzan con `npm test` y `npm run test:e2e` desde `02_Spike`.
 
 ## Compilar la memoria
 
-Desde `01_Memoria`, con una distribución LaTeX:
+Desde `01_Memoria`, con una distribución LaTeX.
 
 ```sh
 pdflatex -interaction=nonstopmode -halt-on-error Informe_Entrega1_Via.tex
