@@ -5,6 +5,7 @@ Aplicación de movilidad del proyecto conjunto de la Universitat Jaume I.
 - Ruben Andres Szasz Szasz
 - Kilian Escudero Vizcaino
 - Ismael Ferrando Paulo
+  
 
 ## Entrega 1
 
