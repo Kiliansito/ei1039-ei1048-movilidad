@@ -678,7 +678,7 @@ La comprobación local supera 34 pruebas de validación, adaptadores, aislamient
 Las pruebas de persistencia incluyen la reapertura de SQLite y la recuperación de una escritura confirmada tras terminar el proceso con SIGKILL. Este ensayo verifica la caída del proceso, sin simular daños físicos en el almacenamiento. El catálogo contiene 52 especificaciones de aceptación; las comprobaciones automatizadas del spike verifican su viabilidad técnica, no la implementación completa de las historias.\par
 \clearpage
 \section{Experiencia con Codex}\label{sec6}
-Codex se utilizó en distintas fases del trabajo. Primero sirvió para interpretar las instrucciones y distinguir lo que correspondía a la primera entrega de lo que se desarrollará después. La orientación inicial daba demasiado peso a una aplicación completa. La indicación «una pantalla por cada funcionalidad» llevó a acotar el spike y a centrarse en comprobar las conexiones entre sus componentes.\par
+Codex se utilizó en distintas fases del trabajo. Primero sirvió para interpretar las instrucciones y distinguir lo que correspondía a la primera entrega de lo que se desarrollará después. La orientación inicial daba demasiado peso a una aplicación completa. La indicación \guillemotleft{}una pantalla por cada funcionalidad\guillemotright{} llevó a acotar el spike y a centrarse en comprobar las conexiones entre sus componentes.\par
 Después se trabajó sobre las historias de usuario y sus escenarios. Se mantuvo la separación entre usuarios, lugares, vehículos, rutas, preferencias y persistencia. Los costes de combustible y electricidad se trataron por separado para revisar sus unidades. En los escenarios de rutas se sustituyeron las expectativas de distancia fija por comprobaciones sobre el resultado recibido, porque una API real puede cambiar el trayecto que devuelve.\par
 Para el código y las interfaces se conservaron el stack y los adaptadores existentes. Se descartaron el copiloto y las simulaciones porque no eran necesarios para la iteración 0. Las propuestas se comprobaron con pruebas y con el navegador: se corrigieron las etiquetas de los desplegables y un error de Leaflet al cambiar de pantalla durante una animación.\par
 La herramienta ayudó a redactar borradores, organizar los escenarios y localizar errores. Su principal inconveniente fue ampliar el alcance más de lo necesario. Además, los datos simulados permiten comprobar cálculos y errores, pero no demuestran que un servicio público esté disponible. Se mantuvo una interfaz sencilla y se distinguieron ambos tipos de prueba. Para las siguientes iteraciones conviene definir primero las pruebas y contrastar las propuestas con el enunciado y con el código.\par
@@ -689,5 +689,15 @@ La herramienta ayudó a redactar borradores, organizar los escenarios y localiza
 [4] Presentación del proyecto conjunto EI1039-EI1048. Material docente, 31 diapositivas.\par
 [5] GAIDeT Declaration Generator. https://panbibliotekar.github.io/gaidet-declaration/ (consulta: 15/10/2026).\par
 \subsection*{Declaración GAIDeT}
-Se ha utilizado Codex de OpenAI, basado en GPT-6, para el análisis de requisitos, la generación y revisión de historias, escenarios y código, la preparación de los diseños, la redacción y edición del informe y la automatización de comprobaciones. Estas tareas corresponden a las categorías de desarrollo de software, validación, visualización y redacción de GAIDeT [5]. La responsabilidad del contenido corresponde a Ruben Andres Szasz Szasz, Kilian Escudero Vizcaino e Ismael Ferrando Paulo.\par
+\begingroup\fontsize{9.25}{11.7}\selectfont
+\textbf{Responsables de la delegación:} Ruben Andres Szasz Szasz, Kilian Escudero Vizcaino e Ismael Ferrando Paulo.\par
+\textbf{Herramienta y modelo:} Codex de OpenAI, basado en GPT-6.\par
+\begin{tabularx}{\linewidth}{@{}p{3.5cm}Y@{}}\arrayrulecolor{black}\toprule
+\textbf{Categoría GAIDeT [5]} & \textbf{Tareas delegadas y aplicación en la entrega}\\[3pt]\midrule
+\textbf{Desarrollo de software y automatización} & Generación y optimización de código; automatización de procesos. Se aplicó al spike, las interfaces, las pruebas y la compilación del informe.\\[3pt]\arrayrulecolor{black!25}\midrule[0.25pt]
+\textbf{Redacción y edición} & Generación de texto, revisión y edición, y cambio de formato. Se aplicó a los borradores de historias, escenarios y memoria, y a su preparación en LaTeX.\\[3pt]\arrayrulecolor{black!25}\midrule[0.25pt]
+\textbf{Supervisión} & Evaluación de calidad e identificación de limitaciones. Se aplicó a la coherencia de los escenarios, la detección de errores y la revisión del alcance y de las comprobaciones.\\[3pt]\arrayrulecolor{black!25}\midrule[0.25pt]
+\end{tabularx}\par
+La IA no asume la autoría ni la responsabilidad del trabajo. La responsabilidad final del contenido corresponde a los tres integrantes indicados.\par
+\endgroup
 \end{document}
