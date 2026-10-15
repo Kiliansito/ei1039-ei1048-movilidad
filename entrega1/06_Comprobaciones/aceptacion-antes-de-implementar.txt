@@ -1,0 +1,35 @@
+✔ PI-06-V Given condiciones de la memoria When operación Then resultado y estado final (45.015ms)
+✔ PI-06-I Given condiciones de la memoria When operación Then resultado y estado final (37.794291ms)
+✔ PI-14-V Given condiciones de la memoria When operación Then resultado y estado final (42.353084ms)
+✔ PI-14-I Given condiciones de la memoria When operación Then resultado y estado final (40.986292ms)
+✔ PI-15-V Given condiciones de la memoria When operación Then resultado y estado final (42.44875ms)
+✔ PI-15-I Given condiciones de la memoria When operación Then resultado y estado final (41.869083ms)
+✔ PI-16-V Given condiciones de la memoria When operación Then resultado y estado final (41.433084ms)
+✔ PI-16-I Given condiciones de la memoria When operación Then resultado y estado final (41.22375ms)
+✔ PI-17-V Given condiciones de la memoria When operación Then resultado y estado final (38.4755ms)
+✔ PI-17-I Given condiciones de la memoria When operación Then resultado y estado final (38.160958ms)
+✔ PI-18-V Given condiciones de la memoria When operación Then resultado y estado final (38.343458ms)
+✔ PI-18-I Given condiciones de la memoria When operación Then resultado y estado final (38.279ms)
+✖ PI-19-V Given condiciones de la memoria When operación Then resultado y estado final (38.05425ms)
+✔ PI-19-I Given condiciones de la memoria When operación Then resultado y estado final (40.287209ms)
+ℹ tests 14
+ℹ suites 0
+ℹ pass 13
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 721.126166
+
+✖ failing tests:
+
+test at tests/support/scenarios.ts:1:17224
+✖ PI-19-V Given condiciones de la memoria When operación Then resultado y estado final (38.05425ms)
+  Error: Primero calcula una ruta válida.
+      at MobilityService.saveRoute (/Users/ruben/prTODO/tmp/publicacion-movilidad/entrega1/02_Spike/src/services.ts:363:13)
+      at Object.run (/Users/ruben/prTODO/tmp/publicacion-movilidad/entrega1/02_Spike/tests/support/scenarios.ts:111:68)
+      at async TestContext.<anonymous> (/Users/ruben/prTODO/tmp/publicacion-movilidad/entrega1/02_Spike/tests/support/scenarios.ts:135:75)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    status: 400
+  }

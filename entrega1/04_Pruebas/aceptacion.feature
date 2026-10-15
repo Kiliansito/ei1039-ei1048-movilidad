@@ -1,6 +1,6 @@
 Feature: Movilidad de Vía
-  # Catálogo de especificaciones sin definiciones ejecutables de pasos.
-  # Datos y condiciones comunes en docs/entrega1/03-reglas-metodo-prueba.md.
+  # Catálogo sin definiciones ejecutables de pasos.
+  # Datos comunes en docs/entrega1/03-reglas-metodo-prueba.md.
 
   Scenario: PA-01-V Registrar una cuenta, escenario válido
     Given no existe ana@example.com y el almacenamiento está disponible
@@ -148,9 +148,9 @@ Feature: Movilidad de Vía
     Then el coste devuelto es (distancia en km / 100 × 6 × 1,60) € redondeado a céntimos, con el origen manual del precio
 
   Scenario: PA-15-I Estimar coste de combustible, escenario inválido
-    Given Ana tiene Centro, UJI y Compacto, el servicio real de rutas funciona y el acceso al precio automático de gasolina está interrumpido
-    When calcula la ruta en coche entre esos lugares
-    Then se devuelve el trayecto con su distancia y duración, y el coste queda sin valor
+    Given Ana tiene Compacto con consumo de 6 l/100 km y precio manual de gasolina de 1,60 euros por litro
+    When intenta fijar un precio de -1 euro por litro
+    Then se rechaza el precio y el valor guardado permanece en 1,60 euros por litro
 
   Scenario: PA-16-V Estimar coste eléctrico, escenario válido
     Given Ana tiene Centro y UJI, Eléctrico con consumo de 15 kWh/100 km y precio manual de 0,20 €/kWh
@@ -158,9 +158,9 @@ Feature: Movilidad de Vía
     Then el coste devuelto es (distancia en km / 100 × 15 × 0,20) € redondeado a céntimos, con el origen manual del precio
 
   Scenario: PA-16-I Estimar coste eléctrico, escenario inválido
-    Given Ana tiene Centro, UJI y Eléctrico, el servicio real de rutas funciona y el acceso al precio automático de electricidad está interrumpido
-    When calcula la ruta con Eléctrico entre esos lugares
-    Then se devuelve el trayecto y el coste queda sin valor al no disponer de precio eléctrico
+    Given Ana tiene Eléctrico y un precio manual de 0,20 euros por kWh
+    When intenta guardar un precio de 0 euros por kWh
+    Then se rechaza el precio y se conserva el valor de 0,20 euros por kWh
 
   Scenario: PA-17-V Estimar calorías, escenario válido
     Given Ana tiene Centro y UJI guardados, pesa 70 kg y el servicio de rutas está disponible

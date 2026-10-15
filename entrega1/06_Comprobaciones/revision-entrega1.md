@@ -6,7 +6,7 @@
 
 Las 26 historias tienen un tamaño razonable para el alcance básico del proyecto. Se han mantenido los seis requisitos y las 24 historias propuestas por el enunciado. Las dos separaciones adicionales permiten comprobar la selección en el mapa y el coste eléctrico. Reducir el catálogo sin revisar esa cobertura podría eliminar operaciones que el profesorado pide expresamente.
 
-Se han revisado los cuatro PDF docentes completos, la memoria, los ocho documentos Markdown, los 52 escenarios, la tabla de trazabilidad, los nueve mockups y las instrucciones y comprobaciones del spike. Se ha contrastado la descripción de la arquitectura y los cálculos con el código correspondiente.
+Se han revisado los cuatro PDF docentes completos, la memoria, los ocho documentos Markdown, los 52 escenarios, la tabla de trazabilidad, los diez mockups de Figma y las instrucciones y comprobaciones del spike. Se ha contrastado la descripción de la arquitectura y los cálculos con el código correspondiente.
 
 ## Correspondencia con el material docente
 
@@ -36,8 +36,8 @@ Las historias expresan una necesidad, incluyen resultados observables y tienen l
 
 ## Correcciones realizadas
 
-- Se completan los ocho documentos Markdown que solo tenían un título.
-- Se añade un análisis de variantes a cada escenario y se conservan 26 escenarios válidos y 26 inválidos.
+- Se combinan los cinco apartados incorporados desde Drive con la revisión de las historias y las reglas. Los ocho documentos de lectura quedan completos.
+- Se añade un análisis de variantes a cada escenario y se conservan 26 escenarios válidos y 26 inválidos seleccionados.
 - Se concretan usuarios, lugares, vehículos, precios y condiciones de los resultados guardados.
 - Se retira la comprobación de dibujar el mapa de la prueba de aceptación de la lógica de negocio. Su verificación corresponde al navegador.
 - Se explica cómo comprobar resultados de API reales que cambian y cómo distinguir una prueba de integración con un doble.
@@ -47,7 +47,7 @@ Las historias expresan una necesidad, incluyen resultados observables y tienen l
 - Se corrige el acceso con contraseñas que contienen espacios exteriores. La prueba reproduce el fallo antes del cambio y lo supera después.
 - Se añade una prueba que interrumpe una escritura antes de confirmar la transacción y comprueba que solo se conserva el dato anterior.
 - Se actualiza la dependencia indirecta source-map-js de 1.2.1 a 1.2.2. La revisión de dependencias ya no informa de vulnerabilidades conocidas.
-- Se añade un comando para mantener los documentos Markdown, el catálogo de aceptación y la trazabilidad alineados con la fuente LaTeX.
+- Se añade un comando para mantener los documentos Markdown, el catálogo de aceptación y la trazabilidad alineados con la fuentes LaTeX y sus apartados.
 
 ## Comprobaciones
 
@@ -58,8 +58,8 @@ Las historias expresan una necesidad, incluyen resultados observables y tienen l
 | Servicios reales | Dos pruebas superadas, precios públicos y búsqueda y rutas con ORS en los tres modos |
 | Compilación TypeScript y Vite | Correcta |
 | Dependencias | Sin vulnerabilidades conocidas según npm audit en esta revisión |
-| Memoria | 21 páginas compiladas y revisadas visualmente |
-| Documentos y catálogo | 26 historias, 52 escenarios con sus cinco campos completos y nueve pantallas |
+| Memoria | Compilada y revisada visualmente |
+| Documentos y catálogo | 26 historias, 52 escenarios con sus cinco campos completos y diez pantallas de Figma |
 
 Los archivos de esta carpeta conservan las salidas de las ejecuciones. Las pruebas locales y de navegador no representan 52 pruebas de aceptación ya terminadas.
 
@@ -70,3 +70,9 @@ El profesorado debe revisar las dos separaciones de historias y las decisiones d
 El repositorio es privado. El equipo debe comprobar que el profesor de prácticas tiene acceso antes de presentar el PDF. No se han cambiado sus permisos ni se han añadido colaboradores.
 
 La planificación de iteraciones, la estimación de horas, el reparto de historias y la justificación detallada de patrones corresponden a la siguiente entrega. El desarrollo del proyecto tendrá que conservar pruebas del proceso ATDD y seguir la revisión de ramas que indica la metodología. Un spike funcional no sustituye ese trabajo.
+
+## Integración de las aportaciones del equipo
+
+Se conservan la estructura de siete apartados, las reglas de dominio, las tablas de análisis de escenarios y los diez diseños de Figma del commit 601182d. Se aplican las correcciones de redacción y de aceptación, y se mantiene una explicación general del uso de IA. Se elimina el apartado de ejemplos de la revisión.
+
+Se corrigen tres diferencias entre las versiones. Los cálculos seleccionados usan las medidas devueltas por el servicio real, las cifras fijas de los mockups se presentan como ejemplos aritméticos y la escritura interrumpida antes de confirmar ya cuenta con una comprobación local. La tabla distingue las variantes analizadas de las 52 pruebas seleccionadas.

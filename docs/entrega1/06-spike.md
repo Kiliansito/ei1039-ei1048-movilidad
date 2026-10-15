@@ -29,4 +29,4 @@ Las pruebas de persistencia comprueban la reapertura de SQLite, la recuperación
 
 La consulta real de precios ha superado su comprobación de obtener al menos un precio público. También se ha superado la prueba real de ORS con búsqueda de lugares y rutas en coche, bicicleta y a pie. Se utilizó una clave local existente sin incorporarla al repositorio. El catálogo contiene 52 especificaciones de aceptación para el proyecto. Las comprobaciones del spike no demuestran que todas las historias estén implementadas.
 
-Las instrucciones completas están en [el README del spike](../../entrega1/02_Spike/README.md). Los resultados están en [Comprobaciones](../../entrega1/06_Comprobaciones/).
+Las instrucciones están en [el README del spike](../../entrega1/02_Spike/README.md). Los resultados están en [Comprobaciones](../../entrega1/06_Comprobaciones/).

@@ -38,6 +38,8 @@ También se puede usar `tectonic Informe_Entrega1_Via.tex`. GitHub Actions compi
 
 ## Documentación
 
-Los [apartados de la memoria](docs/entrega1/00-portada.md) también se pueden leer en Markdown. La fuente de referencia es el archivo LaTeX. Ejecutar `python3 scripts/exportar_documentacion.py` para actualizar las copias después de editarlo.
+Los [apartados de la memoria](docs/entrega1/00-portada.md) también se pueden leer en Markdown. La fuente de referencia es el archivo LaTeX con sus cinco apartados incluidos. Ejecutar `python3 scripts/exportar_documentacion.py` para actualizar las copias después de editarlo.
 
 La [revisión completa de la Entrega 1](entrega1/06_Comprobaciones/revision-entrega1.md) recoge las correcciones, las comprobaciones y las cuestiones que debe cerrar el equipo.
+
+Los apartados 1 a 5 incorporan la aportación del documento de Drive y los [diez mockups de Figma](https://www.figma.com/design/0X0JpvayI4WsF0QyywWWbs), revisados junto con los escenarios. Las fuentes están en `entrega1/01_Memoria/apartados/` desde la raíz del repositorio.

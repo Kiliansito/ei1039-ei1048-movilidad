@@ -8,6 +8,8 @@ ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "entrega1/01_Memoria/Informe_Entrega1_Via.tex"
 DOCS = ROOT / "docs/entrega1"
 TEXT = SOURCE.read_text()
+for relative in re.findall(r"\\input\{([^}]+)\}", TEXT):
+    TEXT = TEXT.replace(r"\input{" + relative + "}", (SOURCE.parent / (relative + ".tex")).read_text())
 
 
 def plain(value):
@@ -27,6 +29,7 @@ def prose(value):
     in_table = False
     table_header = False
     for line in value.splitlines():
+        line = line.replace(r"\clearpage", "")
         if "\\begin{tabularx}" in line:
             in_table = True
             table_header = True
@@ -44,9 +47,9 @@ def prose(value):
                     lines.append("| " + " | ".join("---" for _ in cells) + " |")
                     table_header = False
             continue
-        heading = re.match(r"\\subsection\*?\{([^}]+)\}", line)
+        heading = re.match(r"\\(subsection|subsubsection)\*?\{([^}]+)\}", line)
         if heading:
-            lines.append("\n## " + heading[1] + "\n")
+            lines.append("\n" + ("### " if heading[1] == "subsubsection" else "## ") + heading[2] + "\n")
         elif line.startswith(r"\textbf{"):
             lines.append(plain(line) + "\n")
         elif "includegraphics" in line:
@@ -82,56 +85,54 @@ Curso 2026-2027 · 15 de octubre de 2026
 
 La memoria para entregar está en [PDF](../../entrega1/01_Memoria/Informe_Entrega1_Via.pdf). Su [fuente LaTeX](../../entrega1/01_Memoria/Informe_Entrega1_Via.tex) es el documento de referencia. Estos archivos Markdown son copias de lectura generadas con `python3 scripts/exportar_documentacion.py`.
 """)
-intro = section(1)
-requirements = re.search(r"\\begin{tabularx}.*?\\end{tabularx}", intro, re.S)[0]
-write("01-introduccion.md", "# Objetivo y alcance\n\n" + prose(intro.replace(requirements, "")))
-write("02-requisitos.md", "# Requisitos\n\nLos seis requisitos corresponden al enunciado docente. El catálogo mantiene sus 24 historias y separa además la selección en el mapa y el coste eléctrico.\n\n" + prose(requirements) + "\nLa justificación está en [Objetivo y alcance](01-introduccion.md). Las decisiones se presentan al profesorado para su revisión.\n")
-write("03-reglas-metodo-prueba.md", "# Reglas de dominio y pruebas\n\n" + prose(section(2)))
+write("01-introduccion.md", "# Introducción\n\n" + prose(section(1)))
+write("02-requisitos.md", "# Requisitos\n\n" + prose(section(2)))
+write("03-reglas-metodo-prueba.md", "# Reglas y método de prueba\n\n" + prose(section(3)))
+write("04-historias-escenarios-aceptacion.md", "# Historias, escenarios y aceptación\n\n" + prose(section(4)))
 
-histories = re.findall(r"\\subsection\*\{HU-(\d\d) ([^}]+)\}\s*(.*?)(?=\\subsection\*\{HU-|\\section\{Diseño)", section(3) + r"\section{Diseño", re.S)
+histories = re.findall(r"\\subsection\*\{HU-(\d\d)\. ([^}]+)\}\s*(.*?)(?=\\(?:clearpage)?\\?subsection\*\{HU-|\Z)", section(4), re.S)
 if len(histories) != 26:
     raise ValueError(f"Se esperaban 26 historias y se han encontrado {len(histories)}")
-markdown = ["# Historias, escenarios y aceptación\n", "Las 52 pruebas se especifican para el proyecto. El archivo `.feature` contiene el catálogo y todavía no tiene definiciones ejecutables de pasos. Las comprobaciones del spike tienen otro alcance, explicado en su README.\n"]
-feature = ["Feature: Movilidad de Vía", "  # Catálogo de especificaciones sin definiciones ejecutables de pasos.", "  # Datos y condiciones comunes en docs/entrega1/03-reglas-metodo-prueba.md."]
-trace = ["# Trazabilidad de requisitos, historias y pantallas\n", "Los códigos PA identifican especificaciones de aceptación previstas. No indican que todas estén automatizadas o superadas en el spike.\n", "| Requisito | Historia | Escenarios y pruebas | Pantallas |", "| --- | --- | --- | --- |"]
-screen_stories = {}
+
+mockups = section(5)
+screen_blocks = re.findall(r"\\subsection\*\{(M\d\d)\. ([^}]+)\}(.*?)(?=\\clearpage\\subsection|\Z)", mockups, re.S)
+if len(screen_blocks) != 10:
+    raise ValueError("Deben existir diez pantallas de Figma")
+screens = []
+links = {}
+for code, title, block in screen_blocks:
+    related = re.search(r"\\textbf\{Historias relacionadas\} (.*?)\\par", block)[1]
+    hus = re.findall(r"HU-\d\d", related)
+    screens.append([code, title, ", ".join(hus)])
+    urls = re.findall(r"\\href\{([^}]+)\}", block)
+    links[code] = urls[-1]
+(ROOT / "entrega1/03_Mockups/pantallas.json").write_text(json.dumps(screens, ensure_ascii=False, indent=2) + "\n")
+
+feature = ["Feature: Movilidad de Vía", "  # Catálogo sin definiciones ejecutables de pasos.", "  # Datos comunes en docs/entrega1/03-reglas-metodo-prueba.md."]
+trace = ["# Trazabilidad de requisitos, historias y pantallas\n", "Los códigos PA identifican especificaciones previstas. No indican que todas estén automatizadas o superadas en el spike. Los escenarios elegidos son E-xx-V y E-xx-I1. El resto de las filas de las tablas amplía el análisis sin añadir pruebas seleccionadas.\n", "| Requisito | Historia | Escenarios y pruebas | Pantallas de Figma |", "| --- | --- | --- | --- |"]
 for num, title, block in histories:
-    first = block.splitlines()[0]
-    meta = re.match(r"(R\d) \\textperiodcentered\{\} (.+?)   (Como .+?)\\par", first)
-    if not meta:
-        raise ValueError(f"No se reconocen los datos de HU-{num}")
-    requirement, screens, story = meta.groups()
-    markdown.extend([f"\n## HU-{num} {title}\n", f"{requirement} · {screens}\n", plain(story) + "\n"])
-    tables = re.findall(r"\\begin{tabularx}.*?\\end{tabularx}", block, re.S)
+    requirement = re.search(r"\\textbf\{Requisito\} (R\d)", block)[1]
+    tables = re.findall(r"\\begin\{minipage\}.*?\\end\{minipage\}", block, re.S)
     if len(tables) != 2:
-        raise ValueError(f"HU-{num} no tiene exactamente dos escenarios")
+        raise ValueError(f"HU-{num} debe contener dos pruebas seleccionadas")
     for kind, table in zip(["V", "I"], tables):
         rows = dict(re.findall(r"\\textbf\{(Justificación|Análisis|Given|When|Then)\} & (.*?)\\\\\[\dpt\]", table))
         if len(rows) != 5:
             raise ValueError(f"Análisis incompleto en HU-{num}-{kind}")
         label = "válido" if kind == "V" else "inválido"
-        markdown.append(f"### E-{num}-{kind} · Escenario {label} · PA-{num}-{kind}\n")
-        for key in ["Justificación", "Análisis", "Given", "When", "Then"]:
-            markdown.append(f"**{key}** {plain(rows[key])}\n")
         feature.extend(["", f"  Scenario: PA-{num}-{kind} {title}, escenario {label}"] + [f"    {key} {plain(rows[key])}" for key in ["Given", "When", "Then"]])
-    limits = re.search(r"\\textbf\{Límites y variantes\.\} (.*?)\\par", block)[1]
-    markdown.append("**Límites y variantes** " + plain(limits) + "\n")
-    pairs = f"E-{num}-V / PA-{num}-V y E-{num}-I / PA-{num}-I"
-    trace.append(f"| {requirement} | HU-{num} {title} | {pairs} | {screens} |")
-    for screen in re.findall(r"M\d\d", screens):
-        screen_stories.setdefault(screen, []).append("HU-" + num)
-
-write("04-historias-escenarios-aceptacion.md", "\n".join(markdown))
+    related = ", ".join(code for code, _, hus in screens if "HU-" + num in hus)
+    if not related:
+        raise ValueError(f"HU-{num} no está relacionada con ninguna pantalla")
+    trace.append(f"| {requirement} | HU-{num} {title} | E-{num}-V / PA-{num}-V y E-{num}-I1 / PA-{num}-I | {related} |")
 (ROOT / "entrega1/04_Pruebas/aceptacion.feature").write_text("\n".join(feature) + "\n")
-(ROOT / "entrega1/04_Pruebas/trazabilidad.md").write_text("\n".join(trace) + "\n\nHU-25 y HU-26 afectan a la recuperación de datos y preferencias de todas las pantallas M03 a M09. No necesitan una pantalla propia.\n")
+(ROOT / "entrega1/04_Pruebas/trazabilidad.md").write_text("\n".join(trace) + "\n")
 
-mockups = section(4)
-captions = re.findall(r"\\textbf\{(M\d\d) (.*?) \\textperiodcentered\{\} (.*?)\}", mockups)
-screens = [[code, title, plain(hus)] for code, title, hus in captions]
-if len(screens) != 9:
-    raise ValueError("Deben existir nueve pantallas")
-(ROOT / "entrega1/03_Mockups/pantallas.json").write_text(json.dumps(screens, ensure_ascii=False, indent=2) + "\n")
-write("05-mockups.md", "# Diseño de interfaces\n\n" + prose(mockups) + "\nLos diseños se pueden consultar juntos en [la galería](../../entrega1/03_Mockups/index.html). Cada pantalla conserva una versión SVG editable y otra PNG.\n\n" + "\n\n".join(f"## {code} {title}\n\n{hus}\n\n![{code} {title}](../../entrega1/03_Mockups/{code}.png)" for code, title, hus in screens) + "\n")
-write("06-spike.md", "# Iteración 0\n\n" + prose(section(5)) + "\nLas instrucciones completas están en [el README del spike](../../entrega1/02_Spike/README.md). Los resultados están en [Comprobaciones](../../entrega1/06_Comprobaciones/).\n")
-write("07-ia.md", "# Experiencia con IA generativa\n\n" + prose(section(6)))
-print("Actualizados ocho documentos, 26 historias, 52 escenarios y nueve pantallas")
+write("05-mockups.md", "# Del escenario a la pantalla\n\n" + prose(mockups) + "\n" + "\n\n".join(f"## {code} {title}\n\n{hus}\n\n![{code} {title}](../../entrega1/03_Mockups/figma/{code}.png)\n\n[Editar en Figma]({links[code]})" for code, title, hus in screens))
+write("06-spike.md", "# Iteración 0\n\n" + prose(section(6)) + "\nLas instrucciones están en [el README del spike](../../entrega1/02_Spike/README.md). Los resultados están en [Comprobaciones](../../entrega1/06_Comprobaciones/).\n")
+write("07-ia.md", "# Experiencia con IA generativa\n\n" + prose(section(7)))
+html = '<!doctype html><html lang="es"><meta charset="utf-8"><title>Mockups de Vía</title><style>body{max-width:960px;margin:40px auto;font:16px Arial;padding:0 20px}img{max-width:100%;height:auto;border:1px solid #ddd}section{margin:48px 0}a{color:#245c44}</style><h1>Vía · Mockups de Figma</h1><p>Diez propuestas de interfaz para las 26 historias. Las cifras ilustran cálculos y los estados alternativos no aparecen a la vez.</p>'
+for code, title, hus in screens:
+    html += f'<section><h2>{code} {title}</h2><p>{hus}</p><img src="figma/{code}.png" alt="{title}"><p><a href="{links[code]}">Abrir diseño editable en Figma</a></p></section>'
+(ROOT / "entrega1/03_Mockups/index.html").write_text(html + "</html>\n")
+print("Actualizados ocho documentos, 26 historias, 52 pruebas seleccionadas y diez pantallas de Figma")

@@ -1,47 +1,52 @@
 [
   [
     "M01",
-    "Alta de usuario",
-    "HU-01"
+    "Registro e inicio de sesión",
+    "HU-01, HU-02"
   ],
   [
     "M02",
-    "Acceso",
-    "HU-02"
+    "Mi cuenta y cierre de sesión",
+    "HU-03, HU-04"
   ],
   [
     "M03",
-    "Cuenta",
-    "HU-03 y HU-04"
+    "Añadir un lugar",
+    "HU-05, HU-06, HU-09"
   ],
   [
     "M04",
-    "Alta de lugar",
-    "HU-05, HU-06 y HU-09"
+    "Mis lugares",
+    "HU-07, HU-08, HU-22"
   ],
   [
     "M05",
-    "Lugares",
-    "HU-07, HU-08 y HU-22"
+    "Mis vehículos",
+    "HU-10, HU-11, HU-12, HU-13, HU-22"
   ],
   [
     "M06",
-    "Vehículos",
-    "HU-10 a HU-13 y HU-22"
+    "Planificar un trayecto",
+    "HU-14, HU-18"
   ],
   [
     "M07",
-    "Cálculo y resultado",
-    "HU-09 y HU-14 a HU-19"
+    "Resultado y estimaciones",
+    "HU-15, HU-16, HU-17, HU-19"
   ],
   [
     "M08",
     "Rutas guardadas",
-    "HU-20 a HU-22"
+    "HU-20, HU-21, HU-22"
   ],
   [
     "M09",
     "Preferencias",
-    "HU-15 a HU-17, HU-23 y HU-24"
+    "HU-23, HU-24, HU-15, HU-16, HU-17"
+  ],
+  [
+    "M10",
+    "Volver a la aplicación",
+    "HU-25, HU-26"
   ]
 ]

@@ -12,7 +12,7 @@ Repositorio en [Kiliansito/ei1039-ei1048-movilidad](https://github.com/Kiliansit
 
 - **01_Memoria** informe en PDF compilado con LaTeX y fuente `.tex` editable.
 - **02_Spike** código de la iteración 0 e instrucciones de ejecución.
-- **03_Mockups** nueve pantallas en SVG editable y PNG. `index.html` permite verlas juntas.
+- **03_Mockups** diez pantallas de Figma en PNG. `index.html` permite verlas juntas.
 - **04_Pruebas** escenarios Given-When-Then y matriz de trazabilidad.
 - **05_Material_docente** cuatro PDF originales de clase, con nombres descriptivos.
 - **06_Comprobaciones** resultados de las pruebas locales, del navegador y de la compilación.
@@ -50,3 +50,5 @@ Los esquemas se cargan desde `03_Mockups`, por lo que ambas carpetas deben conse
 ## Documentos de lectura
 
 Los ocho apartados de [docs/entrega1](../docs/entrega1/) recogen el contenido de la memoria. Para actualizarlos tras editar el archivo LaTeX, ejecutar `python3 scripts/exportar_documentacion.py` desde la raíz del repositorio. El mismo comando actualiza el catálogo de aceptación, la trazabilidad y la relación de pantallas.
+
+Los apartados 1 a 5 incorporan la aportación del documento de Drive y los [diez mockups de Figma](https://www.figma.com/design/0X0JpvayI4WsF0QyywWWbs), revisados junto con los escenarios. Las fuentes están en `entrega1/01_Memoria/apartados/` desde la raíz del repositorio.

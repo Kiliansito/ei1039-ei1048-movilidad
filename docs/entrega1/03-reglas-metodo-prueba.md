@@ -1,4 +1,4 @@
-# Reglas de dominio y pruebas
+# Reglas y método de prueba
 
 ## Datos admitidos
 
@@ -29,3 +29,5 @@ Cada historia tiene un escenario válido y otro inválido, con justificación, a
 Según la metodología docente [2], las pruebas de aceptación se aplican sobre los servicios de la lógica de negocio y utilizan las dependencias reales necesarias. Las pruebas de integración sustituyen al menos una dependencia por un doble de prueba. El dibujo del mapa, los formularios y los mensajes visibles se comprueban aparte en el navegador.
 
 Las rutas reales pueden cambiar. Se comprueban la geometría, la distancia y la duración recibidas, y se calcula el coste esperado a partir de ellas. Los errores externos se provocan interrumpiendo el acceso al servicio real cuando sea posible. Si se simulan con un doble, el resultado se registra como prueba de integración.
+
+% Contenido de la segunda pestaña del documento de Drive.
