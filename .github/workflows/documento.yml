@@ -6,11 +6,17 @@ on:
     paths:
       - 'entrega1/01_Memoria/**'
       - 'entrega1/03_Mockups/**'
+      - 'entrega1/04_Pruebas/**'
+      - 'docs/entrega1/**'
+      - 'scripts/exportar_documentacion.py'
       - '.github/workflows/documento.yml'
   pull_request:
     paths:
       - 'entrega1/01_Memoria/**'
       - 'entrega1/03_Mockups/**'
+      - 'entrega1/04_Pruebas/**'
+      - 'docs/entrega1/**'
+      - 'scripts/exportar_documentacion.py'
       - '.github/workflows/documento.yml'
   workflow_dispatch:
 
@@ -23,6 +29,10 @@ jobs:
     steps:
       - name: Obtener fuentes
         uses: actions/checkout@v4
+      - name: Comprobar que la documentación coincide con la memoria
+        run: |
+          python3 scripts/exportar_documentacion.py
+          git diff --exit-code -- docs/entrega1 entrega1/04_Pruebas entrega1/03_Mockups/pantallas.json
       - name: Instalar LaTeX
         run: |
           sudo apt-get update

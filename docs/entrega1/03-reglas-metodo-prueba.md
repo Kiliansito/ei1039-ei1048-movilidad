@@ -1,10 +1,33 @@
-# 3. Reglas y método de prueba
+# Reglas y método de prueba
 
-| Objeto | Reglas propuestas |
+## Datos admitidos
+
+Cada cuenta accede solo a sus datos. El nombre de usuario admite de 1 a 70 caracteres. El correo admite hasta 254, debe tener formato válido y ser único tras quitar espacios exteriores y convertirlo a minúsculas. La contraseña admite de 10 a 128 caracteres y se comprueba exactamente como se escribió, incluidos sus espacios. Los nombres de lugares y rutas admiten de 1 a 120 caracteres, y los de vehículos de 1 a 70. Los nombres se guardan sin espacios exteriores.
+
+La latitud admite valores entre -90 y 90, y la longitud entre -180 y 180, incluidos los extremos. Solo se aceptan números finitos. Un topónimo es el nombre de un lugar y su búsqueda admite de 1 a 200 caracteres tras quitar espacios exteriores. Los vehículos pueden ser de gasolina, diésel o eléctricos, con consumo entre 0,1 y 100 l/100 km o kWh/100 km.
+
+Para calcular una ruta, los dos lugares deben estar guardados en la cuenta y tener coordenadas distintas. Los modos son coche, bicicleta y a pie. En coche se selecciona un vehículo. Los criterios son más rápida, más corta y más económica. El peso para estimar calorías admite de 20 a 300 kg. Los precios manuales admiten de 0,001 a 20 euros por litro o kWh. Estos límites son decisiones de la propuesta y deberán revisarse con el profesorado.
+
+
+## Datos de los escenarios
+
+Cada escenario empieza con una base de datos de prueba independiente. Solo se crean los elementos que indica su estado inicial. En las operaciones de gestión se parte de una sesión activa de Ana, salvo indicación contraria. Ana usa ana@example.com y RutaSegura2026. Luis usa luis@example.com y OtraRuta2026. Cada registro recibe un identificador propio.
+
+| **Elemento** | **Datos de referencia** |
 | --- | --- |
-| Cuenta | Correo normalizado, único y de hasta 254 caracteres; nombre de 1 a 70; contraseña de 10 a 128. No se muestran contraseñas en respuestas. |
-| Lugar | Nombre de 1 a 120 caracteres; latitud entre -90 y 90 y longitud entre -180 y 180; valores finitos. El usuario confirma el resultado del topónimo. |
-| Vehículo | Gasolina, diésel o eléctrico; consumo entre 0.1 y 100 en su unidad; nombre de 1 a 70 caracteres. |
-| Cálculo | Distancia en km, duración en minutos para las fórmulas; €/l o €/kWh; precio manual entre 0.001 y 20; peso entre 20 y 300 kg. |
-| Propiedad | Cada usuario solo consulta o modifica sus elementos. Una operación inválida no altera el estado confirmado. |
-| Persistencia | Escrituras atómicas; favoritos, preferencias y contenidos confirmados recuperables. Rutas guardadas como instantáneas históricas. |
+| Centro y UJI | Centro en (39.9864, -0.0513) y UJI en (39.9946, -0.0684), de Ana. |
+| Estación | Lugar de Luis en (39.9885, -0.0510). |
+| Compacto y Eléctrico | Vehículos de Ana, de gasolina con 6 l/100 km y eléctrico con 15 kWh/100 km. |
+| Furgoneta | Vehículo de Luis, diésel con 8 l/100 km. |
+| Rutas guardadas | Camino a clase va de Centro a UJI y Paseo de UJI a Centro. Camino al trabajo pertenece a Luis. Se guardan el trazado y las métricas del resultado real utilizado al preparar cada prueba. |
+
+
+## Criterio de prueba y desarrollo
+
+Cada historia tiene un escenario válido y otro inválido, con justificación, análisis y una prueba Given-When-Then. Válido significa que la operación puede completarse con sus condiciones. Inválido significa que una entrada o condición impide completarla, aunque el sistema responda correctamente al error. Los límites adicionales orientan pruebas futuras y no aumentan las 52 pruebas seleccionadas.
+
+Según la metodología docente [2], las pruebas de aceptación se aplican sobre los servicios de la lógica de negocio y utilizan las dependencias reales necesarias. Las pruebas de integración sustituyen al menos una dependencia por un doble de prueba. El dibujo del mapa, los formularios y los mensajes visibles se comprueban aparte en el navegador.
+
+Las rutas reales pueden cambiar. Se comprueban la geometría, la distancia y la duración recibidas, y se calcula el coste esperado a partir de ellas. Los errores externos se provocan interrumpiendo el acceso al servicio real cuando sea posible. Si se simulan con un doble, el resultado se registra como prueba de integración.
+
+% Contenido de la segunda pestaña del documento de Drive.

@@ -6,16 +6,16 @@
 
 EI1039 y EI1048 · Universitat Jaume I · Curso 2026-2027
 
-Repositorio: [Kiliansito/ei1039-ei1048-movilidad](https://github.com/Kiliansito/ei1039-ei1048-movilidad).
+Repositorio en [Kiliansito/ei1039-ei1048-movilidad](https://github.com/Kiliansito/ei1039-ei1048-movilidad).
 
 ## Contenido
 
-- **01_Memoria**: informe en PDF compilado con LaTeX y fuente `.tex` editable.
-- **02_Spike**: código de la iteración 0 e instrucciones de ejecución.
-- **03_Mockups/figma**: diez imágenes de los mockups actuales de Figma, utilizadas en el apartado 5 de la memoria. Los diseños anteriores en SVG, PNG e `index.html` se conservan como antecedentes.
-- **04_Pruebas**: escenarios Given-When-Then y matriz de trazabilidad.
-- **05_Material_docente**: cuatro PDF originales de clase, con nombres descriptivos.
-- **06_Comprobaciones**: resultados de las pruebas locales, del navegador y de la compilación.
+- **01_Memoria** informe en PDF compilado con LaTeX y fuente `.tex` editable.
+- **02_Spike** código de la iteración 0 e instrucciones de ejecución.
+- **03_Mockups** diez pantallas de Figma en PNG. `index.html` permite verlas juntas.
+- **04_Pruebas** escenarios Given-When-Then y matriz de trazabilidad.
+- **05_Material_docente** cuatro PDF originales de clase, con nombres descriptivos.
+- **06_Comprobaciones** resultados de las pruebas locales, del navegador y de la compilación.
 
 ## Ejecutar el spike
 
@@ -39,7 +39,7 @@ pdflatex -interaction=nonstopmode -halt-on-error Informe_Entrega1_Via.tex
 pdflatex -interaction=nonstopmode -halt-on-error Informe_Entrega1_Via.tex
 ```
 
-También se puede compilar con Tectonic:
+También se puede compilar con Tectonic.
 
 ```sh
 tectonic Informe_Entrega1_Via.tex
@@ -47,4 +47,8 @@ tectonic Informe_Entrega1_Via.tex
 
 Los esquemas se cargan desde `03_Mockups`, por lo que ambas carpetas deben conservar su posición.
 
-Los puntos 1–5 se incluyen desde `01_Memoria/apartados/` y corresponden a la segunda pestaña del documento de Drive. Su copia en Markdown está en `../docs/entrega1/`. El contenido existente del spike y de la declaración de IA se mantiene; la revisión del spike queda pendiente de Rubén.
+## Documentos de lectura
+
+Los ocho apartados de [docs/entrega1](../docs/entrega1/) recogen el contenido de la memoria. Para actualizarlos tras editar el archivo LaTeX, ejecutar `python3 scripts/exportar_documentacion.py` desde la raíz del repositorio. El mismo comando actualiza el catálogo de aceptación, la trazabilidad y la relación de pantallas.
+
+Los apartados 1 a 5 incorporan la aportación del documento de Drive y los [diez mockups de Figma](https://www.figma.com/design/0X0JpvayI4WsF0QyywWWbs), revisados junto con los escenarios. Las fuentes están en `entrega1/01_Memoria/apartados/` desde la raíz del repositorio.

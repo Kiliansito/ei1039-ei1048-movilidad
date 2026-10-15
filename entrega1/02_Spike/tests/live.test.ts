@@ -46,8 +46,18 @@ test(
           lon: -0.0513,
         }),
         b = app.addPlace(u.id, results[0]);
+      const vehicle = app.saveVehicle(u.id, {
+        name: "Compacto",
+        type: "petrol",
+        consumption: 6,
+      });
       for (const mode of ["car", "bike", "foot"]) {
-        const result = await app.plan(u.id, { from: a.id, to: b.id, mode });
+        const result = await app.plan(u.id, {
+          from: a.id,
+          to: b.id,
+          mode,
+          vehicleId: mode === "car" ? vehicle.id : undefined,
+        });
         assert.ok(result.routes[0].distance > 0);
         assert.ok(result.routes[0].geometry.length >= 2);
       }

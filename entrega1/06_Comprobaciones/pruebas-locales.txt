@@ -1,46 +1,48 @@
 
-> via-spike@0.1.0 test
+> via-spike@0.1.0 test:local
 > node --import tsx --test tests/core.test.ts tests/persistence.test.ts tests/security.test.ts tests/adapters.test.ts
 
-✔ Given ORS GeoJSON When planning Then coordinates and instructions normalized (0.7785ms)
-✔ Given external malformed data When routing Then reject instead of inventing geometry (0.151875ms)
-✔ Given government prices When converting Then electricity changes MWh to kWh (0.889333ms)
-✔ Given provider outage When fetching prices Then missing values remain null (0.116ms)
-✔ Given cache When requesting twice Then only one underlying call (0.119209ms)
-✔ Given transient provider failure When retry succeeds Then return real response (412.653708ms)
-✔ Given unreachable routing point When provider rejects Then show actionable message without retry (0.429833ms)
-✔ Given provider quota exceeded as HTTP 403 When requesting a route Then report quota rather than an invalid key (0.221208ms)
-✔ Given identical routes requested concurrently When cached Then coalesce requests, isolate returned values, and expire (0.265291ms)
-✔ Given a failed route query When trying again Then errors are not cached (0.168792ms)
-✔ Given new email When registering Then account is created; duplicate rejected (23.017542ms)
-✔ invalid email and weak password rejected (20.453291ms)
-✔ Given account When login Then authenticated; wrong password rejected (58.015625ms)
-✔ Given session When logout Then token invalidated (37.588667ms)
-✔ Given owned records When deleting account Then cascade removes all data (39.502583ms)
-✔ Given coordinates When saving place Then persisted; invalid coordinates rejected (19.502125ms)
-✔ Given a toponym When searching Then geocoder result can become registered place (19.832667ms)
-✔ Given a place When deleting Then absent; unknown record rejected (18.578583ms)
-✔ Given vehicle When updating and deleting Then lifecycle persists (17.846ms)
-✔ Given registered endpoints When calculating Then fastest and shortest differ (19.752958ms)
-✔ Given bicycle or walk When planning Then kcal estimated (17.899958ms)
-✔ Given calculated route When saving Then reloadable and deletable (18.322459ms)
-✔ Given favorite When listing Then appears first; cross-account access denied (35.397917ms)
-✔ Given preferences When reopening Then defaults preserved; invalid enum rejected (18.003834ms)
-✔ Provider failure propagates honestly without invented routes (17.874041ms)
-✔ Editing a place preserves identity and favorites, validates coordinates and isolates owners (38.648125ms)
-✔ R6 Given durable state When repository reopens Then account, records and preferences survive (49.858083ms)
-✔ Given selected endpoints When preferences are restored Then last journey survives and foreign endpoints are rejected (21.632959ms)
-✔ Given a committed place When the process is killed without closing SQLite Then WAL recovers it (69.899625ms)
-✔ Given another account When editing or deleting its records Then access denied (45.850375ms)
-✔ Given deleted account When using old session Then invalid; wrong password does not delete (98.853875ms)
-✔ Given persisted password When inspected Then salted hash and no secret in state (38.178167ms)
-✔ Given numeric strings, NaN or unknown preference When submitted Then validation rejects (37.568791ms)
-✔ Given vehicle selected as default When deleted Then default is cleared (38.908458ms)
-ℹ tests 34
+✔ Given ORS GeoJSON When planning Then coordinates and instructions normalized (0.735166ms)
+✔ Given external malformed data When routing Then reject instead of inventing geometry (0.129375ms)
+✔ Given government prices When converting Then electricity changes MWh to kWh (0.917667ms)
+✔ Given provider outage When fetching prices Then missing values remain null (0.124959ms)
+✔ Given cache When requesting twice Then only one underlying call (0.137959ms)
+✔ Given transient provider failure When retry succeeds Then return real response (410.366208ms)
+✔ Given unreachable routing point When provider rejects Then show actionable message without retry (0.416291ms)
+✔ Given provider quota exceeded as HTTP 403 When requesting a route Then report quota rather than an invalid key (0.246667ms)
+✔ Given identical routes requested concurrently When cached Then coalesce requests, isolate returned values, and expire (0.294042ms)
+✔ Given a failed route query When trying again Then errors are not cached (0.179292ms)
+✔ Given new email When registering Then account is created; duplicate rejected (22.586333ms)
+✔ invalid email and weak password rejected (19.359083ms)
+✔ Given account When login Then authenticated; wrong password rejected (40.832166ms)
+✔ Given session When logout Then token invalidated (40.728083ms)
+✔ Given owned records When deleting account Then cascade removes all data (40.733041ms)
+✔ Given coordinates When saving place Then persisted; invalid coordinates rejected (20.740708ms)
+✔ Given a toponym When searching Then geocoder result can become registered place (21.212417ms)
+✔ Given a place When deleting Then absent; unknown record rejected (20.122459ms)
+✔ Given vehicle When updating and deleting Then lifecycle persists (19.657458ms)
+✔ Given registered endpoints When calculating Then fastest and shortest differ (20.910292ms)
+✔ Given bicycle or walk When planning Then kcal estimated (19.296083ms)
+✔ Given calculated route When saving Then reloadable and deletable (19.639458ms)
+✔ Given favorite When listing Then appears first; cross-account access denied (37.599166ms)
+✔ Given preferences When reopening Then defaults preserved; invalid enum rejected (19.009208ms)
+✔ Provider failure propagates honestly without invented routes (18.452125ms)
+✔ Editing a place preserves identity and favorites, validates coordinates and isolates owners (37.502916ms)
+✔ R6 Given durable state When repository reopens Then account, records and preferences survive (46.154125ms)
+✔ Given selected endpoints When preferences are restored Then last journey survives and foreign endpoints are rejected (20.504959ms)
+✔ Given a committed place When the process is killed without closing SQLite Then WAL recovers it (70.022959ms)
+✔ Given an uncommitted place When the process is killed Then only committed records survive (49.0105ms)
+✔ Given a password with surrounding spaces When logging in Then only the exact password works (60.549375ms)
+✔ Given another account When editing or deleting its records Then access denied (40.480958ms)
+✔ Given deleted account When using old session Then invalid; wrong password does not delete (101.402417ms)
+✔ Given persisted password When inspected Then salted hash and no secret in state (38.079667ms)
+✔ Given numeric strings, NaN or unknown preference When submitted Then validation rejects (38.8685ms)
+✔ Given vehicle selected as default When deleted Then default is cleared (37.684625ms)
+ℹ tests 36
 ℹ suites 0
-ℹ pass 34
+ℹ pass 36
 ℹ fail 0
 ℹ cancelled 0
 ℹ skipped 0
 ℹ todo 0
-ℹ duration_ms 544.646709
+ℹ duration_ms 479.236167

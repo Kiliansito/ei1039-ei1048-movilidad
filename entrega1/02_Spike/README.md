@@ -1,10 +1,10 @@
 # Vía · Spike de movilidad
 
-Iteración 0 de EI1039 y EI1048. Nueve pantallas sencillas: alta de usuario, acceso, cuenta, alta de lugar, lugares, vehículos, cálculo de ruta, rutas guardadas y preferencias. Se conservan React, TypeScript, Vite, Node.js, SQLite y Leaflet, junto con OpenRouteService, OpenStreetMap, MITECO y REE.
+Iteración 0 de EI1039 y EI1048. La interfaz sigue manualmente las capturas de las diez pantallas del diseño. Permite gestionar la cuenta, lugares, vehículos, rutas y preferencias. Utiliza React, TypeScript, Vite, Node.js, SQLite y Leaflet, junto con OpenRouteService, OpenStreetMap, MITECO y REE.
 
 ## Ejecutar
 
-Requiere Node.js **24.16 o superior** y npm. Desde esta carpeta:
+Requiere Node.js **24.16 o superior** y npm. Desde esta carpeta se ejecutan los siguientes comandos.
 
 ```sh
 npm ci
@@ -12,17 +12,17 @@ cp .env.example .env
 npm run spike
 ```
 
-En PowerShell, usar `Copy-Item .env.example .env` en lugar de `cp`. Abrir [http://localhost:4173](http://localhost:4173) y crear una cuenta. La base de datos se crea en `data/via.sqlite`. No se incluyen cuentas, bases de datos ni claves en el paquete.
+En PowerShell, usar `Copy-Item .env.example .env` en lugar de `cp`. Abrir [la aplicación local](http://localhost:4173) y crear una cuenta. La base de datos se crea en `data/via.sqlite`. No se incluyen cuentas, bases de datos ni claves en el paquete.
 
-Para geocodificación y cálculo real de rutas, introducir una clave propia en `.env`:
+Para buscar topónimos y calcular rutas reales, introducir una clave propia en `.env`.
 
 ```dotenv
 ORS_API_KEY=tu_clave
 ```
 
-Reiniciar el servidor tras cambiar la clave. Las cuentas, los lugares por coordenadas, los vehículos y las preferencias funcionan sin ella. Los mapas necesitan conexión. La clave no se envía al navegador.
+Reiniciar el servidor tras cambiar la clave. La cuenta, los lugares por coordenadas, los vehículos y las preferencias funcionan sin ella. Los mapas necesitan conexión. La clave no se envía al navegador.
 
-## Comprobar
+## Pruebas
 
 ```sh
 npm test
@@ -31,46 +31,50 @@ npx playwright install chromium
 npm run test:e2e
 ```
 
-Si se utiliza Chrome instalado, ejecutar `PLAYWRIGHT_CHANNEL=chrome npm run test:e2e` en macOS/Linux. En PowerShell: `$env:PLAYWRIGHT_CHANNEL='chrome'; npm run test:e2e`.
+`npm test` ejecuta 36 pruebas locales, 18 de integración y las 52 de aceptación seleccionadas en la memoria. Las de aceptación necesitan la clave ORS y conexión a los servicios reales. Si falta la clave o falla un servicio necesario, el comando falla. No omite esas pruebas.
 
-Las pruebas de navegador ejecutan un servidor aislado con SQLite en memoria y proveedores de prueba. No usan la clave ORS ni la base de datos de trabajo. Las pruebas locales incluyen integración con dobles, validaciones, adaptadores y persistencia. El catálogo de aceptación define el comportamiento previsto del proyecto.
+Las pruebas se pueden lanzar por separado con `npm run test:local`, `npm run test:integration` y `npm run test:acceptance`. El [catálogo Gherkin](../04_Pruebas/aceptacion.feature) recoge los escenarios en texto. Su código está en [acceptance.test.ts](tests/acceptance.test.ts) y [support/scenarios.ts](tests/support/scenarios.ts). Se comprueba que los 52 identificadores del catálogo coinciden con los de las pruebas.
 
-Para los ensayos opcionales con servicios reales:
+Las pruebas de aceptación actúan sobre la lógica de negocio con una base SQLite temporal en disco. Usan los proveedores reales cuando el escenario los necesita. Las de integración sustituyen esos proveedores por dobles con respuestas conocidas para comprobar cálculos y decisiones. Las pruebas locales cubren validaciones, adaptadores, cuentas y persistencia.
+
+Las 24 pruebas de navegador comprueban 12 recorridos en escritorio y móvil. Ejecutan un servidor aislado con SQLite en memoria y proveedores de prueba. No usan la clave ORS ni los datos de trabajo. Guardan capturas de las diez pantallas en `../06_Comprobaciones/capturas` y comprueban que no haya desbordamiento horizontal.
+
+Si se utiliza Chrome instalado, ejecutar `PLAYWRIGHT_CHANNEL=chrome npm run test:e2e` en macOS o Linux. En PowerShell se puede establecer `PLAYWRIGHT_CHANNEL` como variable de entorno antes de ejecutar el mismo comando.
+
+La compilación comprueba los tipos del código, de las pruebas y de la configuración del navegador. GitHub ejecuta las pruebas locales, de integración y de navegador y la compilación. Las 52 de aceptación con servicios reales se han ejecutado localmente. No se ha subido una clave a GitHub.
+
+El [registro del proceso ATDD](../06_Comprobaciones/metodo-atdd.md) conserva la ejecución con fallos anterior a la implementación y los resultados finales. La evidencia corresponde a esta revisión. No acredita el orden de desarrollo del código que ya existía.
+
+Como comprobación adicional de conexión se pueden ejecutar dos ensayos con servicios públicos.
 
 ```sh
 LIVE_APIS=1 npm run test:live
 ```
 
-En PowerShell: `$env:LIVE_APIS='1'; npm run test:live`. ORS también necesita su clave. Sin estas variables las pruebas aparecen omitidas. No se han repetido las consultas reales en esta revisión.
+Son ensayos opcionales y no forman parte de las 52 pruebas de aceptación. Sin `LIVE_APIS=1` aparecen omitidos. ORS también necesita su clave.
 
-Para servir la compilación:
-
-```sh
-npm run build
-npm start
-```
+Para servir la compilación se ejecutan `npm run build` y `npm start`.
 
 ## Organización
 
-- `web/main.tsx`: pantallas y formularios.
-- `web/model.ts`: estado observable y comunicación con la API local.
-- `web/Map.tsx`: Leaflet y selección geográfica.
-- `src/services.ts`: casos de uso de movilidad.
-- `src/domain/`: contratos y estimación de costes.
-- `src/adapters/providers.ts`: adaptadores HTTP, ORS y precios públicos.
-- `src/repository.ts`: SQLite.
-- `src/http.ts` y `src/server.ts`: API local y servidor.
+| Archivo | Función |
+| --- | --- |
+| `web/main.tsx` | Pantallas y formularios |
+| `web/model.ts` | Estado observable y comunicación con la API local |
+| `web/Map.tsx` | Leaflet y selección geográfica |
+| `src/services.ts` | Casos de uso de movilidad |
+| `src/domain/` | Contratos y estimación de costes |
+| `src/adapters/providers.ts` | Adaptadores HTTP, ORS y precios públicos |
+| `src/repository.ts` | SQLite |
+| `src/http.ts` y `src/server.ts` | API local y servidor |
 
-Flujo: pantalla → modelo de vista → HTTP → servicio → contratos de almacenamiento y proveedores.
-
-El spike conserva las separaciones de arquitectura del proyecto: Facade en el servicio, Strategy en los costes, Adapter en los proveedores, Decorator en las cachés y Observer en el modelo de vista. La justificación detallada de patrones y la planificación se desarrollarán en la siguiente entrega.
+Las pantallas consultan un modelo de vista que se comunica por HTTP con el servicio. Este utiliza los contratos de almacenamiento y de servicios externos. Se mantienen Facade en el servicio, Strategy en los costes, Adapter en los proveedores, Decorator en las cachés y Observer en el modelo de vista. La justificación detallada de patrones y la planificación se desarrollarán en la siguiente entrega.
 
 ## Límites
 
-- El cálculo más económico ordena las alternativas recibidas, no todas las carreteras posibles.
+- El cálculo más económico ordena las alternativas recibidas del proveedor.
 - El coste es orientativo. El precio REE es mayorista y no incluye el importe final de una tarifa doméstica.
 - Las calorías se estiman por duración, peso y MET. No son una medición personal.
 - Las rutas guardadas conservan geometría y métricas históricas. Borrar un lugar o cambiar el consumo no recalcula el historial.
-- Se recuperan datos confirmados, preferencias y último trayecto. Los formularios sin guardar y los resultados sin guardar se descartan al cerrar.
+- Se recuperan datos confirmados, preferencias y último trayecto. Al guardar preferencias se vacía la selección del trayecto y se usan los nuevos valores predeterminados. Los formularios y resultados sin guardar se descartan al cerrar.
 - Las pruebas de caída usan SIGKILL. No simulan una avería física del disco.
-- Sin PWA, copiloto, calendario, exportaciones ni despliegue externo en este spike.

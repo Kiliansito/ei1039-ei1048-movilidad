@@ -59,7 +59,7 @@ export function MapView({
       label.textContent = p.name;
       L.circleMarker([p.lat, p.lon], {
         radius: 8,
-        color: "#245c44",
+        color: "#252525",
         fillOpacity: 0.85,
         bubblingMouseEvents: false,
       })
@@ -76,14 +76,14 @@ export function MapView({
     ) {
       L.circleMarker([point.lat, point.lon], {
         radius: 9,
-        color: "#a94a20",
+        color: "#555555",
       }).addTo(group);
       m.setView([point.lat, point.lon], m.getZoom(), { animate: false });
     }
     if (route?.geometry.length) {
       const line = L.polyline(
         route.geometry.map((c) => [c[1], c[0]] as L.LatLngTuple),
-        { color: "#245c44", weight: 5 },
+        { color: "#252525", weight: 5 },
       ).addTo(group);
       m.fitBounds(line.getBounds(), { padding: [25, 25], animate: false });
     }

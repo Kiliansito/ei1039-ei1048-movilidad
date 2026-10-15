@@ -16,36 +16,55 @@ import type {
   State,
   Vehicle,
 } from "../src/domain/types";
+import "@fontsource-variable/inter";
 import "./style.css";
+
 const pages = [
-  "alta-lugar",
+  "calcular",
   "lugares",
   "vehiculos",
-  "calcular",
   "rutas",
   "preferencias",
   "cuenta",
+  "alta-lugar",
+  "resultado",
+  "recuperacion",
 ] as const;
 type Page = (typeof pages)[number];
 const titles: Record<Page, string> = {
-  "alta-lugar": "Alta de lugar",
-  lugares: "Lugares",
-  vehiculos: "Vehículos",
-  calcular: "Calcular ruta",
-  rutas: "Rutas guardadas",
-  preferencias: "Preferencias",
-  cuenta: "Cuenta",
+  calcular: "¿Adónde vamos?",
+  lugares: "Mis lugares",
+  vehiculos: "Mis vehículos",
+  rutas: "Mis rutas",
+  preferencias: "Tus valores predeterminados",
+  cuenta: "Mi cuenta",
+  "alta-lugar": "Nuevo lugar de interés",
+  resultado: "Resultado del trayecto",
+  recuperacion: "Tu estado recuperado",
 };
-const modeNames = { car: "Coche", bike: "Bicicleta", foot: "A pie" };
-const typeNames = {
-  petrol: "Gasolina",
-  diesel: "Diésel",
-  electric: "Eléctrico",
+const navigation = [
+  ["calcular", "Explorar"],
+  ["lugares", "Lugares"],
+  ["vehiculos", "Vehículos"],
+  ["rutas", "Rutas"],
+  ["preferencias", "Preferencias"],
+  ["cuenta", "Mi cuenta"],
+] as const;
+const modes = { car: "Coche", bike: "Bicicleta", foot: "A pie" };
+const types = { petrol: "Gasolina", diesel: "Diésel", electric: "Eléctrico" };
+const criteria = {
+  fastest: "Más rápida",
+  shortest: "Más corta",
+  cheapest: "Más económica",
 };
-const number = (v: number, digits = 2) =>
-  v.toLocaleString("es-ES", { maximumFractionDigits: digits });
-function navigate(page: Page) {
+const number = (value: number, digits = 2) =>
+  value.toLocaleString("es-ES", { maximumFractionDigits: digits });
+const navigate = (page: Page) => {
   location.hash = page;
+};
+function submit(event: FormEvent, action: () => Promise<void>) {
+  event.preventDefault();
+  void vm.run(action);
 }
 function Field({ label, children }: { label: string; children: ReactNode }) {
   const id = React.useId();
@@ -58,10 +77,6 @@ function Field({ label, children }: { label: string; children: ReactNode }) {
     </div>
   );
 }
-function submit(event: FormEvent, action: () => Promise<void>) {
-  event.preventDefault();
-  void vm.run(action);
-}
 function Favorite({
   kind,
   item,
@@ -73,253 +88,313 @@ function Favorite({
     <button
       className="secondary"
       aria-pressed={!!item.favorite}
-      onClick={() => void vm.run(() => vm.favorite(kind, item.id))}
       aria-label={`${item.favorite ? "Quitar de" : "Marcar como"} favoritos ${item.name}`}
+      onClick={() => void vm.run(() => vm.favorite(kind, item.id))}
     >
-      {item.favorite ? "★ Favorito" : "☆ Favorito"}
+      {item.favorite ? "Desmarcar favorito" : "Marcar favorito"}
     </button>
   );
 }
 function Delete({
   kind,
-  id,
-  name,
+  item,
 }: {
   kind: Collection;
-  id: string;
-  name?: string;
+  item: { id: string; name?: string };
 }) {
   const [confirm, setConfirm] = useState(false);
   return confirm ? (
-    <span className="confirmation">
-      ¿Eliminar {name}?{" "}
-      <button
-        className="danger"
-        onClick={() => void vm.run(() => vm.remove(kind, id))}
-      >
-        Confirmar eliminación
-      </button>
-      <button className="secondary" onClick={() => setConfirm(false)}>
-        Cancelar
-      </button>
-    </span>
+    <div className="confirm-panel">
+      <strong>¿Eliminar {item.name}?</strong>
+      <p>Se eliminará este elemento. Los demás datos se conservarán.</p>
+      <div className="actions">
+        <button className="secondary" onClick={() => setConfirm(false)}>
+          Cancelar
+        </button>
+        <button
+          className="danger"
+          onClick={() => void vm.run(() => vm.remove(kind, item.id))}
+        >
+          Confirmar eliminación
+        </button>
+      </div>
+    </div>
   ) : (
-    <button className="secondary" onClick={() => setConfirm(true)}>
+    <button className="danger" onClick={() => setConfirm(true)}>
       Eliminar
     </button>
   );
 }
 function Auth() {
-  const [register, setRegister] = useState(location.hash === "#alta-usuario");
   return (
-    <section className="auth">
-      <h1>{register ? "Alta de usuario" : "Iniciar sesión"}</h1>
-      <p>Accede para guardar tus lugares, vehículos y rutas.</p>
-      <form
-        onSubmit={(e) =>
-          submit(e, async () => {
-            const f = new FormData(e.currentTarget);
-            await vm.auth(register, Object.fromEntries(f));
-            navigate("alta-lugar");
-          })
-        }
-      >
-        {register && (
-          <Field label="Nombre">
-            <input name="name" required maxLength={70} autoComplete="name" />
-          </Field>
-        )}
-        <Field label="Correo electrónico">
-          <input
-            name="email"
-            type="email"
-            required
-            maxLength={254}
-            autoComplete="email"
-          />
-        </Field>
-        <Field label="Contraseña">
-          <input
-            name="password"
-            type="password"
-            required
-            minLength={register ? 10 : 1}
-            maxLength={128}
-            autoComplete={register ? "new-password" : "current-password"}
-          />
-        </Field>
-        {register && <small>Entre 10 y 128 caracteres.</small>}
-        <button type="submit">{register ? "Crear cuenta" : "Entrar"}</button>
-      </form>
-      <button
-        className="text-button"
-        onClick={() => {
-          setRegister(!register);
-          vm.set({ error: "", notice: "" });
-          location.hash = register ? "acceso" : "alta-usuario";
-        }}
-      >
-        {register ? "Ya tengo cuenta" : "Crear una cuenta"}
-      </button>
-    </section>
+    <div className="auth-grid">
+      {[true, false].map((register) => (
+        <section key={String(register)}>
+          <h1>{register ? "Crear una cuenta" : "Iniciar sesión"}</h1>
+          <form
+            aria-label={register ? "Crear una cuenta" : "Iniciar sesión"}
+            onSubmit={(e) =>
+              submit(e, async () => {
+                const data = Object.fromEntries(new FormData(e.currentTarget));
+                await vm.auth(register, data);
+                navigate(register ? "alta-lugar" : "recuperacion");
+              })
+            }
+          >
+            {register && (
+              <Field label="Nombre">
+                <input
+                  name="name"
+                  required
+                  maxLength={70}
+                  autoComplete="name"
+                />
+              </Field>
+            )}
+            <Field label="Correo electrónico">
+              <input
+                name="email"
+                type="email"
+                required
+                maxLength={254}
+                autoComplete="email"
+              />
+            </Field>
+            <Field label="Contraseña">
+              <input
+                name="password"
+                type="password"
+                required
+                minLength={register ? 10 : 1}
+                maxLength={128}
+                autoComplete={register ? "new-password" : "current-password"}
+              />
+            </Field>
+            {register && (
+              <small>La contraseña debe tener entre 10 y 128 caracteres.</small>
+            )}
+            <button>{register ? "Crear cuenta" : "Entrar"}</button>
+          </form>
+        </section>
+      ))}
+    </div>
   );
 }
 function NewPlace({ state }: { state: State }) {
-  const [name, setName] = useState(""),
+  const [method, setMethod] = useState("coordinates"),
+    [name, setName] = useState(""),
     [lat, setLat] = useState(""),
-    [lon, setLon] = useState("");
-  const [query, setQuery] = useState(""),
-    [results, setResults] = useState<GeocodedPlace[] | null>(null);
-  const [point, setPoint] = useState<{ lat: number; lon: number }>();
-  function choose(p: GeocodedPlace) {
-    setName(p.name);
-    setLat(String(p.lat));
-    setLon(String(p.lon));
-    setPoint({ lat: p.lat, lon: p.lon });
+    [lon, setLon] = useState(""),
+    [query, setQuery] = useState("");
+  const [results, setResults] = useState<GeocodedPlace[] | null>(null),
+    [point, setPoint] = useState<{ lat: number; lon: number }>();
+  function choose(place: GeocodedPlace) {
+    setName(place.name);
+    setLat(String(place.lat));
+    setLon(String(place.lon));
+    setPoint({ lat: place.lat, lon: place.lon });
   }
   return (
-    <>
-      <p>
-        Busca un topónimo, introduce coordenadas o selecciona un punto en el
-        mapa.
-      </p>
-      <div className="columns">
-        <div>
-          <form
-            className="search"
-            onSubmit={(e) =>
-              submit(e, async () => {
-                setResults(null);
-                setResults(await api("/search?q=" + encodeURIComponent(query)));
-              })
-            }
+    <section className="place-editor">
+      <div
+        className="tabs"
+        role="tablist"
+        aria-label="Forma de añadir un lugar"
+      >
+        {[
+          ["coordinates", "Coordenadas"],
+          ["toponym", "Topónimo"],
+          ["map", "Mapa"],
+        ].map(([key, label]) => (
+          <button
+            key={key}
+            type="button"
+            role="tab"
+            aria-selected={method === key}
+            aria-controls="place-fields"
+            onClick={() => setMethod(key)}
           >
-            <Field label="Topónimo">
-              <input
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                required
-                maxLength={200}
-                placeholder="Ejemplo: Universitat Jaume I"
-              />
-            </Field>
-            <button type="submit" className="secondary">
-              Buscar
-            </button>
-          </form>
-          {results !== null && (
-            <div className="results">
-              {results.length ? (
-                results.map((p, i) => (
-                  <button
-                    className="secondary"
-                    key={i}
-                    onClick={() => choose(p)}
-                  >
-                    {p.name}
-                  </button>
-                ))
-              ) : (
-                <p>No se han encontrado lugares.</p>
-              )}
-            </div>
-          )}
-          <form
-            onSubmit={(e) =>
-              submit(e, async () => {
-                await vm.save(
-                  "/places",
-                  { name, lat: Number(lat), lon: Number(lon) },
-                  "Lugar guardado.",
-                );
-                setName("");
-                setLat("");
-                setLon("");
-                setPoint(undefined);
-                setResults(null);
-              })
-            }
-          >
-            <Field label="Nombre del lugar">
-              <input
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-                maxLength={120}
-              />
-            </Field>
-            <div className="pair">
-              <Field label="Latitud">
-                <input
-                  value={lat}
-                  onChange={(e) => setLat(e.target.value)}
-                  type="number"
-                  min={-90}
-                  max={90}
-                  step="any"
-                  required
-                />
-              </Field>
-              <Field label="Longitud">
-                <input
-                  value={lon}
-                  onChange={(e) => setLon(e.target.value)}
-                  type="number"
-                  min={-180}
-                  max={180}
-                  step="any"
-                  required
-                />
-              </Field>
-            </div>
-            <button type="submit">Guardar lugar</button>
-          </form>
-        </div>
-        <div>
-          <MapView
-            places={state.places}
-            point={point}
-            onPick={(a, b) => {
-              setLat(a.toFixed(6));
-              setLon(b.toFixed(6));
-              setPoint({ lat: a, lon: b });
-            }}
-            onPlace={choose}
-          />
-          <small>
-            El punto seleccionado rellena las coordenadas. Añade un nombre antes
-            de guardarlo.
-          </small>
-        </div>
+            {label}
+          </button>
+        ))}
       </div>
-    </>
+      {method === "toponym" && (
+        <form
+          className="search"
+          aria-label="Búsqueda de lugares por nombre"
+          onSubmit={(e) =>
+            submit(e, async () => {
+              setResults(null);
+              setResults(await api("/search?q=" + encodeURIComponent(query)));
+            })
+          }
+        >
+          <Field label="Buscar un topónimo">
+            <input
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              required
+              maxLength={200}
+            />
+          </Field>
+          <button>Buscar</button>
+        </form>
+      )}
+      {results !== null && method === "toponym" && (
+        <section
+          className="search-results"
+          aria-label="Resultados de la búsqueda"
+        >
+          {results.length ? (
+            results.map((p, i) => (
+              <button
+                key={i}
+                className="secondary"
+                aria-label={`Seleccionar ${p.name}`}
+                onClick={() => choose(p)}
+              >
+                {p.name}
+              </button>
+            ))
+          ) : (
+            <p>No se han encontrado lugares. Prueba con otro nombre.</p>
+          )}
+        </section>
+      )}
+      <form
+        id="place-fields"
+        aria-label="Guardar un lugar"
+        onSubmit={(e) =>
+          submit(e, async () => {
+            await vm.save(
+              "/places",
+              { name, lat: Number(lat), lon: Number(lon) },
+              "Lugar guardado.",
+            );
+            setName("");
+            setLat("");
+            setLon("");
+            setPoint(undefined);
+            setResults(null);
+          })
+        }
+      >
+        <Field label="Nombre del lugar">
+          <input
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+            maxLength={120}
+          />
+        </Field>
+        <div className="pair">
+          <Field label="Latitud">
+            <input
+              value={lat}
+              onChange={(e) => setLat(e.target.value)}
+              type="number"
+              min={-90}
+              max={90}
+              step="any"
+              required
+            />
+          </Field>
+          <Field label="Longitud">
+            <input
+              value={lon}
+              onChange={(e) => setLon(e.target.value)}
+              type="number"
+              min={-180}
+              max={180}
+              step="any"
+              required
+            />
+          </Field>
+        </div>
+        <MapView
+          places={state.places}
+          point={point}
+          onPick={(a, b) => {
+            setLat(a.toFixed(6));
+            setLon(b.toFixed(6));
+            setPoint({ lat: a, lon: b });
+          }}
+          onPlace={choose}
+        />
+        <small>
+          Selecciona un punto en el mapa o escribe sus coordenadas. El lugar se
+          añade cuando confirmas el guardado.
+        </small>
+        <div className="actions">
+          <a className="button secondary" href="#lugares">
+            Cancelar
+          </a>
+          <button>Guardar lugar</button>
+        </div>
+      </form>
+    </section>
   );
 }
 function Places({ state }: { state: State }) {
+  const [query, setQuery] = useState("");
+  const places = state.places.filter((p) =>
+    p.name.toLocaleLowerCase("es").includes(query.toLocaleLowerCase("es")),
+  );
+  async function use(place: Place, as: "fromId" | "toId") {
+    const p = state.preferences,
+      j = p.lastJourney;
+    await vm.preferences({
+      lastJourney: {
+        fromId: j?.fromId ?? "",
+        toId: j?.toId ?? "",
+        mode: j?.mode ?? p.mode,
+        preference: j?.preference ?? p.preference,
+        vehicleId: j?.vehicleId ?? p.vehicleId ?? "",
+        [as]: place.id,
+      },
+    });
+    navigate("calcular");
+  }
   return (
     <>
-      <div className="page-actions">
-        <p>
-          Lugares disponibles para calcular rutas. Los favoritos aparecen
-          primero.
-        </p>
-        <button onClick={() => navigate("alta-lugar")}>Añadir lugar</button>
-      </div>
+      <a className="button" href="#alta-lugar">
+        Añadir lugar
+      </a>
+      <Field label="Buscar en mis lugares">
+        <input
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Centro o UJI"
+          type="search"
+        />
+      </Field>
       {!state.places.length && (
         <p className="empty">Todavía no hay lugares guardados.</p>
       )}
+      {state.places.length > 0 && !places.length && (
+        <p>No hay lugares con ese nombre.</p>
+      )}
       <ul className="items">
-        {state.places.map((p) => (
+        {places.map((p) => (
           <li key={p.id}>
-            <div>
-              <strong>{p.name}</strong>
+            <div className="record">
+              <strong>
+                {p.name}
+                {p.favorite ? " · Favorito" : ""}
+              </strong>
               <small>
                 {number(p.lat, 6)}, {number(p.lon, 6)}
               </small>
             </div>
             <div className="actions">
+              <button onClick={() => void vm.run(() => use(p, "fromId"))}>
+                Usar como origen
+              </button>
+              <button onClick={() => void vm.run(() => use(p, "toId"))}>
+                Usar como destino
+              </button>
               <Favorite kind="places" item={p} />
-              <Delete kind="places" id={p.id} name={p.name} />
+              <Delete kind="places" item={p} />
             </div>
           </li>
         ))}
@@ -332,14 +407,51 @@ function Vehicles({ state }: { state: State }) {
     [type, setType] = useState<Vehicle["type"]>("petrol");
   return (
     <>
-      <p>Introduce el consumo medio para estimar el coste del trayecto.</p>
+      <ul className="items">
+        {state.vehicles.map((v) => (
+          <li key={v.id}>
+            <div className="record">
+              <strong>
+                {v.name}
+                {v.favorite ? " · Favorito" : ""}
+              </strong>
+              <small>
+                {types[v.type]} · {number(v.consumption)}{" "}
+                {v.type === "electric" ? "kWh" : "l"}/100 km
+                {state.preferences.vehicleId === v.id
+                  ? " · Predeterminado"
+                  : ""}
+              </small>
+            </div>
+            <div className="actions">
+              <button
+                onClick={() => {
+                  setEditing(v);
+                  setType(v.type);
+                }}
+              >
+                Editar
+              </button>
+              <Favorite kind="vehicles" item={v} />
+              <Delete kind="vehicles" item={v} />
+            </div>
+          </li>
+        ))}
+      </ul>
+      {!state.vehicles.length && (
+        <p className="empty">
+          Todavía no hay vehículos guardados. Añade uno para calcular rutas en
+          coche.
+        </p>
+      )}
       <form
         key={editing?.id ?? "new"}
+        aria-label="Añadir o editar vehículo"
         className="vehicle-form"
         onSubmit={(e) =>
           submit(e, async () => {
-            const form = e.currentTarget;
-            const f = new FormData(form);
+            const form = e.currentTarget,
+              f = new FormData(form);
             await vm.save(
               "/vehicles",
               {
@@ -356,24 +468,24 @@ function Vehicles({ state }: { state: State }) {
           })
         }
       >
-        <h2>{editing ? "Editar vehículo" : "Alta de vehículo"}</h2>
-        <div className="three">
-          <Field label="Nombre">
-            <input
-              name="name"
-              required
-              maxLength={70}
-              defaultValue={editing?.name ?? ""}
-            />
-          </Field>
+        <h2>Añadir o editar vehículo</h2>
+        <Field label="Nombre">
+          <input
+            name="name"
+            required
+            maxLength={70}
+            defaultValue={editing?.name ?? ""}
+          />
+        </Field>
+        <div className="pair">
           <Field label="Tipo">
             <select
               value={type}
               onChange={(e) => setType(e.target.value as Vehicle["type"])}
             >
-              {Object.entries(typeNames).map(([k, v]) => (
-                <option key={k} value={k}>
-                  {v}
+              {Object.entries(types).map(([key, value]) => (
+                <option key={key} value={key}>
+                  {value}
                 </option>
               ))}
             </select>
@@ -393,13 +505,10 @@ function Vehicles({ state }: { state: State }) {
           </Field>
         </div>
         <div className="actions">
-          <button type="submit">
-            {editing ? "Guardar cambios" : "Guardar vehículo"}
-          </button>
           {editing && (
             <button
-              type="button"
               className="secondary"
+              type="button"
               onClick={() => {
                 setEditing(null);
                 setType("petrol");
@@ -408,38 +517,9 @@ function Vehicles({ state }: { state: State }) {
               Cancelar edición
             </button>
           )}
+          <button>{editing ? "Guardar cambios" : "Guardar vehículo"}</button>
         </div>
       </form>
-      <h2>Mis vehículos</h2>
-      {!state.vehicles.length && (
-        <p className="empty">Todavía no hay vehículos guardados.</p>
-      )}
-      <ul className="items">
-        {state.vehicles.map((v) => (
-          <li key={v.id}>
-            <div>
-              <strong>{v.name}</strong>
-              <small>
-                {typeNames[v.type]} · {number(v.consumption)}{" "}
-                {v.type === "electric" ? "kWh" : "l"}/100 km
-              </small>
-            </div>
-            <div className="actions">
-              <button
-                className="secondary"
-                onClick={() => {
-                  setEditing(v);
-                  setType(v.type);
-                }}
-              >
-                Editar
-              </button>
-              <Favorite kind="vehicles" item={v} />
-              <Delete kind="vehicles" id={v.id} name={v.name} />
-            </div>
-          </li>
-        ))}
-      </ul>
     </>
   );
 }
@@ -450,9 +530,9 @@ function RouteSummary({ route }: { route: Route }) {
       ·{" "}
       {route.mode === "car"
         ? route.cost === null
-          ? "Precio no disponible"
-          : number(route.cost) + " € estimados"
-        : number(route.calories, 0) + " kcal estimadas"}
+          ? "Coste no disponible"
+          : `${number(route.cost)} € estimados`
+        : `${number(route.calories, 0)} kcal estimadas`}
     </p>
   );
 }
@@ -463,251 +543,316 @@ function Calculator({ state }: { state: State }) {
   const [from, setFrom] = useState(j?.fromId ?? ""),
     [to, setTo] = useState(j?.toId ?? "");
   const [mode, setMode] = useState(j?.mode ?? p.mode),
-    [preference, setPreference] = useState(j?.preference ?? p.preference);
-  const [vehicleId, setVehicle] = useState(j?.vehicleId || p.vehicleId || ""),
-    [selected, setSelected] = useState(0),
-    [saved, setSaved] = useState<number[]>([]);
+    [criterion, setCriterion] = useState(j?.preference ?? p.preference),
+    [vehicleId, setVehicle] = useState(j?.vehicleId || p.vehicleId || "");
   const [pick, setPick] = useState<"from" | "to">("from");
-  const [name, setName] = useState("");
-  const route = app.plan?.routes[selected];
-  function change(action: () => void) {
+  function changed(action: () => void) {
     action();
-    vm.set({ plan: null, notice: "", error: "" });
-    setSelected(0);
-    setSaved([]);
+    vm.set({ plan: null, error: "", notice: "" });
   }
-  const selectPlace = (place: Place) =>
-    change(() => (pick === "from" ? setFrom(place.id) : setTo(place.id)));
   return (
     <>
-      <p>Selecciona dos lugares dados de alta y un medio de transporte.</p>
-      {!app.configured && (
-        <p className="hint">
-          La búsqueda y el cálculo de rutas necesitan una clave de
-          OpenRouteService en el servidor.
-        </p>
-      )}
-      <div className="columns">
-        <div>
-          <form
-            onSubmit={(e) =>
-              submit(e, async () => {
-                setSelected(0);
-                setSaved([]);
-                await vm.plan({
-                  from,
-                  to,
-                  mode,
-                  preference,
-                  vehicleId: mode === "car" ? vehicleId : undefined,
-                });
-              })
-            }
-          >
-            <Field label="Origen">
+      <form
+        aria-label="Planificar un trayecto"
+        onSubmit={(e) =>
+          submit(e, async () => {
+            await vm.plan({
+              from,
+              to,
+              mode,
+              preference: criterion,
+              vehicleId: mode === "car" ? vehicleId : undefined,
+            });
+            navigate("resultado");
+          })
+        }
+      >
+        <div className="pair">
+          {[
+            ["Origen guardado", from, setFrom],
+            ["Destino guardado", to, setTo],
+          ].map(([label, value, setter]) => (
+            <Field key={String(label)} label={String(label)}>
               <select
                 required
-                value={from}
-                onChange={(e) => change(() => setFrom(e.target.value))}
-              >
-                <option value="">Selecciona un lugar</option>
-                {state.places.map((p) => (
-                  <option key={p.id} value={p.id}>
-                    {p.name}
-                  </option>
-                ))}
-              </select>
-            </Field>
-            <Field label="Destino">
-              <select
-                required
-                value={to}
-                onChange={(e) => change(() => setTo(e.target.value))}
-              >
-                <option value="">Selecciona un lugar</option>
-                {state.places.map((p) => (
-                  <option key={p.id} value={p.id}>
-                    {p.name}
-                  </option>
-                ))}
-              </select>
-            </Field>
-            <Field label="Transporte">
-              <select
-                value={mode}
+                value={String(value)}
                 onChange={(e) =>
-                  change(() => setMode(e.target.value as Preferences["mode"]))
+                  changed(() => (setter as typeof setFrom)(e.target.value))
                 }
               >
-                {Object.entries(modeNames).map(([k, v]) => (
-                  <option key={k} value={k}>
-                    {v}
+                <option value="">Selecciona un lugar</option>
+                {state.places.map((place) => (
+                  <option key={place.id} value={place.id}>
+                    {place.name}
                   </option>
                 ))}
               </select>
             </Field>
-            {mode === "car" && (
-              <Field label="Vehículo">
-                <select
-                  value={vehicleId}
-                  required
-                  onChange={(e) => change(() => setVehicle(e.target.value))}
-                >
-                  <option value="">Selecciona un vehículo</option>
-                  {state.vehicles.map((v) => (
-                    <option key={v.id} value={v.id}>
-                      {v.name}
-                    </option>
-                  ))}
-                </select>
-              </Field>
-            )}
-            <Field label="Criterio">
-              <select
-                value={preference}
-                onChange={(e) =>
-                  change(() =>
-                    setPreference(e.target.value as Preferences["preference"]),
-                  )
-                }
-              >
-                <option value="fastest">Más rápida</option>
-                <option value="shortest">Más corta</option>
-                <option value="cheapest">Más económica</option>
-              </select>
-            </Field>
-            <button type="submit">Calcular ruta</button>
-          </form>
+          ))}
         </div>
-        <div>
-          <Field label="Al seleccionar un lugar en el mapa">
+        <div className="pair">
+          <Field label="Modo de transporte">
             <select
-              value={pick}
-              onChange={(e) => setPick(e.target.value as "from" | "to")}
+              value={mode}
+              onChange={(e) =>
+                changed(() => setMode(e.target.value as Preferences["mode"]))
+              }
             >
-              <option value="from">Usar como origen</option>
-              <option value="to">Usar como destino</option>
+              {Object.entries(modes).map(([key, value]) => (
+                <option key={key} value={key}>
+                  {value}
+                </option>
+              ))}
             </select>
           </Field>
-          <MapView places={state.places} route={route} onPlace={selectPlace} />
-          <small>
-            Pulsa un marcador guardado para elegirlo. Para un punto nuevo
-            utiliza Alta de lugar.
-          </small>
+          <Field label="Criterio">
+            <select
+              value={criterion}
+              onChange={(e) =>
+                changed(() =>
+                  setCriterion(e.target.value as Preferences["preference"]),
+                )
+              }
+            >
+              {Object.entries(criteria).map(([key, value]) => (
+                <option key={key} value={key}>
+                  {value}
+                </option>
+              ))}
+            </select>
+          </Field>
         </div>
-      </div>
-      {app.plan && (
-        <section className="route-result">
-          <h2>Resultado</h2>
-          <div className="actions">
-            {app.plan.routes.map((r, i) => (
-              <button
-                key={i}
-                className="secondary"
-                aria-pressed={selected === i}
-                onClick={() => {
-                  setSelected(i);
-                  setName("");
-                }}
-              >
-                Opción {i + 1} · {number(r.distance / 1000)} km
-              </button>
-            ))}
-          </div>
-          {route && (
-            <>
-              <h3>
-                {route.from?.name} a {route.to?.name}
-              </h3>
-              <RouteSummary route={route} />
-              {route.mode === "car" && (
-                <small>
-                  {route.priceSource}
-                  {route.priceDate ? " · " + route.priceDate : ""}
-                </small>
-              )}
-              <p>
-                Se compara entre las opciones obtenidas. La duración no incluye
-                tráfico en tiempo real.
-              </p>
-              <form
-                onSubmit={(e) =>
-                  submit(e, async () => {
-                    await vm.saveRoute(selected, name);
-                    setSaved([...saved, selected]);
-                  })
-                }
-              >
-                <Field label="Nombre de la ruta">
-                  <input
-                    required
-                    maxLength={120}
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    placeholder="Ejemplo: Camino a clase"
-                  />
-                </Field>
-                <button disabled={saved.includes(selected)}>
-                  {saved.includes(selected) ? "Ruta guardada" : "Guardar ruta"}
-                </button>
-              </form>
-            </>
-          )}
-        </section>
+        {mode === "car" && (
+          <Field label="Vehículo">
+            <select
+              required
+              value={vehicleId}
+              onChange={(e) => changed(() => setVehicle(e.target.value))}
+            >
+              <option value="">Selecciona un vehículo</option>
+              {state.vehicles.map((v) => (
+                <option key={v.id} value={v.id}>
+                  {v.name} · {types[v.type]} · {number(v.consumption)}{" "}
+                  {v.type === "electric" ? "kWh" : "l"}/100 km
+                </option>
+              ))}
+            </select>
+          </Field>
+        )}
+        {!state.places.length && (
+          <p className="hint">
+            Añade dos lugares antes de calcular un trayecto.{" "}
+            <a href="#alta-lugar">Añadir lugar</a>
+          </p>
+        )}
+        {mode === "car" && !state.vehicles.length && (
+          <p className="hint">
+            Añade un vehículo para utilizar su consumo.{" "}
+            <a href="#vehiculos">Mis vehículos</a>
+          </p>
+        )}
+        <button>Calcular ruta</button>
+      </form>
+      <section className="planner-map">
+        <Field label="Al seleccionar un lugar en el mapa">
+          <select
+            value={pick}
+            onChange={(e) => setPick(e.target.value as "from" | "to")}
+          >
+            <option value="from">Usar como origen</option>
+            <option value="to">Usar como destino</option>
+          </select>
+        </Field>
+        <MapView
+          places={state.places}
+          onPlace={(place) =>
+            changed(() =>
+              pick === "from" ? setFrom(place.id) : setTo(place.id),
+            )
+          }
+        />
+        <small>
+          Pulsa un marcador guardado para elegir el origen o el destino.
+        </small>
+      </section>
+      {!app.configured && (
+        <p className="hint">
+          El servicio de rutas no está configurado. Puedes seguir gestionando
+          tus lugares y vehículos.
+        </p>
       )}
     </>
   );
 }
-function SavedRoutes({ state }: { state: State }) {
-  const [selected, setSelected] = useState<string>();
-  const route = state.routes.find((r) => r.id === selected);
+function Result() {
+  const app = useApp(),
+    [selected, setSelected] = useState(0),
+    [name, setName] = useState(""),
+    [saved, setSaved] = useState<number[]>([]);
+  const route = app.plan?.routes[selected];
+  if (!route)
+    return (
+      <div className="record">
+        <h2>No hay un trayecto calculado</h2>
+        <p>Selecciona dos lugares y calcula la ruta antes de guardarla.</p>
+        <a className="button" href="#calcular">
+          Volver al planificador
+        </a>
+      </div>
+    );
   return (
     <>
-      <p>
-        Consulta el trazado que guardaste. El precio corresponde al momento del
-        cálculo.
-      </p>
+      <h2 className="journey-title">
+        {route.from?.name} a {route.to?.name}
+      </h2>
+      <MapView route={route} />
+      {app.plan!.routes.length > 1 && (
+        <div className="actions alternatives" aria-label="Alternativas de ruta">
+          {app.plan!.routes.map((r, i) => (
+            <button
+              key={i}
+              className="secondary"
+              aria-pressed={selected === i}
+              onClick={() => setSelected(i)}
+            >
+              Opción {i + 1} · {number(r.distance / 1000)} km
+            </button>
+          ))}
+        </div>
+      )}
+      <section className="record">
+        <h2>
+          {route.mode === "car"
+            ? types[route.vehicle!.type]
+            : modes[route.mode]}
+        </h2>
+        <RouteSummary route={route} />
+        <p>
+          {route.mode === "car"
+            ? route.priceSource
+            : "Estimación orientativa según la duración y el peso configurado."}
+        </p>
+        {route.mode === "car" && route.priceDate && (
+          <small>{route.priceDate}</small>
+        )}
+        {route.mode === "car" && route.cost === null && (
+          <p>
+            No hay un precio disponible para estimar el coste de este trayecto.
+          </p>
+        )}
+      </section>
+      <form
+        className="save-route"
+        onSubmit={(e) =>
+          submit(e, async () => {
+            await vm.saveRoute(selected, name);
+            setSaved([...saved, selected]);
+          })
+        }
+      >
+        <Field label="Nombre para guardar la ruta">
+          <input
+            required
+            maxLength={120}
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+        </Field>
+        <div className="actions">
+          <a className="button secondary" href="#calcular">
+            Volver al planificador
+          </a>
+          <button disabled={saved.includes(selected)}>
+            {saved.includes(selected) ? "Ruta guardada" : "Guardar ruta"}
+          </button>
+          <a className="button secondary" href="#rutas">
+            Mis rutas
+          </a>
+        </div>
+      </form>
+    </>
+  );
+}
+function SavedRoutes({ state }: { state: State }) {
+  const [selected, setSelected] = useState<string>(),
+    [query, setQuery] = useState("");
+  const route = state.routes.find((r) => r.id === selected),
+    filtered = state.routes.filter((r) =>
+      (r.name ?? "")
+        .toLocaleLowerCase("es")
+        .includes(query.toLocaleLowerCase("es")),
+    );
+  return (
+    <>
+      <Field label="Buscar en mis rutas">
+        <input
+          type="search"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Camino a clase"
+        />
+      </Field>
       {!state.routes.length && (
-        <p className="empty">Todavía no hay rutas guardadas.</p>
+        <p className="empty">
+          Todavía no hay rutas guardadas.{" "}
+          <a href="#calcular">Planificar un trayecto</a>
+        </p>
+      )}
+      {state.routes.length > 0 && !filtered.length && (
+        <p>No hay rutas con ese nombre.</p>
       )}
       <ul className="items">
-        {state.routes.map((r) => (
+        {filtered.map((r) => (
           <li key={r.id}>
-            <div>
-              <strong>{r.name}</strong>
+            <div className="record">
+              <strong>
+                {r.name}
+                {r.favorite ? " · Favorito" : ""}
+              </strong>
               <RouteSummary route={r} />
             </div>
             <div className="actions">
-              <button className="secondary" onClick={() => setSelected(r.id)}>
-                Ver mapa
-              </button>
+              <button onClick={() => setSelected(r.id)}>Ver detalle</button>
               <Favorite kind="routes" item={{ ...r, id: r.id! }} />
-              <Delete kind="routes" id={r.id!} name={r.name} />
+              <Delete kind="routes" item={{ id: r.id!, name: r.name }} />
             </div>
           </li>
         ))}
       </ul>
       {route && (
-        <section>
-          <h2>{route.name}</h2>
+        <section className="historical-route">
+          <h2>Detalle de {route.name}</h2>
           <MapView route={route} />
-          {route.mode === "car" && (
-            <small>
-              {route.priceSource} {route.priceDate}
-            </small>
-          )}
+          <div className="record">
+            <h3>Cálculo histórico</h3>
+            <p>
+              Se muestran el trazado y las medidas que guardaste. Consultar esta
+              ruta no vuelve a calcularla.
+            </p>
+            {route.mode === "car" && (
+              <small>
+                {route.priceSource} {route.priceDate}
+              </small>
+            )}
+          </div>
         </section>
       )}
     </>
   );
 }
 function Settings({ state }: { state: State }) {
-  const p = state.preferences;
-  const [mode, setMode] = useState(p.mode),
+  const p = state.preferences,
+    [mode, setMode] = useState(p.mode),
     [manual, setManual] = useState(p.useManualPrices);
   return (
     <form
+      key={JSON.stringify(p)}
       className="settings"
+      aria-label="Preferencias de movilidad"
+      onReset={() => {
+        setMode(p.mode);
+        setManual(p.useManualPrices);
+      }}
       onSubmit={(e) =>
         submit(e, async () => {
           const f = new FormData(e.currentTarget);
@@ -734,18 +879,15 @@ function Settings({ state }: { state: State }) {
         })
       }
     >
-      <p>
-        Estos valores se usarán como predeterminados en las nuevas consultas.
-      </p>
       <div className="pair">
         <Field label="Transporte predeterminado">
           <select
             value={mode}
             onChange={(e) => setMode(e.target.value as Preferences["mode"])}
           >
-            {Object.entries(modeNames).map(([k, v]) => (
-              <option key={k} value={k}>
-                {v}
+            {Object.entries(modes).map(([key, value]) => (
+              <option key={key} value={key}>
+                {value}
               </option>
             ))}
           </select>
@@ -760,32 +902,35 @@ function Settings({ state }: { state: State }) {
             ))}
           </select>
         </Field>
-        <Field label="Criterio predeterminado">
-          <select name="preference" defaultValue={p.preference}>
-            <option value="fastest">Más rápida</option>
-            <option value="shortest">Más corta</option>
-            <option value="cheapest">Más económica</option>
-          </select>
-        </Field>
-        <Field label="Aspecto">
-          <select name="theme" defaultValue={p.theme}>
-            <option value="light">Claro</option>
-            <option value="dark">Oscuro</option>
-            <option value="system">Según el sistema</option>
-          </select>
-        </Field>
-        <Field label="Peso para estimar calorías (kg)">
-          <input
-            name="weight"
-            type="number"
-            min={20}
-            max={300}
-            step="any"
-            defaultValue={p.weight}
-            required
-          />
-        </Field>
       </div>
+      <Field label="Criterio predeterminado">
+        <select name="preference" defaultValue={p.preference}>
+          {Object.entries(criteria).map(([key, value]) => (
+            <option key={key} value={key}>
+              {value}
+            </option>
+          ))}
+        </select>
+      </Field>
+      <Field label="Aspecto">
+        <select name="theme" defaultValue={p.theme}>
+          <option value="light">Claro</option>
+          <option value="dark">Oscuro</option>
+          <option value="system">Según el sistema</option>
+        </select>
+      </Field>
+      <Field label="Peso para estimar calorías (kg)">
+        <input
+          name="weight"
+          type="number"
+          min={20}
+          max={300}
+          step="any"
+          required
+          defaultValue={p.weight}
+        />
+      </Field>
+      <h2>Precios manuales</h2>
       <label className="checkbox">
         <input
           type="checkbox"
@@ -798,7 +943,7 @@ function Settings({ state }: { state: State }) {
         {(["petrol", "diesel", "electric"] as const).map((k) => (
           <Field
             key={k}
-            label={`${typeNames[k]} (${k === "electric" ? "€/kWh" : "€/l"})`}
+            label={`${types[k]} (${k === "electric" ? "€/kWh" : "€/l"})`}
           >
             <input
               name={k}
@@ -806,38 +951,46 @@ function Settings({ state }: { state: State }) {
               min={0.001}
               max={20}
               step="any"
-              defaultValue={p.manualPrices[k]}
               required
+              defaultValue={p.manualPrices[k]}
             />
           </Field>
         ))}
       </div>
       <small>
-        Con precios automáticos se consultan MITECO y REE. La electricidad es
-        una referencia mayorista, no la tarifa final de tu vivienda.
+        Los precios automáticos son referencias públicas de MITECO y REE. El
+        precio eléctrico mayorista no equivale a una tarifa doméstica final.
       </small>
-      <button type="submit">Guardar preferencias</button>
+      <div className="actions">
+        <button type="reset" className="secondary">
+          Cancelar
+        </button>
+        <button>Guardar preferencias</button>
+      </div>
     </form>
   );
 }
 function Account({ state }: { state: State }) {
   const [confirm, setConfirm] = useState(false);
   return (
-    <section className="settings">
-      <p>
-        <strong>{state.user.name}</strong>
-        <br />
-        {state.user.email}
-      </p>
+    <section className="account">
+      <Field label="Nombre">
+        <input value={state.user.name} readOnly />
+      </Field>
+      <Field label="Correo electrónico">
+        <input value={state.user.email} readOnly />
+      </Field>
       <button onClick={() => void vm.run(() => vm.logout())}>
         Cerrar sesión
       </button>
       <section className="account-delete">
-        <h2>Eliminar cuenta</h2>
-        <p>
-          Se borrarán la cuenta y todos sus lugares, vehículos, rutas y
-          preferencias.
-        </p>
+        <div className="record">
+          <h2>Eliminar mi cuenta</h2>
+          <p>
+            Se eliminarán tu cuenta, sesiones, lugares, vehículos, rutas y
+            preferencias. Esta acción requiere confirmación.
+          </p>
+        </div>
         {!confirm ? (
           <button className="danger" onClick={() => setConfirm(true)}>
             Eliminar mi cuenta
@@ -846,30 +999,31 @@ function Account({ state }: { state: State }) {
           <form
             onSubmit={(e) =>
               submit(e, async () => {
-                const f = new FormData(e.currentTarget);
-                await vm.account(String(f.get("password")));
+                await vm.account(
+                  String(new FormData(e.currentTarget).get("password")),
+                );
               })
             }
           >
             <Field label="Confirma tu contraseña">
               <input
-                type="password"
                 name="password"
+                type="password"
                 required
                 maxLength={128}
                 autoComplete="current-password"
               />
             </Field>
             <div className="actions">
-              <button className="danger">
-                Confirmar eliminación de cuenta
-              </button>
               <button
                 type="button"
                 className="secondary"
                 onClick={() => setConfirm(false)}
               >
                 Cancelar
+              </button>
+              <button className="danger">
+                Confirmar eliminación de cuenta
               </button>
             </div>
           </form>
@@ -878,12 +1032,60 @@ function Account({ state }: { state: State }) {
     </section>
   );
 }
+function Recovery({ state }: { state: State }) {
+  const p = state.preferences,
+    j = p.lastJourney;
+  return (
+    <section className="recovery">
+      <div className="record">
+        <h2>Bienvenido de nuevo, {state.user.name}</h2>
+        <p>Los contenidos confirmados de tu cuenta están disponibles.</p>
+      </div>
+      <div className="record">
+        <h2>Estado guardado</h2>
+        <p data-testid="recovered-places">
+          {state.places.map((x) => x.name).join(" · ") ||
+            "No hay lugares guardados"}
+        </p>
+        <p>
+          {state.vehicles.map((x) => x.name).join(" · ") ||
+            "No hay vehículos guardados"}
+        </p>
+        <p>
+          {state.routes.map((x) => x.name).join(" · ") ||
+            "No hay rutas guardadas"}
+        </p>
+        <small>
+          {modes[p.mode]} · {criteria[p.preference]} ·{" "}
+          {p.theme === "dark"
+            ? "Tema oscuro"
+            : p.theme === "system"
+              ? "Aspecto del sistema"
+              : "Tema claro"}
+        </small>
+        {j?.fromId && (
+          <small>
+            Último trayecto de{" "}
+            {state.places.find((x) => x.id === j.fromId)?.name ??
+              "lugar eliminado"}{" "}
+            a{" "}
+            {state.places.find((x) => x.id === j.toId)?.name ??
+              "destino pendiente"}
+          </small>
+        )}
+      </div>
+      <a className="button" href="#calcular">
+        Continuar planificación
+      </a>
+    </section>
+  );
+}
 function App() {
   const app = useApp();
-  const currentPage = () =>
+  const currentPage = (): Page =>
     pages.includes(location.hash.slice(1) as Page)
       ? (location.hash.slice(1) as Page)
-      : "alta-lugar";
+      : "recuperacion";
   const [page, setPage] = useState<Page>(currentPage);
   useEffect(() => {
     void vm.init();
@@ -895,40 +1097,51 @@ function App() {
     return () => removeEventListener("hashchange", listener);
   }, []);
   useEffect(() => {
-    const t = app.state?.preferences.theme ?? "light";
-    document.documentElement.dataset.theme = t;
+    document.documentElement.dataset.theme =
+      app.state?.preferences.theme ?? "light";
   }, [app.state?.preferences.theme]);
   useEffect(() => {
     document.getElementById("page-title")?.focus();
-  }, [page]);
+  }, [page, app.state?.user.id]);
   const state = app.state;
+  const active =
+    page === "alta-lugar"
+      ? "lugares"
+      : page === "resultado"
+        ? "calcular"
+        : page === "recuperacion"
+          ? "cuenta"
+          : page;
   return (
     <>
       <a className="skip" href="#content">
         Ir al contenido
       </a>
       <header>
-        <div className="brand">
-          Vía <span>Spike · EI1039 / EI1048</span>
-        </div>
-        {state && <span>{state.user.name}</span>}
-      </header>
-      {state && (
+        <a
+          className="brand"
+          href={state ? "#calcular" : "#acceso"}
+          aria-label="Vía, inicio"
+        >
+          VÍA
+        </a>
         <nav aria-label="Navegación principal">
-          {pages.map((p) => (
+          {navigation.map(([key, label]) => (
             <a
-              key={p}
-              href={`#${p}`}
-              aria-current={page === p ? "page" : undefined}
+              key={key}
+              href={state ? `#${key}` : "#acceso"}
+              aria-current={
+                (state ? active === key : key === "cuenta") ? "page" : undefined
+              }
             >
-              {titles[p]}
+              {label}
             </a>
           ))}
         </nav>
-      )}
+      </header>
       <main id="content">
         <div aria-live="polite">
-          {app.busy && <p className="notice">Procesando…</p>}
+          {app.busy && <p className="notice">Procesando...</p>}
           {app.notice && (
             <p role="status" className="notice">
               {app.notice}
@@ -941,7 +1154,30 @@ function App() {
           </p>
         )}
         {!app.ready ? (
-          <p>Cargando…</p>
+          <p>Cargando...</p>
+        ) : !state && app.loadFailed ? (
+          <section className="recovery">
+            <h1>No se pueden recuperar los datos</h1>
+            <p>
+              No se ha cargado el estado de la aplicación. Vuelve a intentarlo
+              para continuar.
+            </p>
+            <button
+              onClick={() =>
+                void vm.run(async () => {
+                  await vm.init();
+                })
+              }
+            >
+              Reintentar
+            </button>
+            <button
+              className="text-button"
+              onClick={() => vm.set({ error: "", loadFailed: false })}
+            >
+              Ir al acceso
+            </button>
+          </section>
         ) : (
           <fieldset className="app-fields" disabled={app.busy}>
             {!state ? (
@@ -960,10 +1196,14 @@ function App() {
                     <Vehicles state={state} />
                   ) : page === "calcular" ? (
                     <Calculator state={state} />
+                  ) : page === "resultado" ? (
+                    <Result />
                   ) : page === "rutas" ? (
                     <SavedRoutes state={state} />
                   ) : page === "preferencias" ? (
                     <Settings state={state} />
+                  ) : page === "recuperacion" ? (
+                    <Recovery state={state} />
                   ) : (
                     <Account state={state} />
                   )}
@@ -973,7 +1213,7 @@ function App() {
           </fieldset>
         )}
       </main>
-      <footer>Iteración 0 · Prototipo de movilidad</footer>
+      <footer>Vía · Proyecto de movilidad · EI1039 y EI1048</footer>
     </>
   );
 }

@@ -129,6 +129,12 @@ test("Given vehicle When updating and deleting Then lifecycle persists", () => {
 });
 test("Given registered endpoints When calculating Then fastest and shortest differ", async () => {
   const { app, user } = fixture();
+  const v = app.saveVehicle(user.id, {
+    name: "Compacto",
+    type: "petrol",
+    consumption: 6,
+  });
+  app.preferences(user.id, { vehicleId: v.id });
   const a = app.addPlace(user.id, { name: "A", lat: 39, lon: 0 }),
     b = app.addPlace(user.id, { name: "B", lat: 39.1, lon: 0.1 });
   const result = await app.plan(user.id, {
@@ -180,6 +186,12 @@ test("Given bicycle or walk When planning Then kcal estimated", async () => {
 });
 test("Given calculated route When saving Then reloadable and deletable", async () => {
   const { app, user } = fixture();
+  const v = app.saveVehicle(user.id, {
+    name: "Compacto",
+    type: "petrol",
+    consumption: 6,
+  });
+  app.preferences(user.id, { vehicleId: v.id });
   const a = app.addPlace(user.id, { name: "A", lat: 39, lon: 0 }),
     b = app.addPlace(user.id, { name: "B", lat: 39.1, lon: 0.1 });
   const r = await app.plan(user.id, {
@@ -188,7 +200,11 @@ test("Given calculated route When saving Then reloadable and deletable", async (
     mode: "car",
     preference: "fastest",
   });
-  const saved = app.saveRoute(user.id, { ...r.routes[0], name: "Mi ruta" });
+  const saved = app.saveRoute(user.id, {
+    planId: r.planId,
+    index: 0,
+    name: "Mi ruta",
+  });
   assert.equal(app.state(user.id).routes.length, 1);
   app.remove(user.id, "routes", saved.id);
   assert.equal(app.state(user.id).routes.length, 0);
@@ -221,6 +237,12 @@ test("Given preferences When reopening Then defaults preserved; invalid enum rej
 });
 test("Provider failure propagates honestly without invented routes", async () => {
   const { app, user } = fixture();
+  const v = app.saveVehicle(user.id, {
+    name: "Compacto",
+    type: "petrol",
+    consumption: 6,
+  });
+  app.preferences(user.id, { vehicleId: v.id });
   app.routing = {
     routes: async () => {
       throw new Error("Servicio no disponible");

@@ -1,0 +1,40 @@
+name: Pruebas del spike
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'entrega1/02_Spike/**'
+      - 'entrega1/04_Pruebas/**'
+      - '.github/workflows/pruebas.yml'
+  pull_request:
+    paths:
+      - 'entrega1/02_Spike/**'
+      - 'entrega1/04_Pruebas/**'
+      - '.github/workflows/pruebas.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  locales-integracion-navegador:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: entrega1/02_Spike
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.16.0'
+          cache: npm
+          cache-dependency-path: entrega1/02_Spike/package-lock.json
+      - run: npm ci
+      - run: npm run test:local
+      - run: npm run test:integration
+      - run: npm run build
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e
+
+  # Real acceptance tests are run locally with ORS_API_KEY. No key is uploaded.

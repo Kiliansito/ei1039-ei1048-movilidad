@@ -25,6 +25,7 @@ export async function api<T = any>(
 type Snapshot = {
   state: State | null;
   ready: boolean;
+  loadFailed: boolean;
   configured: boolean;
   busy: boolean;
   error: string;
@@ -36,6 +37,7 @@ class ViewModel {
   private snapshot: Snapshot = {
     state: null,
     ready: false,
+    loadFailed: false,
     configured: false,
     busy: false,
     error: "",
@@ -71,6 +73,7 @@ class ViewModel {
     }
   }
   async init() {
+    this.set({ ready: false, error: "", loadFailed: false });
     try {
       const health = await api("/health");
       this.set({ configured: health.routingConfigured });
@@ -83,6 +86,7 @@ class ViewModel {
       }
     } catch (e) {
       this.set({
+        loadFailed: true,
         error: e instanceof Error ? e.message : "Servidor no disponible.",
       });
     } finally {
@@ -95,6 +99,7 @@ class ViewModel {
   async auth(register: boolean, data: unknown) {
     await api(register ? "/auth/register" : "/auth/login", "POST", data);
     await this.refresh();
+    this.set({ notice: register ? "Cuenta creada." : "Sesión iniciada." });
   }
   async logout() {
     await api("/auth/logout", "POST", {});
@@ -126,17 +131,9 @@ class ViewModel {
   }
   async plan(data: any) {
     this.set({ plan: null });
-    await api("/preferences", "PATCH", {
-      lastJourney: {
-        fromId: data.from,
-        toId: data.to,
-        mode: data.mode,
-        preference: data.preference,
-        vehicleId: data.vehicleId ?? "",
-      },
-    });
+    const plan = await api("/plan", "POST", data);
     await this.refresh();
-    this.set({ plan: await api("/plan", "POST", data) });
+    this.set({ plan });
   }
   async saveRoute(index: number, name: string) {
     await api("/routes", "POST", {

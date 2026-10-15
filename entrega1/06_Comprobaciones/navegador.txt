@@ -2,18 +2,38 @@
 > via-spike@0.1.0 test:e2e
 > playwright test
 
-[WebServer] (node:17278) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (node:34102) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
 [WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
 
-Running 4 tests using 1 worker
+Running 24 tests using 1 worker
 
-(node:17350) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(node:34103) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
 (Use `node --trace-warnings ...` to show where the warning was created)
-  ✓  1 [desktop] › tests/browser/app.spec.ts:19:1 › alta, vehículos, cálculo, favoritos y recuperación al recargar (1.5s)
-  ✓  2 [desktop] › tests/browser/app.spec.ts:63:1 › el error del proveedor conserva los campos y el borrado se puede cancelar (630ms)
-(node:17371) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+  ✓   1 [desktop] › tests/browser/app.spec.ts:97:1 › M01 registro y acceso comparten la pantalla y un correo duplicado conserva los campos (722ms)
+  ✓   2 [desktop] › tests/browser/app.spec.ts:128:1 › M02 una contraseña incorrecta no borra la cuenta y permite cancelar (506ms)
+  ✓   3 [desktop] › tests/browser/app.spec.ts:150:1 › M03 guarda coordenadas, exige seleccionar un resultado y permite elegir en el mapa (619ms)
+  ✓   4 [desktop] › tests/browser/app.spec.ts:181:1 › M04 busca, ordena favoritos, cancela el borrado y selecciona un origen (835ms)
+  ✓   5 [desktop] › tests/browser/app.spec.ts:203:1 › M05 edita el consumo y cambia las unidades al elegir un eléctrico (519ms)
+  ✓   6 [desktop] › tests/browser/app.spec.ts:222:1 › M06 y M07 calculan con el vehículo elegido y guardan el resultado (1.0s)
+  ✓   7 [desktop] › tests/browser/app.spec.ts:236:1 › un fallo de rutas conserva los campos y no cambia el último trayecto guardado (929ms)
+  ✓   8 [desktop] › tests/browser/app.spec.ts:261:1 › un origen y destino iguales no alteran las preferencias (840ms)
+  ✓   9 [desktop] › tests/browser/app.spec.ts:280:1 › M08 recupera la copia histórica y permite buscar y cancelar su eliminación (1.0s)
+  ✓  10 [desktop] › tests/browser/app.spec.ts:300:1 › M09 guarda valores predeterminados y cancela una edición sin guardarla (547ms)
+  ✓  11 [desktop] › tests/browser/app.spec.ts:322:1 › M10 muestra los datos recuperados después de iniciar sesión (937ms)
+  ✓  12 [desktop] › tests/browser/app.spec.ts:348:1 › un fallo de carga muestra un error recuperable y no una colección vacía (318ms)
+(node:34185) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
 (Use `node --trace-warnings ...` to show where the warning was created)
-  ✓  3 [mobile] › tests/browser/app.spec.ts:19:1 › alta, vehículos, cálculo, favoritos y recuperación al recargar (1.3s)
-  ✓  4 [mobile] › tests/browser/app.spec.ts:63:1 › el error del proveedor conserva los campos y el borrado se puede cancelar (609ms)
+  ✓  13 [mobile] › tests/browser/app.spec.ts:97:1 › M01 registro y acceso comparten la pantalla y un correo duplicado conserva los campos (711ms)
+  ✓  14 [mobile] › tests/browser/app.spec.ts:128:1 › M02 una contraseña incorrecta no borra la cuenta y permite cancelar (481ms)
+  ✓  15 [mobile] › tests/browser/app.spec.ts:150:1 › M03 guarda coordenadas, exige seleccionar un resultado y permite elegir en el mapa (659ms)
+  ✓  16 [mobile] › tests/browser/app.spec.ts:181:1 › M04 busca, ordena favoritos, cancela el borrado y selecciona un origen (849ms)
+  ✓  17 [mobile] › tests/browser/app.spec.ts:203:1 › M05 edita el consumo y cambia las unidades al elegir un eléctrico (550ms)
+  ✓  18 [mobile] › tests/browser/app.spec.ts:222:1 › M06 y M07 calculan con el vehículo elegido y guardan el resultado (1.1s)
+  ✓  19 [mobile] › tests/browser/app.spec.ts:236:1 › un fallo de rutas conserva los campos y no cambia el último trayecto guardado (725ms)
+  ✓  20 [mobile] › tests/browser/app.spec.ts:261:1 › un origen y destino iguales no alteran las preferencias (701ms)
+  ✓  21 [mobile] › tests/browser/app.spec.ts:280:1 › M08 recupera la copia histórica y permite buscar y cancelar su eliminación (976ms)
+  ✓  22 [mobile] › tests/browser/app.spec.ts:300:1 › M09 guarda valores predeterminados y cancela una edición sin guardarla (520ms)
+  ✓  23 [mobile] › tests/browser/app.spec.ts:322:1 › M10 muestra los datos recuperados después de iniciar sesión (851ms)
+  ✓  24 [mobile] › tests/browser/app.spec.ts:348:1 › un fallo de carga muestra un error recuperable y no una colección vacía (251ms)
 
-  4 passed (5.4s)
+  24 passed (18.4s)

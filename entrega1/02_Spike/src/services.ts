@@ -42,6 +42,10 @@ const verify = (password: string, hash: string) => {
   );
 };
 export class MobilityService {
+  private plans = new Map<
+    string,
+    { userId: string; routes: Route[]; expires: number }
+  >();
   repo: RepositoryPort;
   routing?: RoutingPort;
   geocoder?: GeocodingPort;
@@ -87,7 +91,13 @@ export class MobilityService {
   }
   login(input: any) {
     const email = text(input.email, 254).toLowerCase();
-    const password = text(input.password, 128);
+    const password = input.password;
+    if (
+      typeof password !== "string" ||
+      password.length < 10 ||
+      password.length > 128
+    )
+      throw new AppError("Credenciales incorrectas.", 401);
     const u = this.repo.findUser(email);
     if (!u || !verify(password, u.password))
       throw new AppError("Credenciales incorrectas.", 401);
@@ -100,7 +110,14 @@ export class MobilityService {
     const u = this.repo.session(digest(token));
     return u ? pickUser(u) : null;
   }
+  stateForSession(token: string) {
+    const user = this.session(token);
+    if (!user) throw new AppError("Inicia sesión para continuar.", 401);
+    return this.state(user.id);
+  }
   logout(token: string) {
+    if (!this.session(token))
+      throw new AppError("Inicia sesión para continuar.", 401);
     this.repo.deleteSession(digest(token));
   }
   deleteAccount(id: string, password: string) {
@@ -113,6 +130,8 @@ export class MobilityService {
     )
       throw new AppError("Contraseña incorrecta.", 401);
     this.repo.deleteUser(id);
+    for (const [key, plan] of this.plans)
+      if (plan.userId === id) this.plans.delete(key);
   }
   private user(id: string) {
     const u = this.repo.getUser(id);
@@ -272,15 +291,12 @@ export class MobilityService {
     if (from.id === to.id || (from.lat === to.lat && from.lon === to.lon))
       throw new AppError("Elige dos lugares diferentes.");
     const vid = input.vehicleId ?? p.vehicleId;
-    const vehicle: Vehicle = vid
-      ? this.owned(id, "vehicles", vid)
-      : {
-          id: "reference",
-          name: "Coche de referencia",
-          type: "petrol",
-          consumption: 6,
-          favorite: false,
-        };
+    if (mode === "car" && !vid)
+      throw new AppError(
+        "Selecciona uno de tus vehículos para calcular la ruta.",
+      );
+    const vehicle: Vehicle | undefined =
+      mode === "car" ? this.owned(id, "vehicles", vid) : undefined;
     if (!this.routing)
       throw new AppError(
         "Añade ORS_API_KEY en .env y reinicia Vía para calcular rutas reales.",
@@ -324,12 +340,12 @@ export class MobilityService {
         throw new AppError("El proveedor ha devuelto una ruta no válida.", 502);
       return {
         ...r,
-        ...estimate(mode, r.distance, r.duration, p.weight, vehicle, price),
+        ...estimate(mode, r.distance, r.duration, p.weight, vehicle!, price),
         mode,
         from,
         to,
         vehicle: mode === "car" ? vehicle : undefined,
-        price: mode === "car" ? (price[vehicle.type] ?? undefined) : undefined,
+        price: mode === "car" ? (price[vehicle!.type] ?? undefined) : undefined,
         priceSource: price.source,
         priceDate: price.date,
         estimated: true,
@@ -343,18 +359,39 @@ export class MobilityService {
           ? r.distance
           : (r.cost ?? Infinity);
     routes.sort((a, b) => score(a) - score(b) || a.distance - b.distance);
-    return { routes, preference, price };
+    this.preferences(id, {
+      lastJourney: {
+        fromId: from.id,
+        toId: to.id,
+        mode,
+        preference,
+        vehicleId: vehicle?.id ?? "",
+      },
+    });
+    for (const [key, plan] of this.plans)
+      if (plan.expires < Date.now()) this.plans.delete(key);
+    if (this.plans.size >= 1000)
+      this.plans.delete(this.plans.keys().next().value!);
+    const planId = randomUUID();
+    this.plans.set(planId, {
+      userId: id,
+      routes,
+      expires: Date.now() + 3600000,
+    });
+    return { routes, preference, price, planId };
   }
-  saveRoute(id: string, input: any) {
+  saveRoute(id: string, request: any) {
     this.user(id);
+    const plan = this.plans.get(request.planId);
     if (
-      !finite(input.distance, 0, 100000000) ||
-      !finite(input.duration, 0, 100000000) ||
-      !Array.isArray(input.geometry) ||
-      input.geometry.length < 2 ||
-      !["car", "bike", "foot"].includes(input.mode)
+      !plan ||
+      plan.userId !== id ||
+      plan.expires < Date.now() ||
+      !Number.isInteger(request.index) ||
+      !plan.routes[request.index]
     )
-      throw new AppError("Primero calcula una ruta válida.");
+      throw new AppError("Vuelve a calcular la ruta antes de guardarla.");
+    const input = { ...plan.routes[request.index], name: request.name };
     const r = {
       ...input,
       id: randomUUID(),

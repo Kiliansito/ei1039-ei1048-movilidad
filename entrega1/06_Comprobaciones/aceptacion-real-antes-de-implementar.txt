@@ -1,0 +1,259 @@
+✔ PA-01-V Given condiciones de la memoria When operación Then resultado y estado final (24.335333ms)
+✔ PA-01-I Given condiciones de la memoria When operación Then resultado y estado final (41.697ms)
+✖ PA-02-V Given condiciones de la memoria When operación Then resultado y estado final (80.240666ms)
+✔ PA-02-I Given condiciones de la memoria When operación Then resultado y estado final (56.975125ms)
+✔ PA-03-V Given condiciones de la memoria When operación Then resultado y estado final (39.021084ms)
+✖ PA-03-I Given condiciones de la memoria When operación Then resultado y estado final (39.482083ms)
+✖ PA-04-V Given condiciones de la memoria When operación Then resultado y estado final (422.248166ms)
+✖ PA-04-I Given condiciones de la memoria When operación Then resultado y estado final (53.571333ms)
+✔ PA-05-V Given condiciones de la memoria When operación Then resultado y estado final (41.095791ms)
+✔ PA-05-I Given condiciones de la memoria When operación Then resultado y estado final (39.348875ms)
+✔ PA-06-V Given condiciones de la memoria When operación Then resultado y estado final (181.033583ms)
+✔ PA-06-I Given condiciones de la memoria When operación Then resultado y estado final (46.301917ms)
+✖ PA-07-V Given condiciones de la memoria When operación Then resultado y estado final (69.5585ms)
+✔ PA-07-I Given condiciones de la memoria When operación Then resultado y estado final (67.501625ms)
+✔ PA-08-V Given condiciones de la memoria When operación Then resultado y estado final (40.692875ms)
+✔ PA-08-I Given condiciones de la memoria When operación Then resultado y estado final (56.7725ms)
+✔ PA-09-V Given condiciones de la memoria When operación Then resultado y estado final (38.583083ms)
+✔ PA-09-I Given condiciones de la memoria When operación Then resultado y estado final (38.225542ms)
+✔ PA-10-V Given condiciones de la memoria When operación Then resultado y estado final (39.687208ms)
+✔ PA-10-I Given condiciones de la memoria When operación Then resultado y estado final (40.208792ms)
+✖ PA-11-V Given condiciones de la memoria When operación Then resultado y estado final (60.703ms)
+✔ PA-11-I Given condiciones de la memoria When operación Then resultado y estado final (40.804875ms)
+✔ PA-12-V Given condiciones de la memoria When operación Then resultado y estado final (40.923291ms)
+✔ PA-12-I Given condiciones de la memoria When operación Then resultado y estado final (57.149792ms)
+✔ PA-13-V Given condiciones de la memoria When operación Then resultado y estado final (38.087792ms)
+✔ PA-13-I Given condiciones de la memoria When operación Then resultado y estado final (37.567791ms)
+✔ PA-14-V Given condiciones de la memoria When operación Then resultado y estado final (38.063959ms)
+✔ PA-14-I Given condiciones de la memoria When operación Then resultado y estado final (37.887709ms)
+✔ PA-15-V Given condiciones de la memoria When operación Then resultado y estado final (153.817208ms)
+✔ PA-15-I Given condiciones de la memoria When operación Then resultado y estado final (51.068792ms)
+✔ PA-16-V Given condiciones de la memoria When operación Then resultado y estado final (42.433542ms)
+✔ PA-16-I Given condiciones de la memoria When operación Then resultado y estado final (40.395625ms)
+✔ PA-17-V Given condiciones de la memoria When operación Then resultado y estado final (38.414958ms)
+✔ PA-17-I Given condiciones de la memoria When operación Then resultado y estado final (38.295833ms)
+✔ PA-18-V Given condiciones de la memoria When operación Then resultado y estado final (38.167959ms)
+✔ PA-18-I Given condiciones de la memoria When operación Then resultado y estado final (37.705625ms)
+✖ PA-19-V Given condiciones de la memoria When operación Then resultado y estado final (38.342333ms)
+✔ PA-19-I Given condiciones de la memoria When operación Then resultado y estado final (38.023917ms)
+✖ PA-20-V Given condiciones de la memoria When operación Then resultado y estado final (38.031042ms)
+✖ PA-20-I Given condiciones de la memoria When operación Then resultado y estado final (38.217458ms)
+✖ PA-21-V Given condiciones de la memoria When operación Then resultado y estado final (41.101959ms)
+✖ PA-21-I Given condiciones de la memoria When operación Then resultado y estado final (61.772ms)
+✖ PA-22-V Given condiciones de la memoria When operación Then resultado y estado final (42.029ms)
+✖ PA-22-I Given condiciones de la memoria When operación Then resultado y estado final (184.42275ms)
+✔ PA-23-V Given condiciones de la memoria When operación Then resultado y estado final (52.306375ms)
+✔ PA-23-I Given condiciones de la memoria When operación Then resultado y estado final (58.478042ms)
+✔ PA-24-V Given condiciones de la memoria When operación Then resultado y estado final (38.347541ms)
+✔ PA-24-I Given condiciones de la memoria When operación Then resultado y estado final (39.458958ms)
+✖ PA-25-V Given condiciones de la memoria When operación Then resultado y estado final (41.7365ms)
+✖ PA-25-I Given condiciones de la memoria When operación Then resultado y estado final (41.388708ms)
+✔ PA-26-V Given condiciones de la memoria When operación Then resultado y estado final (87.650417ms)
+✔ PA-26-I Given condiciones de la memoria When operación Then resultado y estado final (59.892417ms)
+ℹ tests 52
+ℹ suites 0
+ℹ pass 37
+ℹ fail 15
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3235.702708
+
+✖ failing tests:
+
+test at tests/support/scenarios.ts:1:17224
+✖ PA-02-V Given condiciones de la memoria When operación Then resultado y estado final (80.240666ms)
+  TypeError: f.app.stateForSession is not a function
+      at Object.run (/Users/ruben/prTODO/tmp/publicacion-movilidad/entrega1/02_Spike/tests/support/scenarios.ts:77:184)
+      at TestContext.<anonymous> (/Users/ruben/prTODO/tmp/publicacion-movilidad/entrega1/02_Spike/tests/support/scenarios.ts:135:83)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7)
+
+test at tests/support/scenarios.ts:1:17224
+✖ PA-03-I Given condiciones de la memoria When operación Then resultado y estado final (39.482083ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at Object.run (/Users/ruben/prTODO/tmp/publicacion-movilidad/entrega1/02_Spike/tests/support/scenarios.ts:80:51)
+      at TestContext.<anonymous> (/Users/ruben/prTODO/tmp/publicacion-movilidad/entrega1/02_Spike/tests/support/scenarios.ts:135:83)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: undefined,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at tests/support/scenarios.ts:1:17224
+✖ PA-04-V Given condiciones de la memoria When operación Then resultado y estado final (422.248166ms)
+  Error: Primero calcula una ruta válida.
+      at MobilityService.saveRoute (/Users/ruben/prTODO/tmp/publicacion-movilidad/entrega1/02_Spike/src/services.ts:363:13)
+      at Fixture.saved (/Users/ruben/prTODO/tmp/publicacion-movilidad/entrega1/02_Spike/tests/support/scenarios.ts:61:122)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Object.run (/Users/ruben/prTODO/tmp/publicacion-movilidad/entrega1/02_Spike/tests/support/scenarios.ts:81:27)
+      at async TestContext.<anonymous> (/Users/ruben/prTODO/tmp/publicacion-movilidad/entrega1/02_Spike/tests/support/scenarios.ts:135:75)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    status: 400
+  }
+
+test at tests/support/scenarios.ts:1:17224
+✖ PA-04-I Given condiciones de la memoria When operación Then resultado y estado final (53.571333ms)
+  Error: Primero calcula una ruta válida.
+      at MobilityService.saveRoute (/Users/ruben/prTODO/tmp/publicacion-movilidad/entrega1/02_Spike/src/services.ts:363:13)
+      at Fixture.saved (/Users/ruben/prTODO/tmp/publicacion-movilidad/entrega1/02_Spike/tests/support/scenarios.ts:61:122)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Object.run (/Users/ruben/prTODO/tmp/publicacion-movilidad/entrega1/02_Spike/tests/support/scenarios.ts:82:27)
+      at async TestContext.<anonymous> (/Users/ruben/prTODO/tmp/publicacion-movilidad/entrega1/02_Spike/tests/support/scenarios.ts:135:75)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    status: 400
+  }
+
+test at tests/support/scenarios.ts:1:17224
+✖ PA-07-V Given condiciones de la memoria When operación Then resultado y estado final (69.5585ms)
+  TypeError: f.app.stateForSession is not a function
+      at Object.run (/Users/ruben/prTODO/tmp/publicacion-movilidad/entrega1/02_Spike/tests/support/scenarios.ts:87:148)
+      at TestContext.<anonymous> (/Users/ruben/prTODO/tmp/publicacion-movilidad/entrega1/02_Spike/tests/support/scenarios.ts:135:83)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7)
+
+test at tests/support/scenarios.ts:1:17224
+✖ PA-11-V Given condiciones de la memoria When operación Then resultado y estado final (60.703ms)
+  TypeError: f.app.stateForSession is not a function
+      at Object.run (/Users/ruben/prTODO/tmp/publicacion-movilidad/entrega1/02_Spike/tests/support/scenarios.ts:95:171)
+      at TestContext.<anonymous> (/Users/ruben/prTODO/tmp/publicacion-movilidad/entrega1/02_Spike/tests/support/scenarios.ts:135:83)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7)
+
+test at tests/support/scenarios.ts:1:17224
+✖ PA-19-V Given condiciones de la memoria When operación Then resultado y estado final (38.342333ms)
+  Error: Primero calcula una ruta válida.
+      at MobilityService.saveRoute (/Users/ruben/prTODO/tmp/publicacion-movilidad/entrega1/02_Spike/src/services.ts:363:13)
+      at Object.run (/Users/ruben/prTODO/tmp/publicacion-movilidad/entrega1/02_Spike/tests/support/scenarios.ts:111:68)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (/Users/ruben/prTODO/tmp/publicacion-movilidad/entrega1/02_Spike/tests/support/scenarios.ts:135:75)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    status: 400
+  }
+
+test at tests/support/scenarios.ts:1:17224
+✖ PA-20-V Given condiciones de la memoria When operación Then resultado y estado final (38.031042ms)
+  Error: Primero calcula una ruta válida.
+      at MobilityService.saveRoute (/Users/ruben/prTODO/tmp/publicacion-movilidad/entrega1/02_Spike/src/services.ts:363:13)
+      at Fixture.saved (/Users/ruben/prTODO/tmp/publicacion-movilidad/entrega1/02_Spike/tests/support/scenarios.ts:61:122)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Object.run (/Users/ruben/prTODO/tmp/publicacion-movilidad/entrega1/02_Spike/tests/support/scenarios.ts:113:39)
+      at async TestContext.<anonymous> (/Users/ruben/prTODO/tmp/publicacion-movilidad/entrega1/02_Spike/tests/support/scenarios.ts:135:75)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    status: 400
+  }
+
+test at tests/support/scenarios.ts:1:17224
+✖ PA-20-I Given condiciones de la memoria When operación Then resultado y estado final (38.217458ms)
+  Error: Primero calcula una ruta válida.
+      at MobilityService.saveRoute (/Users/ruben/prTODO/tmp/publicacion-movilidad/entrega1/02_Spike/src/services.ts:363:13)
+      at Fixture.saved (/Users/ruben/prTODO/tmp/publicacion-movilidad/entrega1/02_Spike/tests/support/scenarios.ts:61:122)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Object.run (/Users/ruben/prTODO/tmp/publicacion-movilidad/entrega1/02_Spike/tests/support/scenarios.ts:114:27)
+      at async TestContext.<anonymous> (/Users/ruben/prTODO/tmp/publicacion-movilidad/entrega1/02_Spike/tests/support/scenarios.ts:135:75)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    status: 400
+  }
+
+test at tests/support/scenarios.ts:1:17224
+✖ PA-21-V Given condiciones de la memoria When operación Then resultado y estado final (41.101959ms)
+  Error: Primero calcula una ruta válida.
+      at MobilityService.saveRoute (/Users/ruben/prTODO/tmp/publicacion-movilidad/entrega1/02_Spike/src/services.ts:363:13)
+      at Fixture.saved (/Users/ruben/prTODO/tmp/publicacion-movilidad/entrega1/02_Spike/tests/support/scenarios.ts:61:122)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Object.run (/Users/ruben/prTODO/tmp/publicacion-movilidad/entrega1/02_Spike/tests/support/scenarios.ts:115:35)
+      at async TestContext.<anonymous> (/Users/ruben/prTODO/tmp/publicacion-movilidad/entrega1/02_Spike/tests/support/scenarios.ts:135:75)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    status: 400
+  }
+
+test at tests/support/scenarios.ts:1:17224
+✖ PA-21-I Given condiciones de la memoria When operación Then resultado y estado final (61.772ms)
+  Error: Primero calcula una ruta válida.
+      at MobilityService.saveRoute (/Users/ruben/prTODO/tmp/publicacion-movilidad/entrega1/02_Spike/src/services.ts:363:13)
+      at Object.run (/Users/ruben/prTODO/tmp/publicacion-movilidad/entrega1/02_Spike/tests/support/scenarios.ts:116:274)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (/Users/ruben/prTODO/tmp/publicacion-movilidad/entrega1/02_Spike/tests/support/scenarios.ts:135:75)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    status: 400
+  }
+
+test at tests/support/scenarios.ts:1:17224
+✖ PA-22-V Given condiciones de la memoria When operación Then resultado y estado final (42.029ms)
+  Error: Primero calcula una ruta válida.
+      at MobilityService.saveRoute (/Users/ruben/prTODO/tmp/publicacion-movilidad/entrega1/02_Spike/src/services.ts:363:13)
+      at Fixture.saved (/Users/ruben/prTODO/tmp/publicacion-movilidad/entrega1/02_Spike/tests/support/scenarios.ts:61:122)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Object.run (/Users/ruben/prTODO/tmp/publicacion-movilidad/entrega1/02_Spike/tests/support/scenarios.ts:117:104)
+      at async TestContext.<anonymous> (/Users/ruben/prTODO/tmp/publicacion-movilidad/entrega1/02_Spike/tests/support/scenarios.ts:135:75)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    status: 400
+  }
+
+test at tests/support/scenarios.ts:1:17224
+✖ PA-22-I Given condiciones de la memoria When operación Then resultado y estado final (184.42275ms)
+  Error: Primero calcula una ruta válida.
+      at MobilityService.saveRoute (/Users/ruben/prTODO/tmp/publicacion-movilidad/entrega1/02_Spike/src/services.ts:363:13)
+      at Object.run (/Users/ruben/prTODO/tmp/publicacion-movilidad/entrega1/02_Spike/tests/support/scenarios.ts:118:370)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (/Users/ruben/prTODO/tmp/publicacion-movilidad/entrega1/02_Spike/tests/support/scenarios.ts:135:75)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    status: 400
+  }
+
+test at tests/support/scenarios.ts:1:17224
+✖ PA-25-V Given condiciones de la memoria When operación Then resultado y estado final (41.7365ms)
+  Error: Primero calcula una ruta válida.
+      at MobilityService.saveRoute (/Users/ruben/prTODO/tmp/publicacion-movilidad/entrega1/02_Spike/src/services.ts:363:13)
+      at fullState (/Users/ruben/prTODO/tmp/publicacion-movilidad/entrega1/02_Spike/tests/support/scenarios.ts:123:264)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Object.run (/Users/ruben/prTODO/tmp/publicacion-movilidad/entrega1/02_Spike/tests/support/scenarios.ts:124:40)
+      at async TestContext.<anonymous> (/Users/ruben/prTODO/tmp/publicacion-movilidad/entrega1/02_Spike/tests/support/scenarios.ts:135:75)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    status: 400
+  }
+
+test at tests/support/scenarios.ts:1:17224
+✖ PA-25-I Given condiciones de la memoria When operación Then resultado y estado final (41.388708ms)
+  Error: Primero calcula una ruta válida.
+      at MobilityService.saveRoute (/Users/ruben/prTODO/tmp/publicacion-movilidad/entrega1/02_Spike/src/services.ts:363:13)
+      at fullState (/Users/ruben/prTODO/tmp/publicacion-movilidad/entrega1/02_Spike/tests/support/scenarios.ts:123:264)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Object.run (/Users/ruben/prTODO/tmp/publicacion-movilidad/entrega1/02_Spike/tests/support/scenarios.ts:125:40)
+      at async TestContext.<anonymous> (/Users/ruben/prTODO/tmp/publicacion-movilidad/entrega1/02_Spike/tests/support/scenarios.ts:135:75)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    status: 400
+  }

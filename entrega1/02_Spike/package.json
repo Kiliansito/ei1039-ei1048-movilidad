@@ -9,12 +9,17 @@
   "scripts": {
     "spike": "npm run dev",
     "dev": "node --import tsx --env-file-if-exists=.env src/server.ts",
-    "build": "tsc --noEmit && vite build",
+    "build": "tsc --noEmit && npm run check:tests && vite build",
     "start": "node --import tsx --env-file-if-exists=.env src/server.ts --production",
-    "test": "node --import tsx --test tests/core.test.ts tests/persistence.test.ts tests/security.test.ts tests/adapters.test.ts",
+    "test": "npm run test:local && npm run test:integration && npm run test:acceptance",
     "test:live": "node --import tsx --env-file-if-exists=.env --test tests/live.test.ts",
     "test:e2e": "playwright test",
-    "check": "tsc --noEmit"
+    "check": "tsc --noEmit",
+    "test:local": "node --import tsx --test tests/core.test.ts tests/persistence.test.ts tests/security.test.ts tests/adapters.test.ts",
+    "test:integration": "node --import tsx --test tests/integration.test.ts",
+    "test:acceptance": "node --import tsx --env-file-if-exists=.env --test tests/acceptance.test.ts",
+    "test:all": "npm test && npm run build && npm run test:e2e",
+    "check:tests": "tsc --project tsconfig.tests.json --noEmit"
   },
   "dependencies": {
     "@fontsource-variable/inter": "^5.3.0",

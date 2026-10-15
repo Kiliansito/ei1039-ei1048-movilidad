@@ -1,0 +1,45 @@
+[WebServer] (node:31720) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:31721) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 [desktop] › tests/browser/app.spec.ts:58:1 › M01 registro y acceso comparten la pantalla y un correo duplicado conserva los campos (5.5s)
+
+
+  1) [desktop] › tests/browser/app.spec.ts:58:1 › M01 registro y acceso comparten la pantalla y un correo duplicado conserva los campos
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('form', { name: 'Crear una cuenta', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('form', { name: 'Crear una cuenta', exact: true }) with timeout 5000ms
+      - waiting for getByRole('form', { name: 'Crear una cuenta', exact: true })
+
+
+      58 | test("M01 registro y acceso comparten la pantalla y un correo duplicado conserva los campos",async({page},info)=>{
+      59 |   await page.goto("/");
+    > 60 |   await expect(page.getByRole("form",{name:"Crear una cuenta",exact:true})).toBeVisible();
+         |                                                                             ^
+      61 |   await expect(page.getByRole("form",{name:"Iniciar sesión",exact:true})).toBeVisible();
+      62 |   await shot(page,"M01",info);
+      63 |   await register(page,info);
+        at /Users/ruben/prTODO/tmp/publicacion-movilidad/entrega1/02_Spike/tests/browser/app.spec.ts:60:77
+
+    Error Context: test-results/app-M01-registro-y-acceso--cd988-plicado-conserva-los-campos-desktop/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/app-M01-registro-y-acceso--cd988-plicado-conserva-los-campos-desktop/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/app-M01-registro-y-acceso--cd988-plicado-conserva-los-campos-desktop/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    [desktop] › tests/browser/app.spec.ts:58:1 › M01 registro y acceso comparten la pantalla y un correo duplicado conserva los campos
