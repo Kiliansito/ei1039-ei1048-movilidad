@@ -421,3 +421,148 @@ test("Se puede omitir un vehículo predeterminado y se utiliza el precio de cada
     repo.close();
   }
 });
+
+test("Explorar calcula con lugares sin guardar y una referencia de gasolina de 6 l sin crear registros", async () => {
+  const { app, user, repo } = fixture();
+  try {
+    const input = {
+      from: { name: "Centro", lat: 39, lon: 0 },
+      to: { name: "UJI", lat: 39.1, lon: 0.1 },
+      mode: "car",
+      vehicleId: "",
+      referenceVehicle: { type: "petrol", consumption: 6 },
+    };
+    const plan = await app.plan(user.id, input);
+    assert.equal(plan.routes[0].cost, 0.96);
+    assert.equal(plan.routes[0].vehicle?.reference, true);
+    assert.equal(plan.routes[0].from?.name, "Centro");
+    assert.equal(plan.routes[0].to?.name, "UJI");
+    assert.deepEqual(app.state(user.id).places, []);
+    assert.deepEqual(app.state(user.id).vehicles, []);
+    assert.deepEqual(
+      app.state(user.id).preferences.lastJourney?.fromPoint,
+      input.from,
+    );
+    assert.deepEqual(
+      app.state(user.id).preferences.lastJourney?.referenceVehicle,
+      input.referenceVehicle,
+    );
+    input.from.name = "Cambiado";
+    input.referenceVehicle.consumption = 99;
+    const saved = app.saveRoute(user.id, {
+      planId: plan.planId,
+      index: 0,
+      name: "Consulta directa",
+    });
+    assert.equal(saved.from?.name, "Centro");
+    assert.equal(saved.vehicle?.consumption, 6);
+    assert.equal(app.state(user.id).routes[0].cost, 0.96);
+  } finally {
+    repo.close();
+  }
+});
+
+test("Los puntos directos y el consumo de referencia se validan antes de consultar proveedores", async () => {
+  const { app, user, repo } = fixture();
+  try {
+    let calls = 0;
+    app.routing = {
+      routes: async () => {
+        calls++;
+        return [];
+      },
+    };
+    const input = {
+      from: { name: "Centro", lat: 39, lon: 0 },
+      to: { name: "UJI", lat: 39.1, lon: 0.1 },
+      mode: "car",
+      vehicleId: "",
+      referenceVehicle: { type: "petrol", consumption: 6 },
+    };
+    const before = app.state(user.id);
+    for (const changes of [
+      { from: { name: "Centro", lat: 91, lon: 0 } },
+      { from: { name: "", lat: 39, lon: 0 } },
+      { to: { name: "Centro también", lat: 39, lon: 0 } },
+      { referenceVehicle: { type: "petrol", consumption: 0 } },
+      { referenceVehicle: { type: "unknown", consumption: 6 } },
+    ])
+      await assert.rejects(() => app.plan(user.id, { ...input, ...changes }));
+    assert.equal(calls, 0);
+    assert.deepEqual(app.state(user.id), before);
+  } finally {
+    repo.close();
+  }
+});
+
+test("La referencia admite diésel y electricidad y no sustituye un vehículo propio sin indicarlo", async () => {
+  const { app, user, repo } = fixture();
+  try {
+    const input = {
+      from: { name: "Centro", lat: 39, lon: 0 },
+      to: { name: "UJI", lat: 39.1, lon: 0.1 },
+      mode: "car",
+      vehicleId: "",
+    };
+    for (const [type, consumption, cost] of [
+      ["diesel", 5, 0.75],
+      ["electric", 15, 0.3],
+    ] as const) {
+      const result = await app.plan(user.id, {
+        ...input,
+        referenceVehicle: { type, consumption },
+      });
+      assert.equal(result.routes[0].cost, cost);
+      assert.equal(result.routes[0].vehicle?.type, type);
+    }
+    const v = app.saveVehicle(user.id, {
+      name: "Propio",
+      type: "petrol",
+      consumption: 8,
+    });
+    app.preferences(user.id, { vehicleId: v.id });
+    const own = await app.plan(user.id, { ...input, vehicleId: v.id });
+    assert.equal(own.routes[0].cost, 1.28);
+    await assert.rejects(() =>
+      app.plan(user.id, {
+        ...input,
+        vehicleId: v.id,
+        referenceVehicle: { type: "petrol", consumption: 6 },
+      }),
+    );
+    const reference = await app.plan(user.id, {
+      ...input,
+      referenceVehicle: { type: "petrol", consumption: 6 },
+    });
+    assert.equal(reference.routes[0].cost, 0.96);
+    assert.equal(app.state(user.id).preferences.vehicleId, v.id);
+  } finally {
+    repo.close();
+  }
+});
+
+test("Los lugares guardados conservan la comprobación de propiedad al combinarse con puntos directos", async () => {
+  const { app, user, repo } = fixture();
+  try {
+    const other = app.register({
+      name: "Luis",
+      email: "direct-other@example.com",
+      password: "TestingDirect123",
+    });
+    const foreign = app.addPlace(other.id, {
+      name: "Privado",
+      lat: 40,
+      lon: 1,
+    });
+    await assert.rejects(() =>
+      app.plan(user.id, {
+        from: { name: "Centro", lat: 39, lon: 0 },
+        to: foreign.id,
+        mode: "foot",
+      }),
+    );
+    assert.deepEqual(app.state(user.id).places, []);
+  } finally {
+    repo.close();
+  }
+});

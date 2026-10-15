@@ -230,6 +230,34 @@ export class MobilityService {
     this.repo.put(id, kind, item);
     return item;
   }
+  private directPoint(input: any) {
+    if (
+      !input ||
+      typeof input !== "object" ||
+      !finite(input.lat, -90, 90) ||
+      !finite(input.lon, -180, 180)
+    )
+      throw new AppError("Selecciona un lugar con coordenadas válidas.");
+    return {
+      name: text(input.name),
+      lat: input.lat as number,
+      lon: input.lon as number,
+    };
+  }
+  private reference(input: any) {
+    if (
+      !input ||
+      !["petrol", "diesel", "electric"].includes(input.type) ||
+      !finite(input.consumption, 0.1, 100)
+    )
+      throw new AppError(
+        "Revisa el tipo y el consumo del vehículo de referencia.",
+      );
+    return {
+      type: input.type as Vehicle["type"],
+      consumption: input.consumption as number,
+    };
+  }
   preferences(id: string, input: any) {
     this.user(id);
     const allowed = [
@@ -262,6 +290,9 @@ export class MobilityService {
         !["fromId", "toId", "vehicleId"].every((k) => typeof j[k] === "string")
       )
         throw new AppError("Trayecto reciente no válido.");
+      if (j.fromPoint) this.directPoint(j.fromPoint);
+      if (j.toPoint) this.directPoint(j.toPoint);
+      if (j.referenceVehicle) this.reference(j.referenceVehicle);
       if (j.fromId) this.owned(id, "places", j.fromId);
       if (j.toId) this.owned(id, "places", j.toId);
       if (j.vehicleId) this.owned(id, "vehicles", j.vehicleId);
@@ -307,13 +338,35 @@ export class MobilityService {
       !["fastest", "shortest", "cheapest"].includes(preference)
     )
       throw new AppError("Modo o criterio no válido.");
-    const from = this.owned(id, "places", input.from),
-      to = this.owned(id, "places", input.to);
+    const endpoint = (value: unknown): import("./domain/types.ts").Place =>
+      typeof value === "string"
+        ? this.owned(id, "places", value)
+        : { ...this.directPoint(value), id: randomUUID(), favorite: false };
+    const from = endpoint(input.from),
+      to = endpoint(input.to);
     if (from.id === to.id || (from.lat === to.lat && from.lon === to.lon))
       throw new AppError("Elige dos lugares diferentes.");
     const vid = input.vehicleId ?? p.vehicleId;
+    if (mode === "car" && vid && input.referenceVehicle)
+      throw new AppError("Elige un vehículo propio o uno de referencia.");
+    const reference =
+      mode === "car" && input.referenceVehicle
+        ? this.reference(input.referenceVehicle)
+        : null;
     const vehicle: Vehicle | undefined =
-      mode === "car" && vid ? this.owned(id, "vehicles", vid) : undefined;
+      mode !== "car"
+        ? undefined
+        : vid
+          ? this.owned(id, "vehicles", vid)
+          : reference
+            ? {
+                ...reference,
+                id: "",
+                name: "Vehículo de referencia",
+                favorite: false,
+                reference: true,
+              }
+            : undefined;
     if (!this.routing)
       throw new AppError(
         "Añade ORS_API_KEY en .env y reinicia Vía para calcular rutas reales.",
@@ -370,8 +423,15 @@ export class MobilityService {
     routes.sort((a, b) => score(a) - score(b) || a.distance - b.distance);
     this.preferences(id, {
       lastJourney: {
-        fromId: from.id,
-        toId: to.id,
+        fromId: typeof input.from === "string" ? from.id : "",
+        toId: typeof input.to === "string" ? to.id : "",
+        ...(typeof input.from === "string"
+          ? {}
+          : { fromPoint: this.directPoint(input.from) }),
+        ...(typeof input.to === "string"
+          ? {}
+          : { toPoint: this.directPoint(input.to) }),
+        referenceVehicle: reference,
         mode,
         preference,
         vehicleId: vehicle?.id ?? "",

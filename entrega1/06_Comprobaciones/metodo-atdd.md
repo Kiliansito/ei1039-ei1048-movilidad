@@ -29,3 +29,9 @@ El archivo aceptacion.feature es el catálogo de lectura. Las pruebas ejecutable
 El commit 688b43b añade las pruebas antes de cambiar la implementación. Las cuatro pruebas nuevas fallan porque el vehículo era obligatorio y no existía una consulta independiente de precios. La salida está en vehiculo-opcional-antes.txt. Los cambios posteriores permiten consultar precios y rutas sin registrar un vehículo y calcular el coste solo con consumo y precio disponibles.
 
 La nueva ejecución pasa 40 pruebas locales y 28 de navegador. Las 52 pruebas de aceptación y las 18 de integración mantienen sus identificadores y cobertura. Los nuevos casos comprueban también precios manuales, fallo del proveedor, prioridad sobre el vehículo predeterminado y uso del precio correcto para gasolina, diésel y electricidad.
+
+## Búsqueda desde Explorar y referencia editable
+
+El commit f602634 define cuatro casos locales y dos recorridos de navegador antes de cambiar la implementación. La primera ejecución de core pasa 22 y falla 2. La salida está en explorar-directo-antes.txt. Los puntos y referencias inválidos y la propiedad de los lugares guardados también se comprueban.
+
+La nueva ejecución supera 44 pruebas locales, 18 de integración, 52 de aceptación y 32 de navegador. Los casos nuevos cubren búsqueda y selección sin altas automáticas, referencia editable, restauración de la consulta, guardado del resultado, invalidación al cambiar el texto y selección directa en el mapa.

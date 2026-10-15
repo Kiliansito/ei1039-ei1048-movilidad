@@ -1,0 +1,66 @@
+✔ Given new email When registering Then account is created; duplicate rejected (20.512167ms)
+✔ invalid email and weak password rejected (17.54325ms)
+✔ Given account When login Then authenticated; wrong password rejected (35.494666ms)
+✔ Given session When logout Then token invalidated (35.714667ms)
+✔ Given owned records When deleting account Then cascade removes all data (36.95375ms)
+✔ Given coordinates When saving place Then persisted; invalid coordinates rejected (18.076916ms)
+✔ Given a toponym When searching Then geocoder result can become registered place (17.893333ms)
+✔ Given a place When deleting Then absent; unknown record rejected (18.476375ms)
+✔ Given vehicle When updating and deleting Then lifecycle persists (18.499166ms)
+✔ Given registered endpoints When calculating Then fastest and shortest differ (20.792416ms)
+✔ Given bicycle or walk When planning Then kcal estimated (19.17375ms)
+✔ Given calculated route When saving Then reloadable and deletable (17.820875ms)
+✔ Given favorite When listing Then appears first; cross-account access denied (35.582875ms)
+✔ Given preferences When reopening Then defaults preserved; invalid enum rejected (17.836625ms)
+✔ Provider failure propagates honestly without invented routes (17.697959ms)
+✔ Editing a place preserves identity and favorites, validates coordinates and isolates owners (35.496125ms)
+✔ Sin vehículo se calcula y guarda una ruta en coche sin inventar el coste (17.832291ms)
+✔ Se pueden consultar los tres precios sin tener vehículos y elegir precios manuales (18.063417ms)
+✔ Sin proveedor de precios no se inventan importes ni se bloquea una ruta sin vehículo (17.637792ms)
+✔ Se puede omitir un vehículo predeterminado y se utiliza el precio de cada tipo de energía (36.827375ms)
+✖ Explorar calcula con lugares sin guardar y una referencia de gasolina de 6 l sin crear registros (18.856375ms)
+✔ Los puntos directos y el consumo de referencia se validan antes de consultar proveedores (17.723291ms)
+✖ La referencia admite diésel y electricidad y no sustituye un vehículo propio sin indicarlo (17.781417ms)
+✔ Los lugares guardados conservan la comprobación de propiedad al combinarse con puntos directos (35.171625ms)
+ℹ tests 24
+ℹ suites 0
+ℹ pass 22
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 691.085458
+
+✖ failing tests:
+
+test at tests/core.test.ts:1:11173
+✖ Explorar calcula con lugares sin guardar y una referencia de gasolina de 6 l sin crear registros (18.856375ms)
+  TypeError: Provided value cannot be bound to SQLite parameter 3.
+      at SqliteRepository.get (/Users/ruben/prTODO/tmp/publicacion-movilidad/entrega1/02_Spike/src/repository.ts:52:8)
+      at MobilityService.owned (/Users/ruben/prTODO/tmp/publicacion-movilidad/entrega1/02_Spike/src/services.ts:205:28)
+      at MobilityService.plan (/Users/ruben/prTODO/tmp/publicacion-movilidad/entrega1/02_Spike/src/services.ts:310:23)
+      at TestContext.<anonymous> (/Users/ruben/prTODO/tmp/publicacion-movilidad/entrega1/02_Spike/tests/core.test.ts:429:28)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    code: 'ERR_INVALID_ARG_TYPE'
+  }
+
+test at tests/core.test.ts:1:13081
+✖ La referencia admite diésel y electricidad y no sustituye un vehículo propio sin indicarlo (17.781417ms)
+  TypeError: Provided value cannot be bound to SQLite parameter 3.
+      at SqliteRepository.get (/Users/ruben/prTODO/tmp/publicacion-movilidad/entrega1/02_Spike/src/repository.ts:52:8)
+      at MobilityService.owned (/Users/ruben/prTODO/tmp/publicacion-movilidad/entrega1/02_Spike/src/services.ts:205:28)
+      at MobilityService.plan (/Users/ruben/prTODO/tmp/publicacion-movilidad/entrega1/02_Spike/src/services.ts:310:23)
+      at TestContext.<anonymous> (/Users/ruben/prTODO/tmp/publicacion-movilidad/entrega1/02_Spike/tests/core.test.ts:471:32)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    code: 'ERR_INVALID_ARG_TYPE'
+  }

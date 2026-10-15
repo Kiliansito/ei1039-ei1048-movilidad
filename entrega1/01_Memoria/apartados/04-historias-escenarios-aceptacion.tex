@@ -720,9 +720,9 @@ Se seleccionan E-13-V como escenario válido y E-13-I1 como escenario inválido 
 
 \subsubsection*{Reglas de dominio aplicables}
 
-\textbf{RD-54} Los extremos de la ruta deben ser lugares guardados del usuario y tener coordenadas distintas.\par
+\textbf{RD-54} Los extremos deben tener coordenadas válidas y distintas. Se admiten lugares propios guardados y puntos elegidos desde Explorar sin guardarlos.\par
 
-\textbf{RD-55} Los modos previstos son a pie, bicicleta y coche. El vehículo es opcional para consultar una ruta en coche y necesario para estimar su coste.\par
+\textbf{RD-55} Los modos previstos son a pie, bicicleta y coche. Se puede consultar solo la ruta o estimar su coste con un vehículo propio o una referencia editable.\par
 
 \textbf{RD-56} El cálculo válido devuelve geometría con al menos dos puntos válidos, distancia y duración positivas. El dibujo del trayecto se comprueba por separado en la interfaz.\par
 
@@ -734,7 +734,7 @@ Se seleccionan E-13-V como escenario válido y E-13-I1 como escenario inválido 
 
 \begingroup\fontsize{7.8}{11}\selectfont\setlength{\tabcolsep}{3pt}
 \begin{tabularx}{\linewidth}{@{}*{6}{Y}@{}}\toprule
-\textbf{Escenario} & \textbf{Sesión válida} & \textbf{Extremos propios guardados} & \textbf{Coordenadas distintas} & \textbf{Proveedor disponible} & \textbf{Ruta}\\\midrule
+\textbf{Escenario} & \textbf{Sesión válida} & \textbf{Extremos válidos} & \textbf{Coordenadas distintas} & \textbf{Proveedor disponible} & \textbf{Ruta}\\\midrule
 E-14-V & Sí & Sí & Sí & Sí & Sí\\[3pt]
 E-14-I1 & Sí & Sí & No & No aplica & No\\[3pt]
 E-14-I2 & Sí & No & Sí & No aplica & No\\[3pt]
@@ -749,7 +749,7 @@ Se seleccionan E-14-V como escenario válido y E-14-I1 como escenario inválido 
 \begingroup\fontsize{9.25}{11.1}\selectfont\begin{tabularx}{\linewidth}{@{}p{2.6cm}Y@{}}\arrayrulecolor{black}\toprule
 \textbf{E-14-V} & \textbf{Escenario válido \textperiodcentered{} Prueba PA-14-V}\\[1pt]\midrule
 \textbf{Justificación} & comprueba que el servicio devuelve un trayecto y unas medidas coherentes.\\[1pt]\arrayrulecolor{black!25}\midrule[0.25pt]
-\textbf{Análisis} & Repetir en coche y bicicleta, con lugares guardados.\\[1pt]\arrayrulecolor{black!25}\midrule[0.25pt]
+\textbf{Análisis} & Repetir en coche y bicicleta, con lugares guardados y puntos directos.\\[1pt]\arrayrulecolor{black!25}\midrule[0.25pt]
 \textbf{Given} & Ana tiene Centro (39.9864,-0.0513) y UJI (39.9946,-0.0684), y el servicio real está disponible\\[1pt]\arrayrulecolor{black!25}\midrule[0.25pt]
 \textbf{When} & calcula la ruta a pie entre Centro y UJI\\[1pt]\arrayrulecolor{black!25}\midrule[0.25pt]
 \textbf{Then} & se devuelve una geometría con al menos dos puntos válidos, distancia positiva menor de 100 km y duración positiva\\[1pt]\arrayrulecolor{black!25}\midrule[0.25pt]
@@ -1215,7 +1215,7 @@ Se seleccionan E-22-V como escenario válido y E-22-I1 como escenario inválido 
 
 \subsubsection*{Reglas de dominio aplicables}
 
-\textbf{RD-55} Los modos previstos son a pie, bicicleta y coche. El vehículo es opcional para consultar una ruta en coche y necesario para estimar su coste.\par
+\textbf{RD-55} Los modos previstos son a pie, bicicleta y coche. Se puede consultar solo la ruta o estimar su coste con un vehículo propio o una referencia editable.\par
 
 \textbf{RD-94} Si se fija un vehículo predeterminado para el modo coche, debe pertenecer al usuario.\par
 
