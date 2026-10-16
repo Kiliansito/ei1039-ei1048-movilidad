@@ -1,8 +1,5 @@
 # Historias, escenarios y aceptación
 
-Cada historia recoge dos escenarios seleccionados y una variante relevante. V indica válido e I inválido. Las reglas comunes y los datos de prueba se definen en el apartado 3.
-
-
 ## HU-01. Registrar una cuenta
 
 **Requisito** R1

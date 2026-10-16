@@ -1,4 +1,6 @@
-\clearpage\section{Reglas y método de prueba}\label{sec3}
+\clearpage\begingroup\section{Reglas y método de prueba}\label{sec3}
+\setlength{\parskip}{3pt}
+\fontsize{9.5}{12}\selectfont
 \subsection*{Reglas comunes}
 \textbf{RD-01. Cuenta y sesión.} El registro requiere un correo válido y único y una contraseña válida. Consultar o gestionar datos requiere una sesión activa. Cerrar sesión conserva los datos. Eliminar la cuenta exige confirmar la contraseña y elimina sus datos asociados.\par
 \textbf{RD-02. Guardado y errores.} Solo se informa de éxito cuando la operación se confirma. Una entrada inválida o un fallo no debe dejar cambios parciales. Un fallo de carga se muestra como error, sin presentarlo como una lista vacía.\par
@@ -26,3 +28,4 @@ Los límites de campos, consumos, precios, peso y los MET son propuestas pendien
 Cada escenario prepara sus datos de forma independiente. Salvo indicación contraria, Ana tiene una sesión activa, con ana@example.com y RutaSegura2026. Centro está en (39.9864, -0.0513) y UJI en (39.9946, -0.0684). Compacto es de gasolina, con 6 l/100 km, y Eléctrico consume 15 kWh/100 km. Camino a clase va de Centro a UJI y Paseo hace el recorrido inverso. Cada elemento tiene un identificador propio.\par
 Se seleccionan dos escenarios por historia, uno válido y otro inválido, y se conserva una variante relevante en la tabla. Cada prueba seleccionada incluye justificación, análisis breve de casos extremos y Given-When-Then con datos concretos. Si un caso no está definido, se consulta al profesorado.\par
 Según la metodología docente [2], aceptación comprueba la lógica de negocio con las dependencias reales necesarias. Integración sustituye al menos una dependencia por un doble. Los formularios, mapas y mensajes se comprueban en el navegador. Para persistencia se reabre la misma base de datos en disco desde otro proceso. Los fallos se provocan de forma controlada y se distinguen de una entrada incorrecta.\par
+\endgroup

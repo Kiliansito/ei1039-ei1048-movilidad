@@ -4,7 +4,7 @@ Se conservan las 26 historias y sus 52 pruebas seleccionadas, una válida y otra
 
 Las 108 reglas numeradas se agrupan en diez reglas comunes y una tabla de validaciones. Se elimina su repetición en cada historia y el apartado adicional de límites y variantes, que repetía el análisis. Los límites propuestos y las decisiones que requieren validación del profesorado conservan ese carácter.
 
-Se sustituyen los inválidos centrados en datos de otras cuentas por operaciones sobre elementos ya eliminados. HU-18 comprueba un destino sin seleccionar, HU-19 un nombre vacío y HU-24 un fallo al guardar la preferencia. HU-03 comprueba una sesión ya cerrada. HU-14 permite tanto puntos elegidos directamente como lugares guardados. Se actualizan el texto de los mockups, el catálogo Gherkin y las nueve pruebas ejecutables afectadas. Las diez imágenes de Figma se conservan y la aplicación mantiene sus comprobaciones de acceso.
+Se sustituyen los inválidos centrados en datos de otras cuentas por operaciones sobre elementos ya eliminados. HU-18 comprueba un destino sin seleccionar, HU-19 un nombre vacío y HU-24 un fallo al guardar la preferencia. HU-03 comprueba una sesión ya cerrada. HU-14 permite tanto puntos elegidos directamente como lugares guardados. Se actualizan el texto de los mockups, el catálogo Gherkin y las nueve pruebas ejecutables afectadas. Se conservan los diez diseños y se corrige también el mensaje de error de M09 en Figma y en su captura. La aplicación mantiene sus comprobaciones de acceso.
 
 ## Validación de esta revisión
 
