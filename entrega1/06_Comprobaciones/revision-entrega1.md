@@ -1,7 +1,5 @@
 # Revisión de la Entrega 1
 
-La [síntesis del 16 de octubre](sintesis-entrega1-2026-10-16.md) recoge los últimos cambios de escenarios y reglas y sus comprobaciones. El contenido siguiente conserva la revisión del 15 de octubre y sus resultados históricos.
-
 15 de octubre de 2026
 
 ## Resultado

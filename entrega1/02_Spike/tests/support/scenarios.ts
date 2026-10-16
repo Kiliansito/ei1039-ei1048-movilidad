@@ -273,11 +273,13 @@ scenario("03-V", (f) => {
   assert.deepEqual(f.state(), before);
 });
 scenario("03-I", (f) => {
-  f.places();
-  f.app.logout(f.token);
   const before = f.state();
-  assert.throws(() => f.app.logout(f.token));
-  assert.equal(f.app.session(f.token), null);
+  assert.throws(() => f.app.logout("S0"));
+  assert.throws(
+    () => f.app.stateForSession("S0"),
+    (e) => e instanceof AppError && e.status === 401,
+  );
+  assert.ok(f.app.session(f.token));
   assert.deepEqual(f.state(), before);
 });
 scenario("04-V", async (f) => {
@@ -349,10 +351,14 @@ scenario("08-V", (f) => {
   assert.equal(f.repo.get(f.u.id, "places", a.id), null);
 });
 scenario("08-I", (f) => {
-  const [a, b] = f.places();
-  f.app.remove(f.u.id, "places", a.id);
-  unchanged(f, () => f.app.remove(f.u.id, "places", a.id));
-  assert.deepEqual(f.state().places, [b]);
+  const l = f.other();
+  const p = f.app.addPlace(l.id, {
+    name: "Estación",
+    lat: 39.9885,
+    lon: -0.051,
+  });
+  unchanged(f, () => f.app.remove(f.u.id, "places", p.id));
+  assert.deepEqual(f.app.state(l.id).places, [p]);
 });
 scenario("09-V", (f) => {
   const p = f.app.addPlace(f.u.id, {
@@ -414,11 +420,14 @@ scenario("12-V", (f) => {
   assert.equal(f.state().preferences.vehicleId, null);
 });
 scenario("12-I", (f) => {
-  const a = f.vehicle(),
-    b = f.vehicle("electric");
-  f.app.remove(f.u.id, "vehicles", a.id);
-  unchanged(f, () => f.app.remove(f.u.id, "vehicles", a.id));
-  assert.deepEqual(f.state().vehicles, [b]);
+  const l = f.other(),
+    v = f.app.saveVehicle(l.id, {
+      name: "Furgoneta",
+      type: "diesel",
+      consumption: 8,
+    });
+  unchanged(f, () => f.app.remove(f.u.id, "vehicles", v.id));
+  assert.deepEqual(f.app.state(l.id).vehicles, [v]);
 });
 scenario("13-V", (f) => {
   const v = f.vehicle();
@@ -506,13 +515,14 @@ scenario("18-V", async (f) => {
   assert.equal(p.routes[0].priceSource, "Precio manual");
 });
 scenario("18-I", async (f) => {
-  const [a] = f.places(),
+  const [a, b] = f.places(),
     before = f.state();
   await assert.rejects(() =>
     f.app.plan(f.u.id, {
       from: a.id,
-      mode: "car",
-      preference: "cheapest",
+      to: b.id,
+      mode: "foot",
+      preference: "panorámica",
     }),
   );
   assert.deepEqual(f.state(), before);
@@ -530,17 +540,15 @@ scenario("19-V", async (f) => {
   assert.equal(saved.calculatedAt, p.routes[0].calculatedAt);
   assert.deepEqual(f.state().routes, [persisted(saved)]);
 });
-scenario("19-I", async (f) => {
-  const plan = await f.plan();
+scenario("19-I", (f) =>
   unchanged(f, () =>
     f.app.saveRoute(f.u.id, {
-      planId: plan.planId,
+      planId: "X99",
       index: 0,
-      name: "   ",
+      name: "Camino a clase",
     }),
-  );
-  assert.deepEqual(f.state().routes, []);
-});
+  ),
+);
 scenario("20-V", async (f) => {
   const saved = await f.saved();
   f.reopen();
@@ -563,11 +571,21 @@ scenario("21-V", async (f) => {
   assert.deepEqual(f.state().vehicles, before.vehicles);
 });
 scenario("21-I", async (f) => {
-  const a = await f.saved(),
-    b = await f.saved("Paseo");
-  f.app.remove(f.u.id, "routes", a.id!);
-  unchanged(f, () => f.app.remove(f.u.id, "routes", a.id!));
-  assert.deepEqual(f.state().routes, [b]);
+  const l = f.other();
+  const p = await f.plan();
+  const otherPlan = await f.app.plan(l.id, {
+    from: f.app.addPlace(l.id, { name: "Centro", lat: 39.9864, lon: -0.0513 })
+      .id,
+    to: f.app.addPlace(l.id, { name: "UJI", lat: 39.9946, lon: -0.0684 }).id,
+    mode: "foot",
+  });
+  const foreign = f.app.saveRoute(l.id, {
+    planId: otherPlan.planId,
+    index: 0,
+    name: "Camino al trabajo",
+  });
+  unchanged(f, () => f.app.remove(f.u.id, "routes", foreign.id));
+  assert.deepEqual(f.app.state(l.id).routes, [persisted(foreign)]);
 });
 scenario("22-V", async (f) => {
   const places = f.places(),
@@ -589,11 +607,37 @@ scenario("22-V", async (f) => {
   assert.equal(f.state().vehicles[0].favorite, true);
   assert.equal(f.state().routes[0].favorite, true);
 });
-scenario("22-I", (f) => {
-  const [a, b] = f.places();
-  f.app.remove(f.u.id, "places", a.id);
-  unchanged(f, () => f.app.favorite(f.u.id, "places", a.id));
-  assert.deepEqual(f.state().places, [b]);
+scenario("22-I", async (f) => {
+  const l = f.other();
+  const place = f.app.addPlace(l.id, {
+      name: "Estación",
+      lat: 39.9885,
+      lon: -0.051,
+    }),
+    vehicle = f.app.saveVehicle(l.id, {
+      name: "Furgoneta",
+      type: "diesel",
+      consumption: 8,
+    });
+  const p = await f.plan();
+  const otherPlan = await f.app.plan(l.id, {
+    from: place.id,
+    to: f.app.addPlace(l.id, { name: "UJI", lat: 39.9946, lon: -0.0684 }).id,
+    mode: "foot",
+  });
+  const route = f.app.saveRoute(l.id, {
+    planId: otherPlan.planId,
+    index: 0,
+    name: "Camino al trabajo",
+  });
+  const before = f.app.state(l.id);
+  for (const [kind, x] of [
+    ["places", place],
+    ["vehicles", vehicle],
+    ["routes", route],
+  ] as const)
+    assert.throws(() => f.app.favorite(f.u.id, kind, x.id!));
+  assert.deepEqual(f.app.state(l.id), before);
 });
 scenario("23-V", async (f) => {
   const vehicle = f.vehicle();
@@ -618,13 +662,14 @@ scenario("23-V", async (f) => {
 });
 scenario("23-I", (f) => {
   const v = f.vehicle();
-  f.app.preferences(f.u.id, { mode: "foot", vehicleId: null });
-  f.app.remove(f.u.id, "vehicles", v.id);
-  unchanged(f, () =>
-    f.app.preferences(f.u.id, { mode: "car", vehicleId: v.id }),
-  );
-  assert.equal(f.state().preferences.mode, "foot");
-  assert.equal(f.state().preferences.vehicleId, null);
+  f.app.preferences(f.u.id, { vehicleId: v.id });
+  const l = f.other(),
+    foreign = f.app.saveVehicle(l.id, {
+      name: "Furgoneta",
+      type: "diesel",
+      consumption: 8,
+    });
+  unchanged(f, () => f.app.preferences(f.u.id, { vehicleId: foreign.id }));
 });
 scenario("24-V", async (f) => {
   const vehicle = f.vehicle();
@@ -644,14 +689,7 @@ scenario("24-V", async (f) => {
 });
 scenario("24-I", (f) => {
   f.app.preferences(f.u.id, { preference: "shortest" });
-  const before = f.state(),
-    userId = f.u.id;
-  // La base queda inaccesible para la operación. No se usa un criterio inventado.
-  f.close();
-  assert.throws(() => f.app.preferences(userId, { preference: "fastest" }));
-  f.reopen();
-  assert.deepEqual(f.state(), before);
-  assert.equal(f.state().preferences.preference, "shortest");
+  unchanged(f, () => f.app.preferences(f.u.id, { preference: "panorámica" }));
 });
 async function fullState(f: Fixture) {
   const [a, b] = f.places();

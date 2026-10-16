@@ -1,47 +1,33 @@
 # Reglas y método de prueba
 
-## Reglas comunes
+## Datos admitidos
 
-**RD-01. Cuenta y sesión.** El registro requiere un correo válido y único y una contraseña válida. Consultar o gestionar datos requiere una sesión activa. Cerrar sesión conserva los datos. Eliminar la cuenta exige confirmar la contraseña y elimina sus datos asociados.
+Cada cuenta accede solo a sus datos. El nombre de usuario admite de 1 a 70 caracteres. El correo admite hasta 254, debe tener formato válido y ser único tras quitar espacios exteriores y convertirlo a minúsculas. La contraseña admite de 10 a 128 caracteres y se comprueba exactamente como se escribió, incluidos sus espacios. Los nombres de lugares y rutas admiten de 1 a 120 caracteres, y los de vehículos de 1 a 70. Los nombres se guardan sin espacios exteriores.
 
-**RD-02. Guardado y errores.** Solo se informa de éxito cuando la operación se confirma. Una entrada inválida o un fallo no debe dejar cambios parciales. Un fallo de carga se muestra como error, sin presentarlo como una lista vacía.
+La latitud admite valores entre -90 y 90, y la longitud entre -180 y 180, incluidos los extremos. Solo se aceptan números finitos. Un topónimo es el nombre de un lugar y su búsqueda admite de 1 a 200 caracteres tras quitar espacios exteriores. Los vehículos pueden ser de gasolina, diésel o eléctricos, con consumo entre 0,1 y 100 l/100 km o kWh/100 km.
 
-**RD-03. Lugares.** Se guardan un nombre y coordenadas válidas. La búsqueda por topónimo exige elegir un resultado y el alta por mapa exige seleccionar un punto. Una búsqueda sin coincidencias o una lista sin lugares son resultados válidos.
-
-**RD-04. Vehículos.** Se indican nombre, tipo y consumo. Gasolina y diésel usan l/100 km y los eléctricos kWh/100 km. Modificar conserva el identificador. Eliminar el vehículo predeterminado limpia su referencia.
-
-**RD-05. Rutas.** Los extremos deben ser válidos y distintos. Se admiten puntos de Explorar sin guardarlos y lugares guardados. Los modos son coche, bicicleta y a pie. Sin respuesta válida del proveedor no se presenta una ruta nueva como calculada.
-
-**RD-06. Estimaciones.** El coste es distancia en km/100 por consumo por precio, con unidades coherentes. Puede usarse un vehículo o una referencia editable. Sin precio disponible puede consultarse el trayecto sin coste. Las calorías se estiman como MET por 3,5 por peso/200 por minutos, con MET propuestos de 3,5 a pie y 6,8 en bicicleta. Se redondea al presentar.
-
-**RD-07. Criterio.** Se compara duración, distancia o coste entre las alternativas recibidas. Una sola alternativa es válida. Sin datos de coste se avisa y se usa la distancia como referencia. El precio indica su origen y fecha cuando procede. El precio eléctrico mayorista se distingue de una tarifa final.
-
-**RD-08. Rutas guardadas.** Guardar requiere un resultado calculado y un nombre. Se conservan su geometría, métricas y datos del cálculo como copia histórica, sin recalcularlos al consultar o modificar lugares y vehículos.
-
-**RD-09. Preferencias.** Los favoritos aparecen primero y su marca se conserva. El modo, el vehículo opcional y el criterio predeterminados se aplican a una planificación nueva. Una elección puntual no cambia esos valores.
-
-**RD-10. Persistencia.** Se recuperan los datos confirmados, favoritos, tema y último trayecto tras un cierre normal o una interrupción. Una escritura interrumpida queda completa o no se aplica. El alcance de borradores y resultados sin guardar queda pendiente de confirmar con el profesorado.
+Los extremos deben tener coordenadas válidas y distintas. Se eligen desde Explorar sin guardarlos o entre los lugares propios. Los modos son coche, bicicleta y a pie. El coste en coche usa un vehículo propio o una referencia editable, con consumo y precio disponibles. La referencia inicial es de gasolina y 6 l/100 km, marcada como orientativa. Se admite consultar solo la ruta. Los criterios son más rápida, más corta y más económica. El peso admite de 20 a 300 kg y los precios manuales de 0,001 a 20 euros por litro o kWh. Estos límites propuestos deberán revisarse con el profesorado.
 
 
-## Validaciones de entrada
+## Datos de los escenarios
 
-Los nombres y el correo se guardan sin espacios exteriores. El correo se compara en minúsculas y la contraseña se comprueba tal como se escribió.
+Cada escenario empieza con una base de datos de prueba independiente. Solo se crean los elementos que indica su estado inicial. En las operaciones de gestión se parte de una sesión activa de Ana, salvo indicación contraria. Ana usa ana@example.com y RutaSegura2026. Luis usa luis@example.com y OtraRuta2026. Cada registro recibe un identificador propio.
 
-| **Dato** | **Valores admitidos** |
+| **Elemento** | **Datos de referencia** |
 | --- | --- |
-| Nombre de cuenta o vehículo | De 1 a 70 caracteres. |
-| Correo y contraseña | Correo con formato válido y hasta 254 caracteres. Contraseña de 10 a 128. |
-| Lugar, ruta y topónimo | Nombre de lugar o ruta de 1 a 120 caracteres. Topónimo de 1 a 200. |
-| Coordenadas | Latitud de -90 a 90 y longitud de -180 a 180, con números finitos. |
-| Consumo, precio y peso | Consumo de 0,1 a 100. Precio manual de 0,001 a 20 euros/l o euros/kWh. Peso de 20 a 300 kg. |
-
-Los límites de campos, consumos, precios, peso y los MET son propuestas pendientes de validación con el profesorado. Las pruebas de frontera consideran el valor admitido y el inmediatamente exterior.
+| Centro y UJI | Centro en (39.9864, -0.0513) y UJI en (39.9946, -0.0684), de Ana. |
+| Estación | Lugar de Luis en (39.9885, -0.0510). |
+| Compacto y Eléctrico | Vehículos de Ana, de gasolina con 6 l/100 km y eléctrico con 15 kWh/100 km. |
+| Furgoneta | Vehículo de Luis, diésel con 8 l/100 km. |
+| Rutas guardadas | Camino a clase va de Centro a UJI y Paseo de UJI a Centro. Camino al trabajo pertenece a Luis. Se guardan el trazado y las métricas del resultado real utilizado al preparar cada prueba. |
 
 
-## Datos y criterio de prueba
+## Criterio de prueba y desarrollo
 
-Cada escenario prepara sus datos de forma independiente. Salvo indicación contraria, Ana tiene una sesión activa, con ana@example.com y RutaSegura2026. Centro está en (39.9864, -0.0513) y UJI en (39.9946, -0.0684). Compacto es de gasolina, con 6 l/100 km, y Eléctrico consume 15 kWh/100 km. Camino a clase va de Centro a UJI y Paseo hace el recorrido inverso. Cada elemento tiene un identificador propio.
+Cada historia tiene un escenario válido y otro inválido, con justificación, análisis y una prueba Given-When-Then. En el válido se cumplen las condiciones de la operación. En el inválido una entrada o condición impide completarla y el sistema debe informar del error. Las variantes adicionales orientan pruebas futuras y no aumentan las 52 seleccionadas.
 
-Se seleccionan dos escenarios por historia, uno válido y otro inválido, y se conserva una variante relevante en la tabla. Cada prueba seleccionada incluye justificación, análisis breve de casos extremos y Given-When-Then con datos concretos. Si un caso no está definido, se consulta al profesorado.
+Según la metodología docente [2], aceptación comprueba la lógica de negocio con las dependencias reales necesarias. Integración sustituye al menos una dependencia por un doble. El mapa, los formularios y los mensajes se comprueban en el navegador.
 
-Según la metodología docente [2], aceptación comprueba la lógica de negocio con las dependencias reales necesarias. Integración sustituye al menos una dependencia por un doble. Los formularios, mapas y mensajes se comprueban en el navegador. Para persistencia se reabre la misma base de datos en disco desde otro proceso. Los fallos se provocan de forma controlada y se distinguen de una entrada incorrecta.
+Las rutas pueden cambiar. Se validan su geometría, sus medidas y el coste calculado con ellas. Los fallos se provocan cortando el acceso real cuando sea posible. Si se usa un doble, se registra como integración.
+
+% Contenido de la segunda pestaña del documento de Drive.

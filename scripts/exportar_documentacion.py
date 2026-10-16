@@ -30,6 +30,8 @@ def prose(value):
     table_header = False
     for line in value.splitlines():
         line = line.replace(r"\clearpage", "")
+        if line.startswith(r"{\fontsize{9}{11}\selectfont\textbf{Qué significa"):
+            line = line[1:-1].replace(r"\fontsize{9}{11}\selectfont", "")
         if "\\begin{tabularx}" in line:
             in_table = True
             table_header = True
@@ -77,7 +79,7 @@ Especificación de requisitos y diseño inicial
 
 Entrega 1 · EI1039 y EI1048 · Universitat Jaume I
 
-Curso 2026-2027 · 16 de octubre de 2026
+Curso 2026-2027 · 15 de octubre de 2026
 
 - Ruben Andres Szasz Szasz
 - Kilian Escudero Vizcaino
