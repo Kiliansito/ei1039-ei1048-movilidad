@@ -4,7 +4,7 @@ Especificación de requisitos y diseño inicial
 
 Entrega 1 · EI1039 y EI1048 · Universitat Jaume I
 
-Curso 2026-2027 · 15 de octubre de 2026
+Curso 2026-2027 · 16 de octubre de 2026
 
 - Ruben Andres Szasz Szasz
 - Kilian Escudero Vizcaino

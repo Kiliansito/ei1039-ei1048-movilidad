@@ -24,7 +24,7 @@ Reúne los datos de la cuenta, el cierre de sesión y la confirmación de su eli
 
 **Escenario válido** Cerrar sesión impide usar de nuevo esa sesión. Eliminar la cuenta con la contraseña correcta borra sus datos asociados.
 
-**Escenario inválido** Un código de sesión inexistente no permite acceder. Una contraseña incorrecta impide eliminar la cuenta.
+**Escenario inválido** Una sesión ya cerrada no puede cerrarse de nuevo. Una contraseña incorrecta impide eliminar la cuenta.
 
 
 ## M03. Añadir un lugar
@@ -46,7 +46,7 @@ Muestra los lugares propios, su selección para rutas, los favoritos y la confir
 
 **Escenario válido** Ana consulta Centro y UJI. Borrar Centro conserva UJI. Los favoritos aparecen primero.
 
-**Escenario inválido** Sin sesión no se muestran lugares. Los elementos ajenos no se pueden eliminar ni marcar como favoritos.
+**Escenario inválido** Sin sesión se solicita acceso. Si un lugar ya se ha eliminado, se informa y se actualiza la lista.
 
 
 ## M05. Mis vehículos
@@ -57,7 +57,7 @@ Incluye consulta, alta, edición, favoritos y eliminación de vehículos, con la
 
 **Escenario válido** Se registra Compacto. Editar su consumo conserva el identificador. Borrarlo limpia la referencia predeterminada.
 
-**Escenario inválido** Consumo inválido, sesión caducada o vehículo ajeno. La operación se rechaza y se conserva el estado anterior.
+**Escenario inválido** Un consumo inválido impide guardar. Si el vehículo ya no está disponible, se informa y se actualiza la lista.
 
 
 ## M06. Planificar un trayecto
@@ -68,7 +68,7 @@ Explorar permite buscar los extremos, elegir puntos en el mapa o usar lugares gu
 
 **Escenario válido** Centro \(\rightarrow\) UJI devuelve geometría y métricas positivas. El criterio económico compara las alternativas recibidas.
 
-**Escenario inválido** Extremos coincidentes o criterio no admitido. Se rechaza la solicitud. Los fallos del proveedor permiten reintentar.
+**Escenario inválido** Extremos coincidentes o destino sin seleccionar impiden calcular. Los fallos del proveedor permiten reintentar.
 
 
 ## M07. Resultado y estimaciones
@@ -79,7 +79,7 @@ Reúne estados alternativos de coste de combustible, electricidad y calorías, y
 
 **Escenario válido** Las cifras de la figura ilustran cálculos con datos preparados. No son las medidas que deba devolver el servicio de rutas para Centro y UJI. Un resultado calculado para la cuenta puede guardarse.
 
-**Escenario inválido** Precio o peso inválido conserva el valor anterior. Un resultado inventado no se guarda. Cada estimación corresponde a un modo distinto.
+**Escenario inválido** Un precio o peso inválido conserva el valor anterior. Un nombre vacío impide guardar una ruta.
 
 
 ## M08. Rutas guardadas
@@ -90,7 +90,7 @@ Permite consultar copias históricas, gestionar favoritos y confirmar la elimina
 
 **Escenario válido** Consultar conserva geometría y métricas históricas. Borrar Camino a clase mantiene Paseo, lugares y vehículos.
 
-**Escenario inválido** Sin sesión no se revela el historial. Una ruta ajena no se elimina ni se cambia de favorito.
+**Escenario inválido** Sin sesión se solicita acceso. Si una ruta ya se ha eliminado, se informa y se actualiza la lista.
 
 
 ## M09. Preferencias
@@ -101,7 +101,7 @@ Presenta modo, vehículo y criterio predeterminados, peso y precios manuales con
 
 **Escenario válido** Una nueva planificación usa coche, Compacto y más corta, permitiendo cambios puntuales.
 
-**Escenario inválido** Un vehículo ajeno o un criterio desconocido se rechaza sin sustituir la preferencia guardada. Se validan también precios y peso.
+**Escenario inválido** Un vehículo eliminado no puede guardarse como predeterminado. Un fallo de guardado conserva la preferencia anterior.
 
 
 ## M10. Volver a la aplicación

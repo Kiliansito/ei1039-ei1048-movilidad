@@ -1,39 +1,19 @@
 # Historias, escenarios y aceptación
 
+Cada historia recoge dos escenarios seleccionados y una variante relevante. V indica válido e I inválido. Las reglas comunes y los datos de prueba se definen en el apartado 3.
+
+
 ## HU-01. Registrar una cuenta
 
 **Requisito** R1
 
 **Historia** Como persona no registrada quiero crear una cuenta para utilizar los servicios de movilidad.
 
-
-### Reglas de dominio aplicables
-
-**RD-01** El correo electrónico debe estar normalizado.
-
-**RD-02** El correo electrónico debe ser único.
-
-**RD-03** El correo electrónico puede tener como máximo 254 caracteres.
-
-**RD-04** El nombre debe tener entre 1 y 70 caracteres.
-
-**RD-05** La contraseña debe tener entre 10 y 128 caracteres.
-
-**RD-06** Una operación inválida no debe modificar el estado confirmado.
-
-
-### Análisis de escenarios
-
-| **Escenario** | **Servidor disponible** | **Nombre válido** | **Correo válido** | **Contraseña válida** | **Correo no existente** | **Alta** |
-| --- | --- | --- | --- | --- | --- | --- |
-| E-01-V | Sí | Sí | Sí | Sí | Sí | Sí |
-| E-01-I1 | Sí | Sí | Sí | Sí | No | No |
-| E-01-I2 | Sí | Sí | Sí | No | Sí | No |
-| E-01-I3 | Sí | Sí | No | Sí | Sí | No |
-| E-01-I4 | Sí | No | Sí | Sí | Sí | No |
-| E-01-I5 | No | No aplica | No aplica | No aplica | No aplica | No |
-
-Se seleccionan E-01-V como escenario válido y E-01-I1 como escenario inválido para las pruebas de aceptación.
+| **Escenario** | **Entrada o condición** | **Resultado** |
+| --- | --- | --- |
+| E-01-V | Datos válidos, correo nuevo | Cuenta creada |
+| E-01-I1 | Correo ya registrado | Alta rechazada |
+| E-01-I2 | Contraseña de 9 caracteres | Alta rechazada |
 
 | **E-01-V** | **Escenario válido · Prueba PA-01-V** |
 | --- | --- |
@@ -58,36 +38,16 @@ Se seleccionan E-01-V como escenario válido y E-01-I1 como escenario inválido 
 
 **Historia** Como persona registrada quiero iniciar sesión para acceder a mis datos.
 
-
-### Reglas de dominio aplicables
-
-**RD-07** El acceso requiere una cuenta existente y credenciales correctas.
-
-**RD-08** Una sesión solo permite recuperar los datos de su titular.
-
-**RD-09** El correo inexistente y la contraseña incorrecta deben producir el mismo mensaje de error.
-
-**RD-10** Los campos vacíos no permiten iniciar sesión.
-
-**RD-06** Una operación inválida no debe modificar el estado confirmado.
-
-
-### Análisis de escenarios
-
-| **Escenario** | **Servidor disponible** | **Cuenta existente** | **Contraseña correcta** | **Campos completos** | **Acceso** |
-| --- | --- | --- | --- | --- | --- |
-| E-02-V | Sí | Sí | Sí | Sí | Sí |
-| E-02-I1 | Sí | Sí | No | Sí | No |
-| E-02-I2 | Sí | No | No aplica | Sí | No |
-| E-02-I3 | Sí | No aplica | No aplica | No | No |
-| E-02-I4 | No | No aplica | No aplica | No aplica | No |
-
-Se seleccionan E-02-V como escenario válido y E-02-I1 como escenario inválido para las pruebas de aceptación.
+| **Escenario** | **Entrada o condición** | **Resultado** |
+| --- | --- | --- |
+| E-02-V | Credenciales correctas | Sesión iniciada |
+| E-02-I1 | Contraseña incorrecta | Acceso rechazado |
+| E-02-I2 | Campos vacíos | Acceso rechazado |
 
 | **E-02-V** | **Escenario válido · Prueba PA-02-V** |
 | --- | --- |
 | **Justificación** | comprueba que el acceso corresponde a la cuenta indicada. |
-| **Análisis** | Comprobar que otras cuentas no aparecen en la sesión. |
+| **Análisis** | Comprobar correo y contraseña correctos e incorrectos. |
 | **Given** | existe Ana con ana@example.com y RutaSegura2026 |
 | **When** | inicia sesión con esas credenciales |
 | **Then** | se crea una sesión vinculada a Ana y se recuperan únicamente sus datos |
@@ -107,28 +67,11 @@ Se seleccionan E-02-V como escenario válido y E-02-I1 como escenario inválido 
 
 **Historia** Como usuario autenticado quiero cerrar mi sesión para impedir el acceso posterior desde ella.
 
-
-### Reglas de dominio aplicables
-
-**RD-11** Una sesión cerrada debe dejar de dar acceso a los datos.
-
-**RD-12** El cierre de sesión conserva los contenidos del usuario.
-
-**RD-13** Un código de sesión inexistente o ya cerrado no permite consultar datos ni altera otras sesiones.
-
-**RD-14** El cierre debe comprobarse con una consulta posterior que no dé acceso.
-
-
-### Análisis de escenarios
-
-| **Escenario** | **Servidor disponible** | **Sesión de partida** | **Cierre solicitado** | **Acceso posterior** | **Otras sesiones intactas** |
-| --- | --- | --- | --- | --- | --- |
-| E-03-V | Sí | Activa | Sí | No | Sí |
-| E-03-I1 | Sí | Inexistente | Sí | No | Sí |
-| E-03-I2 | Sí | Cerrada | Sí | No | Sí |
-| E-03-I3 | No | Activa | Sí | No verificable | Sí |
-
-Se seleccionan E-03-V como escenario válido y E-03-I1 como escenario inválido para las pruebas de aceptación.
+| **Escenario** | **Entrada o condición** | **Resultado** |
+| --- | --- | --- |
+| E-03-V | Sesión activa | Sesión cerrada, datos conservados |
+| E-03-I1 | Sesión ya cerrada | Cierre rechazado |
+| E-03-V2 | Volver a acceder con credenciales correctas | Nueva sesión |
 
 | **E-03-V** | **Escenario válido · Prueba PA-03-V** |
 | --- | --- |
@@ -140,11 +83,11 @@ Se seleccionan E-03-V como escenario válido y E-03-I1 como escenario inválido 
 
 | **E-03-I1** | **Escenario inválido · Prueba PA-03-I** |
 | --- | --- |
-| **Justificación** | el código de sesión no corresponde a una sesión activa y no debe dar acceso. |
-| **Análisis** | Repetir el cierre con un código ya cerrado. |
-| **Given** | el código de sesión S0 no corresponde a ninguna sesión activa |
-| **When** | se solicita cerrar S0 y consultar datos utilizando ese código de sesión |
-| **Then** | se rechazan ambas peticiones y las sesiones de otros usuarios se conservan |
+| **Justificación** | no se puede cerrar una sesión que ya está cerrada. |
+| **Análisis** | Comprobar que los datos guardados se conservan. |
+| **Given** | Ana ha cerrado su sesión S1 |
+| **When** | intenta cerrar S1 de nuevo |
+| **Then** | se informa de que la sesión no está activa y sus datos se conservan |
 
 
 ## HU-04. Eliminar la cuenta
@@ -153,31 +96,11 @@ Se seleccionan E-03-V como escenario válido y E-03-I1 como escenario inválido 
 
 **Historia** Como usuario quiero eliminar mi cuenta para borrar sus datos asociados.
 
-
-### Reglas de dominio aplicables
-
-**RD-15** La eliminación de la cuenta requiere confirmar la contraseña correcta.
-
-**RD-16** El borrado debe completarse para la cuenta y todos los datos asociados, incluidos cuenta, sesiones, lugares, vehículos, rutas y preferencias asociados.
-
-**RD-17** La eliminación no debe afectar a los datos de otras cuentas.
-
-**RD-18** Cancelar el diálogo no elimina datos.
-
-**RD-06** Una operación inválida no debe modificar el estado confirmado.
-
-
-### Análisis de escenarios
-
-| **Escenario** | **Servidor disponible** | **Sesión válida** | **Contraseña correcta** | **Confirmación** | **Borrado** |
-| --- | --- | --- | --- | --- | --- |
-| E-04-V | Sí | Sí | Sí | Sí | Sí |
-| E-04-I1 | Sí | Sí | No | Sí | No |
-| E-04-I2 | Sí | No | No aplica | Sí | No |
-| E-04-I3 | Sí | Sí | Sí | No | No |
-| E-04-I4 | No | No aplica | No aplica | No aplica | No |
-
-Se seleccionan E-04-V como escenario válido y E-04-I1 como escenario inválido para las pruebas de aceptación.
+| **Escenario** | **Entrada o condición** | **Resultado** |
+| --- | --- | --- |
+| E-04-V | Contraseña y confirmación correctas | Cuenta y datos eliminados |
+| E-04-I1 | Contraseña incorrecta | Datos conservados |
+| E-04-V2 | Cancelar la eliminación | Datos conservados |
 
 | **E-04-V** | **Escenario válido · Prueba PA-04-V** |
 | --- | --- |
@@ -185,7 +108,7 @@ Se seleccionan E-04-V como escenario válido y E-04-I1 como escenario inválido 
 | **Análisis** | Repetir con cuenta vacía y con favoritos guardados. |
 | **Given** | Ana tiene la contraseña RutaSegura2026, dos lugares, un vehículo y una ruta guardada |
 | **When** | confirma la eliminación con RutaSegura2026 |
-| **Then** | se eliminan cuenta, sesiones, lugares, vehículo, ruta y preferencias de Ana, sin afectar a otras cuentas |
+| **Then** | se eliminan cuenta, sesiones, lugares, vehículo, ruta y preferencias de Ana |
 
 | **E-04-I1** | **Escenario inválido · Prueba PA-04-I** |
 | --- | --- |
@@ -202,31 +125,11 @@ Se seleccionan E-04-V como escenario válido y E-04-I1 como escenario inválido 
 
 **Historia** Como usuario quiero dar de alta un lugar mediante coordenadas para usarlo en una ruta.
 
-
-### Reglas de dominio aplicables
-
-**RD-19** El nombre del lugar debe tener entre 1 y 120 caracteres.
-
-**RD-20** La latitud debe ser finita y estar entre -90 y 90. La longitud debe ser finita y estar entre -180 y 180.
-
-**RD-21** El lugar guardado pertenece al usuario que realiza el alta.
-
-**RD-22** Las coordenadas válidas no garantizan cobertura del proveedor de rutas.
-
-**RD-06** Una operación inválida no debe modificar el estado confirmado.
-
-
-### Análisis de escenarios
-
-| **Escenario** | **Sesión válida** | **Nombre válido** | **Latitud válida** | **Longitud válida** | **Alta** |
-| --- | --- | --- | --- | --- | --- |
-| E-05-V | Sí | Sí | Sí | Sí | Sí |
-| E-05-I1 | Sí | Sí | No (91) | Sí | No |
-| E-05-I2 | Sí | Sí | Sí | No | No |
-| E-05-I3 | Sí | No | Sí | Sí | No |
-| E-05-I4 | No | Sí | Sí | Sí | No |
-
-Se seleccionan E-05-V como escenario válido y E-05-I1 como escenario inválido para las pruebas de aceptación.
+| **Escenario** | **Entrada o condición** | **Resultado** |
+| --- | --- | --- |
+| E-05-V | Nombre y coordenadas válidos | Lugar guardado |
+| E-05-I1 | Latitud 91 | Lugar no guardado |
+| E-05-I2 | Longitud 181 | Lugar no guardado |
 
 | **E-05-V** | **Escenario válido · Prueba PA-05-V** |
 | --- | --- |
@@ -251,34 +154,11 @@ Se seleccionan E-05-V como escenario válido y E-05-I1 como escenario inválido 
 
 **Historia** Como usuario quiero buscar un topónimo y guardar un resultado para identificar un lugar sin conocer sus coordenadas.
 
-
-### Reglas de dominio aplicables
-
-**RD-23** El topónimo no puede quedar vacío al eliminar espacios. La entrada vacía se rechaza antes de consultar el servicio.
-
-**RD-24** El límite propuesto del topónimo es de 200 caracteres, pendiente de validación.
-
-**RD-25** El usuario debe seleccionar y confirmar un candidato. Nunca se guarda automáticamente el primero.
-
-**RD-26** Solo se guarda el candidato seleccionado con coordenadas válidas.
-
-**RD-19** El nombre del lugar debe tener entre 1 y 120 caracteres.
-
-**RD-06** Una operación inválida no debe modificar el estado confirmado.
-
-
-### Análisis de escenarios
-
-| **Escenario** | **Sesión válida** | **Topónimo válido** | **Servicio disponible** | **Candidato confirmado** | **Alta** |
-| --- | --- | --- | --- | --- | --- |
-| E-06-V | Sí | Sí | Sí | Sí | Sí |
-| E-06-I1 | Sí | No (espacios) | No aplica | No | No |
-| E-06-I2 | Sí | Sí | No | No | No |
-| E-06-I3 | Sí | Sí | Sí | No | No |
-| E-06-I4 | Sí | No (201 caracteres) | No aplica | No | No |
-| E-06-I5 | No | Sí | No aplica | No aplica | No |
-
-Se seleccionan E-06-V como escenario válido y E-06-I1 como escenario inválido para las pruebas de aceptación.
+| **Escenario** | **Entrada o condición** | **Resultado** |
+| --- | --- | --- |
+| E-06-V | Búsqueda con candidato seleccionado | Candidato guardado |
+| E-06-I1 | Topónimo de tres espacios | Búsqueda rechazada |
+| E-06-V2 | Búsqueda sin coincidencias | Lista vacía, sin alta |
 
 | **E-06-V** | **Escenario válido · Prueba PA-06-V** |
 | --- | --- |
@@ -303,36 +183,19 @@ Se seleccionan E-06-V como escenario válido y E-06-I1 como escenario inválido 
 
 **Historia** Como usuario quiero consultar mis lugares para elegir los que utilizaré.
 
-
-### Reglas de dominio aplicables
-
-**RD-27** La consulta de lugares requiere una sesión válida.
-
-**RD-28** Cada usuario solo consulta sus propios lugares.
-
-**RD-29** Una lista vacía es un resultado válido y debe mostrar una invitación al alta.
-
-**RD-30** Los nombres repetidos y las búsquedas sin coincidencias no deben confundirse con un error de acceso.
-
-
-### Análisis de escenarios
-
-| **Escenario** | **Servidor disponible** | **Sesión válida** | **Lugares propios** | **Lugares ajenos** | **Resultado** |
-| --- | --- | --- | --- | --- | --- |
-| E-07-V | Sí | Sí | Centro y UJI | Estación | Solo Centro y UJI |
-| E-07-I1 | Sí | No | Centro y UJI | No aplica | Acceso denegado |
-| E-07-V2 | Sí | Sí | Ninguno | Estación | Colección vacía |
-| E-07-I2 | No | Sí | No aplica | No aplica | Consulta no disponible |
-
-Se seleccionan E-07-V como escenario válido y E-07-I1 como escenario inválido para las pruebas de aceptación.
+| **Escenario** | **Entrada o condición** | **Resultado** |
+| --- | --- | --- |
+| E-07-V | Sesión activa, Centro y UJI guardados | Lista de lugares |
+| E-07-I1 | Sin sesión válida | Solicitar acceso |
+| E-07-V2 | Ningún lugar guardado | Lista vacía |
 
 | **E-07-V** | **Escenario válido · Prueba PA-07-V** |
 | --- | --- |
-| **Justificación** | comprueba que cada persona recibe únicamente sus lugares. |
+| **Justificación** | comprueba que se recuperan los lugares guardados. |
 | **Análisis** | Repetir con lista vacía y con lugares favoritos. |
-| **Given** | Ana tiene Centro y UJI y Luis tiene Estación |
+| **Given** | Ana tiene Centro y UJI |
 | **When** | Ana consulta su lista |
-| **Then** | se devuelven Centro y UJI y no se devuelve Estación |
+| **Then** | se devuelven Centro y UJI con sus coordenadas |
 
 | **E-07-I1** | **Escenario inválido · Prueba PA-07-I** |
 | --- | --- |
@@ -349,31 +212,11 @@ Se seleccionan E-07-V como escenario válido y E-07-I1 como escenario inválido 
 
 **Historia** Como usuario quiero eliminar un lugar propio para mantener actualizada mi lista.
 
-
-### Reglas de dominio aplicables
-
-**RD-31** Solo se puede eliminar un lugar propio y tras confirmar la operación.
-
-**RD-32** Eliminar un lugar no elimina los restantes lugares del usuario.
-
-**RD-33** El lugar eliminado deja de poder seleccionarse en nuevas rutas. Si era un extremo reciente se limpia esa selección.
-
-**RD-34** Las rutas guardadas conservan su copia histórica. Esta política está pendiente de confirmar con el profesorado.
-
-**RD-06** Una operación inválida no debe modificar el estado confirmado.
-
-
-### Análisis de escenarios
-
-| **Escenario** | **Sesión válida** | **Lugar existente** | **Lugar propio** | **Confirmación** | **Borrado** |
-| --- | --- | --- | --- | --- | --- |
-| E-08-V | Sí | Sí | Sí | Sí | Sí |
-| E-08-I1 | Sí | Sí | No | Sí | No |
-| E-08-I2 | Sí | No | No aplica | Sí | No |
-| E-08-I3 | Sí | Sí | Sí | No | No |
-| E-08-I4 | No | Sí | Sí | Sí | No |
-
-Se seleccionan E-08-V como escenario válido y E-08-I1 como escenario inválido para las pruebas de aceptación.
+| **Escenario** | **Entrada o condición** | **Resultado** |
+| --- | --- | --- |
+| E-08-V | Centro y UJI, confirmar borrar Centro | Solo queda UJI |
+| E-08-I1 | Centro eliminado antes de confirmar | Aviso, UJI conservado |
+| E-08-V2 | Cancelar el borrado | Lugar conservado |
 
 | **E-08-V** | **Escenario válido · Prueba PA-08-V** |
 | --- | --- |
@@ -385,11 +228,11 @@ Se seleccionan E-08-V como escenario válido y E-08-I1 como escenario inválido 
 
 | **E-08-I1** | **Escenario inválido · Prueba PA-08-I** |
 | --- | --- |
-| **Justificación** | impide eliminar un lugar de otra cuenta. |
-| **Análisis** | Repetir con un identificador que no exista. |
-| **Given** | Estación pertenece a Luis |
-| **When** | Ana intenta eliminar Estación |
-| **Then** | se rechaza como elemento no disponible y Estación permanece intacta |
+| **Justificación** | el lugar puede dejar de estar disponible antes de confirmar. |
+| **Análisis** | Comprobar que los demás lugares se conservan. |
+| **Given** | Ana tenía Centro y UJI, pero Centro se ha eliminado desde otra sesión mientras el diálogo seguía abierto |
+| **When** | confirma eliminar Centro desde el diálogo anterior |
+| **Then** | se informa de que Centro ya no está disponible y UJI permanece |
 
 
 ## HU-09. Elegir lugares en el mapa
@@ -398,33 +241,11 @@ Se seleccionan E-08-V como escenario válido y E-08-I1 como escenario inválido 
 
 **Historia** Como usuario quiero seleccionar un punto en el mapa y guardarlo para fijar visualmente un origen o un destino.
 
-
-### Reglas de dominio aplicables
-
-**RD-35** El alta por mapa requiere seleccionar un punto y confirmar el guardado.
-
-**RD-19** El nombre del lugar debe tener entre 1 y 120 caracteres.
-
-**RD-20** La latitud debe ser finita y estar entre -90 y 90. La longitud debe ser finita y estar entre -180 y 180.
-
-**RD-36** Se guarda la posición finalmente seleccionada, aunque el marcador se haya movido.
-
-**RD-37** Cancelar no crea un lugar. El formulario por coordenadas debe ofrecer una alternativa de teclado.
-
-**RD-06** Una operación inválida no debe modificar el estado confirmado.
-
-
-### Análisis de escenarios
-
-| **Escenario** | **Sesión válida** | **Punto seleccionado** | **Nombre válido** | **Confirmación** | **Alta** |
-| --- | --- | --- | --- | --- | --- |
-| E-09-V | Sí | Sí | Sí | Sí | Sí |
-| E-09-I1 | Sí | No | Sí | Sí | No |
-| E-09-I2 | Sí | Sí | No | Sí | No |
-| E-09-I3 | Sí | Sí | Sí | No | No |
-| E-09-I4 | No | Sí | Sí | Sí | No |
-
-Se seleccionan E-09-V como escenario válido y E-09-I1 como escenario inválido para las pruebas de aceptación.
+| **Escenario** | **Entrada o condición** | **Resultado** |
+| --- | --- | --- |
+| E-09-V | Punto seleccionado y nombre válido | Lugar guardado |
+| E-09-I1 | Sin punto seleccionado | Lugar no guardado |
+| E-09-V2 | Mover el marcador antes de guardar | Se guarda la última posición |
 
 | **E-09-V** | **Escenario válido · Prueba PA-09-V** |
 | --- | --- |
@@ -449,33 +270,11 @@ Se seleccionan E-09-V como escenario válido y E-09-I1 como escenario inválido 
 
 **Historia** Como usuario quiero registrar un vehículo para calcular rutas con su consumo.
 
-
-### Reglas de dominio aplicables
-
-**RD-38** El tipo de vehículo debe ser gasolina, diésel o eléctrico.
-
-**RD-39** El nombre del vehículo debe tener entre 1 y 70 caracteres.
-
-**RD-40** El consumo propuesto debe estar entre 0,1 y 100, pendiente de validación.
-
-**RD-41** El consumo se expresa en l/100 km para gasolina o diésel y en kWh/100 km para eléctrico.
-
-**RD-42** El vehículo guardado pertenece al usuario que realiza el alta.
-
-**RD-06** Una operación inválida no debe modificar el estado confirmado.
-
-
-### Análisis de escenarios
-
-| **Escenario** | **Sesión válida** | **Nombre válido** | **Tipo admitido** | **Consumo válido** | **Alta** |
-| --- | --- | --- | --- | --- | --- |
-| E-10-V | Sí | Sí | Sí | Sí (6,0) | Sí |
-| E-10-I1 | Sí | Sí | Sí | No (-1) | No |
-| E-10-I2 | Sí | Sí | No | Sí | No |
-| E-10-I3 | Sí | No | Sí | Sí | No |
-| E-10-I4 | No | Sí | Sí | Sí | No |
-
-Se seleccionan E-10-V como escenario válido y E-10-I1 como escenario inválido para las pruebas de aceptación.
+| **Escenario** | **Entrada o condición** | **Resultado** |
+| --- | --- | --- |
+| E-10-V | Gasolina, consumo 6 l/100 km | Vehículo guardado |
+| E-10-I1 | Consumo -1 | Alta rechazada |
+| E-10-V2 | Eléctrico, consumo 15 kWh/100 km | Vehículo guardado |
 
 | **E-10-V** | **Escenario válido · Prueba PA-10-V** |
 | --- | --- |
@@ -500,36 +299,19 @@ Se seleccionan E-10-V como escenario válido y E-10-I1 como escenario inválido 
 
 **Historia** Como usuario quiero consultar mis vehículos para seleccionar el apropiado.
 
-
-### Reglas de dominio aplicables
-
-**RD-43** La consulta de vehículos requiere una sesión válida.
-
-**RD-44** Cada usuario solo consulta sus propios vehículos, con su tipo y consumo.
-
-**RD-45** Una lista vacía es un resultado válido.
-
-**RD-46** Los vehículos favoritos deben aparecer antes que el resto. Los nombres coincidentes no identifican por sí solos un vehículo.
-
-
-### Análisis de escenarios
-
-| **Escenario** | **Servidor disponible** | **Sesión válida** | **Vehículos propios** | **Vehículos ajenos** | **Resultado** |
-| --- | --- | --- | --- | --- | --- |
-| E-11-V | Sí | Sí | Compacto y Eléctrico | Furgoneta | Solo los propios |
-| E-11-I1 | Sí | Caducada | Compacto y Eléctrico | No aplica | Acceso denegado |
-| E-11-V2 | Sí | Sí | Ninguno | Furgoneta | Colección vacía |
-| E-11-I2 | No | Sí | No aplica | No aplica | Consulta no disponible |
-
-Se seleccionan E-11-V como escenario válido y E-11-I1 como escenario inválido para las pruebas de aceptación.
+| **Escenario** | **Entrada o condición** | **Resultado** |
+| --- | --- | --- |
+| E-11-V | Sesión activa y vehículos guardados | Lista de vehículos |
+| E-11-I1 | Sesión caducada | Solicitar acceso |
+| E-11-V2 | Ningún vehículo guardado | Lista vacía |
 
 | **E-11-V** | **Escenario válido · Prueba PA-11-V** |
 | --- | --- |
 | **Justificación** | presenta los datos que permiten distinguir las opciones. |
 | **Análisis** | Comprobar nombre, tipo y consumo de cada vehículo. |
-| **Given** | Ana tiene Compacto y Eléctrico. Luis tiene Furgoneta |
+| **Given** | Ana tiene Compacto y Eléctrico |
 | **When** | Ana consulta sus vehículos |
-| **Then** | recibe Compacto y Eléctrico con tipo y consumo. No recibe Furgoneta |
+| **Then** | se devuelven los dos vehículos con sus tipos y consumos |
 
 | **E-11-I1** | **Escenario inválido · Prueba PA-11-I** |
 | --- | --- |
@@ -546,31 +328,11 @@ Se seleccionan E-11-V como escenario válido y E-11-I1 como escenario inválido 
 
 **Historia** Como usuario quiero eliminar un vehículo que ya no utilizo para evitar seleccionarlo.
 
-
-### Reglas de dominio aplicables
-
-**RD-47** Solo se puede eliminar un vehículo propio y tras confirmar la operación.
-
-**RD-48** Si se elimina el vehículo predeterminado, su referencia debe quedar vacía y la nueva selección debe indicarse.
-
-**RD-49** Las rutas guardadas conservan su copia histórica.
-
-**RD-18** Cancelar el diálogo no elimina datos.
-
-**RD-06** Una operación inválida no debe modificar el estado confirmado.
-
-
-### Análisis de escenarios
-
-| **Escenario** | **Sesión válida** | **Vehículo propio** | **Confirmación** | **Predeterminado** | **Borrado** |
-| --- | --- | --- | --- | --- | --- |
-| E-12-V | Sí | Sí | Sí | Sí | Sí. Referencia vacía |
-| E-12-I1 | Sí | No | Sí | No aplica | No |
-| E-12-I2 | Sí | Sí | No | Sí | No |
-| E-12-I3 | No | Sí | Sí | Sí | No |
-| E-12-V2 | Sí | Sí | Sí | No | Sí |
-
-Se seleccionan E-12-V como escenario válido y E-12-I1 como escenario inválido para las pruebas de aceptación.
+| **Escenario** | **Entrada o condición** | **Resultado** |
+| --- | --- | --- |
+| E-12-V | Eliminar Compacto predeterminado | Vehículo y referencia eliminados |
+| E-12-I1 | Compacto eliminado antes de confirmar | Aviso, resto conservado |
+| E-12-V2 | Cancelar el borrado | Vehículo conservado |
 
 | **E-12-V** | **Escenario válido · Prueba PA-12-V** |
 | --- | --- |
@@ -582,11 +344,11 @@ Se seleccionan E-12-V como escenario válido y E-12-I1 como escenario inválido 
 
 | **E-12-I1** | **Escenario inválido · Prueba PA-12-I** |
 | --- | --- |
-| **Justificación** | protege vehículos de otros usuarios. |
-| **Análisis** | Comprobar que no cambian las preferencias de otras cuentas. |
-| **Given** | Furgoneta pertenece a Luis |
-| **When** | Ana intenta eliminar Furgoneta |
-| **Then** | se rechaza la operación y no cambian ni Furgoneta ni las preferencias de Ana |
+| **Justificación** | un vehículo ya eliminado no puede borrarse de nuevo. |
+| **Análisis** | Comprobar que el resto de vehículos y preferencias se conserva. |
+| **Given** | Ana tenía Compacto y Eléctrico, pero Compacto se ha eliminado desde otra sesión |
+| **When** | confirma eliminar Compacto desde la lista anterior |
+| **Then** | se informa de que Compacto ya no está disponible y Eléctrico permanece |
 
 
 ## HU-13. Modificar un vehículo
@@ -595,33 +357,11 @@ Se seleccionan E-12-V como escenario válido y E-12-I1 como escenario inválido 
 
 **Historia** Como usuario quiero modificar el nombre, el tipo o el consumo de mi vehículo para mantener sus datos actualizados.
 
-
-### Reglas de dominio aplicables
-
-**RD-50** Solo se puede modificar un vehículo propio.
-
-**RD-51** La modificación conserva el identificador del vehículo.
-
-**RD-40** El consumo propuesto debe estar entre 0,1 y 100, pendiente de validación.
-
-**RD-52** Cambiar el tipo de vehículo debe actualizar la unidad del consumo.
-
-**RD-53** Las rutas históricas no se recalculan silenciosamente al modificar un vehículo.
-
-**RD-06** Una operación inválida no debe modificar el estado confirmado.
-
-
-### Análisis de escenarios
-
-| **Escenario** | **Sesión válida** | **Vehículo propio** | **Tipo admitido** | **Consumo válido** | **Modificación** |
-| --- | --- | --- | --- | --- | --- |
-| E-13-V | Sí | Sí | Sí | Sí (5,5) | Sí |
-| E-13-I1 | Sí | Sí | Sí | No (0) | No |
-| E-13-I2 | Sí | No | Sí | Sí | No |
-| E-13-I3 | Sí | Sí | No | Sí | No |
-| E-13-I4 | No | Sí | Sí | Sí | No |
-
-Se seleccionan E-13-V como escenario válido y E-13-I1 como escenario inválido para las pruebas de aceptación.
+| **Escenario** | **Entrada o condición** | **Resultado** |
+| --- | --- | --- |
+| E-13-V | Cambiar consumo a 5,5 l/100 km | Mismo vehículo actualizado |
+| E-13-I1 | Cambiar consumo a 0 | Consumo anterior conservado |
+| E-13-V2 | Cambiar de gasolina a eléctrico | Unidad kWh/100 km |
 
 | **E-13-V** | **Escenario válido · Prueba PA-13-V** |
 | --- | --- |
@@ -644,33 +384,13 @@ Se seleccionan E-13-V como escenario válido y E-13-I1 como escenario inválido 
 
 **Requisito** R4
 
-**Historia** Como usuario quiero obtener una ruta entre dos lugares guardados para conocer su trayecto, distancia y duración.
+**Historia** Como usuario quiero obtener una ruta entre dos puntos elegidos en Explorar o lugares guardados para conocer su trayecto, distancia y duración.
 
-
-### Reglas de dominio aplicables
-
-**RD-54** Los extremos deben tener coordenadas válidas y distintas. Se admiten lugares propios guardados y puntos elegidos desde Explorar sin guardarlos.
-
-**RD-55** Los modos previstos son a pie, bicicleta y coche. Se puede consultar solo la ruta o estimar su coste con un vehículo propio o una referencia editable.
-
-**RD-56** El cálculo válido devuelve geometría con al menos dos puntos válidos, distancia y duración positivas. El dibujo del trayecto se comprueba por separado en la interfaz.
-
-**RD-57** Un fallo, demora o falta de cobertura del proveedor debe comunicarse sin presentar una ruta nueva como calculada.
-
-**RD-06** Una operación inválida no debe modificar el estado confirmado.
-
-
-### Análisis de escenarios
-
-| **Escenario** | **Sesión válida** | **Extremos válidos** | **Coordenadas distintas** | **Proveedor disponible** | **Ruta** |
-| --- | --- | --- | --- | --- | --- |
-| E-14-V | Sí | Sí | Sí | Sí | Sí |
-| E-14-I1 | Sí | Sí | No | No aplica | No |
-| E-14-I2 | Sí | No | Sí | No aplica | No |
-| E-14-I3 | Sí | Sí | Sí | No | No |
-| E-14-I4 | No | Sí | Sí | No aplica | No |
-
-Se seleccionan E-14-V como escenario válido y E-14-I1 como escenario inválido para las pruebas de aceptación.
+| **Escenario** | **Entrada o condición** | **Resultado** |
+| --- | --- | --- |
+| E-14-V | Extremos distintos y proveedor disponible | Trayecto y métricas |
+| E-14-I1 | Origen y destino coincidentes | Cálculo rechazado |
+| E-14-I2 | Proveedor no disponible | Error, sin ruta nueva |
 
 | **E-14-V** | **Escenario válido · Prueba PA-14-V** |
 | --- | --- |
@@ -683,7 +403,7 @@ Se seleccionan E-14-V como escenario válido y E-14-I1 como escenario inválido 
 | **E-14-I1** | **Escenario inválido · Prueba PA-14-I** |
 | --- | --- |
 | **Justificación** | detecta una combinación de entradas incompatible con el trayecto definido. |
-| **Análisis** | Repetir con lugares no guardados o con coordenadas iguales. |
+| **Análisis** | Probar coordenadas iguales aunque los nombres sean distintos. |
 | **Given** | Ana tiene Centro |
 | **When** | solicita una ruta de Centro a Centro |
 | **Then** | se rechaza por extremos coincidentes y no se devuelve ni guarda una ruta nueva |
@@ -695,33 +415,11 @@ Se seleccionan E-14-V como escenario válido y E-14-I1 como escenario inválido 
 
 **Historia** Como usuario quiero conocer el coste de combustible para comparar el gasto de mi desplazamiento.
 
-
-### Reglas de dominio aplicables
-
-**RD-58** El coste de combustible se calcula como distancia/100 \(\times\) consumo \(\times\) precio, con km, l/100 km y €/l.
-
-**RD-59** La estimación se aplica a gasolina o diésel, con una ruta y un vehículo adecuados.
-
-**RD-60** El intervalo propuesto para el precio manual es de 0,001 a 20 €/l, pendiente de validación.
-
-**RD-61** Debe indicarse el origen manual del precio o la fuente y fecha del precio público.
-
-**RD-62** Sin precio fiable se muestra el coste como no disponible. Se conserva la precisión y se redondea al presentar.
-
-**RD-06** Una operación inválida no debe modificar el estado confirmado.
-
-
-### Análisis de escenarios
-
-| **Escenario** | **Ruta disponible** | **Vehículo de combustible** | **Precio válido** | **Fuente identificada** | **Resultado** |
-| --- | --- | --- | --- | --- | --- |
-| E-15-V | Sí, distancia d | Sí, 6 l/100 km | Sí, 1,60 €/l | Sí | d/100 por 6 por 1,60 |
-| E-15-I1 | No aplica | Sí | No (-1 €/l) | Manual | Rechazo. Precio anterior |
-| E-15-I2 | No | Sí | Sí | Sí | Sin estimación |
-| E-15-I3 | Sí | No | Sí | Sí | No aplica |
-| E-15-I4 | Sí | Sí | No disponible | No | Coste no disponible |
-
-Se seleccionan E-15-V como escenario válido y E-15-I1 como escenario inválido para las pruebas de aceptación.
+| **Escenario** | **Entrada o condición** | **Resultado** |
+| --- | --- | --- |
+| E-15-V | Gasolina, consumo y precio válidos | Coste según distancia |
+| E-15-I1 | Precio manual -1 euros/l | Precio rechazado |
+| E-15-V2 | Precio público no disponible | Ruta consultable sin coste |
 
 | **E-15-V** | **Escenario válido · Prueba PA-15-V** |
 | --- | --- |
@@ -746,33 +444,11 @@ Se seleccionan E-15-V como escenario válido y E-15-I1 como escenario inválido 
 
 **Historia** Como usuario de un vehículo eléctrico quiero conocer el coste energético de una ruta para prever el gasto.
 
-
-### Reglas de dominio aplicables
-
-**RD-63** El coste eléctrico se calcula como distancia/100 \(\times\) consumo \(\times\) precio, con km, kWh/100 km y €/kWh.
-
-**RD-64** La estimación requiere una ruta y un vehículo eléctrico.
-
-**RD-65** El intervalo propuesto para el precio manual es de 0,001 a 20 €/kWh, pendiente de validación. Admitir tarifa gratuita es una decisión pendiente del cliente.
-
-**RD-66** Un precio recibido en €/MWh debe dividirse entre 1000 para expresarlo en €/kWh.
-
-**RD-67** Debe mostrarse el origen del precio y su unidad. El precio mayorista no equivale a la factura final.
-
-**RD-06** Una operación inválida no debe modificar el estado confirmado.
-
-
-### Análisis de escenarios
-
-| **Escenario** | **Ruta disponible** | **Vehículo eléctrico** | **Precio válido** | **Unidad normalizada** | **Resultado** |
-| --- | --- | --- | --- | --- | --- |
-| E-16-V | Sí, distancia d | Sí, 15 kWh/100 km | Sí, 0,20 €/kWh | Sí | d/100 por 15 por 0,20 |
-| E-16-I1 | No aplica | No aplica | No (0 €/kWh) | Sí | Rechazo. Precio anterior |
-| E-16-V2 | Sí (100 km) | Sí (15 kWh/100 km) | Sí (200 €/MWh) | Convertir a €/kWh | 3,00 € |
-| E-16-I2 | No | Sí | Sí | Sí | Sin estimación |
-| E-16-I3 | Sí | No | Sí | Sí | No aplica |
-
-Se seleccionan E-16-V como escenario válido y E-16-I1 como escenario inválido para las pruebas de aceptación.
+| **Escenario** | **Entrada o condición** | **Resultado** |
+| --- | --- | --- |
+| E-16-V | Eléctrico, consumo y precio válidos | Coste según distancia |
+| E-16-I1 | Precio manual 0 euros/kWh | Precio rechazado |
+| E-16-V2 | Precio público no disponible | Ruta consultable sin coste |
 
 | **E-16-V** | **Escenario válido · Prueba PA-16-V** |
 | --- | --- |
@@ -797,33 +473,11 @@ Se seleccionan E-16-V como escenario válido y E-16-I1 como escenario inválido 
 
 **Historia** Como usuario quiero estimar las calorías de una ruta a pie o en bicicleta para valorar el esfuerzo.
 
-
-### Reglas de dominio aplicables
-
-**RD-68** Las calorías se estiman como MET \(\times\) 3.5 \(\times\) peso/200 \(\times\) minutos.
-
-**RD-69** Los MET propuestos son 3,5 a pie y 6,8 en bicicleta, pendientes de validación.
-
-**RD-70** El peso propuesto debe estar entre 20 y 300 kg, pendiente de validación.
-
-**RD-71** La duración se expresa en minutos. Se conserva la precisión y se redondea al presentar.
-
-**RD-72** El resultado se identifica como estimación, no como medición fisiológica individual.
-
-**RD-06** Una operación inválida no debe modificar el estado confirmado.
-
-
-### Análisis de escenarios
-
-| **Escenario** | **Ruta disponible** | **Modo** | **Peso válido** | **Duración válida** | **Resultado** |
-| --- | --- | --- | --- | --- | --- |
-| E-17-V | Sí | A pie | Sí, 70 kg | Sí, duración t | 3,5 por 3,5 por 70/200 por t |
-| E-17-I1 | No aplica | No aplica | No (0 kg) | No aplica | Rechazo. Peso anterior |
-| E-17-V2 | Sí | Bicicleta | Sí (70 kg) | Sí (30 min) | 249,9 kcal |
-| E-17-I2 | No | A pie | Sí | No aplica | Sin estimación |
-| E-17-I3 | Sí | Coche | Sí | Sí | No aplica |
-
-Se seleccionan E-17-V como escenario válido y E-17-I1 como escenario inválido para las pruebas de aceptación.
+| **Escenario** | **Entrada o condición** | **Resultado** |
+| --- | --- | --- |
+| E-17-V | A pie, peso 70 kg | Calorías estimadas |
+| E-17-I1 | Peso 0 kg | Peso rechazado |
+| E-17-V2 | Bicicleta, peso válido | Estimación con MET de bicicleta |
 
 | **E-17-V** | **Escenario válido · Prueba PA-17-V** |
 | --- | --- |
@@ -848,33 +502,11 @@ Se seleccionan E-17-V como escenario válido y E-17-I1 como escenario inválido 
 
 **Historia** Como usuario quiero priorizar duración, distancia o coste para escoger una alternativa adecuada.
 
-
-### Reglas de dominio aplicables
-
-**RD-73** Los criterios admitidos son más rápida, más corta y más económica.
-
-**RD-74** El criterio se aplica a las alternativas realmente recibidas, sin afirmar una optimización global.
-
-**RD-75** En coche, más económica requiere vehículo y precio. Si faltan, se avisa y se ordena por distancia sin afirmar un coste menor. A pie y en bicicleta el coste monetario es cero.
-
-**RD-76** Los empates deben resolverse con un orden estable. Con una sola alternativa se evalúa esa opción.
-
-**RD-77** Un criterio desconocido se rechaza antes de consultar rutas y sin cambiar preferencias.
-
-**RD-06** Una operación inválida no debe modificar el estado confirmado.
-
-
-### Análisis de escenarios
-
-| **Escenario** | **Extremos válidos** | **Criterio admitido** | **Alternativas disponibles** | **Precio para coste** | **Resultado** |
-| --- | --- | --- | --- | --- | --- |
-| E-18-V | Sí | Más económica | Sí | Sí | Menor coste recibido |
-| E-18-I1 | Sí | No (panorámica) | No aplica | No aplica | Rechazo sin consulta |
-| E-18-I2 | Sí | Más económica | Sí | No | Coste no disponible |
-| E-18-I3 | Sí | Sí | No | No aplica | Sin alternativa |
-| E-18-V2 | Sí | Más rápida | Una | No necesario | Única alternativa |
-
-Se seleccionan E-18-V como escenario válido y E-18-I1 como escenario inválido para las pruebas de aceptación.
+| **Escenario** | **Entrada o condición** | **Resultado** |
+| --- | --- | --- |
+| E-18-V | Más económica, alternativas y precio | Menor coste recibido primero |
+| E-18-I1 | Destino sin seleccionar | Cálculo rechazado |
+| E-18-V2 | Una sola alternativa disponible | Se muestra esa alternativa |
 
 | **E-18-V** | **Escenario válido · Prueba PA-18-V** |
 | --- | --- |
@@ -886,11 +518,11 @@ Se seleccionan E-18-V como escenario válido y E-18-I1 como escenario inválido 
 
 | **E-18-I1** | **Escenario inválido · Prueba PA-18-I** |
 | --- | --- |
-| **Justificación** | impide calcular una ruta con un criterio que no está admitido. |
-| **Análisis** | Repetir con criterio vacío y comprobar que no se consulta ORS. |
-| **Given** | Ana tiene Centro y UJI |
-| **When** | solicita el criterio desconocido panorámica |
-| **Then** | se rechaza el criterio sin consultar rutas ni cambiar preferencias |
+| **Justificación** | sin destino no se puede comparar ninguna ruta. |
+| **Análisis** | Comprobar también la ausencia de origen. |
+| **Given** | Ana ha seleccionado Centro como origen y más económica como criterio, pero no ha seleccionado destino |
+| **When** | solicita calcular la ruta |
+| **Then** | se solicita seleccionar un destino y no se calcula una ruta nueva |
 
 
 ## HU-19. Guardar una ruta
@@ -899,47 +531,27 @@ Se seleccionan E-18-V como escenario válido y E-18-I1 como escenario inválido 
 
 **Historia** Como usuario quiero guardar una ruta calculada para consultarla posteriormente.
 
-
-### Reglas de dominio aplicables
-
-**RD-78** Solo se puede guardar un resultado calculado asociado a la sesión del usuario.
-
-**RD-79** El nombre de una ruta admite de 1 a 120 caracteres y no puede estar vacío.
-
-**RD-80** El guardado conserva nombre, geometría, distancia, duración y datos del cálculo, incluida la fecha y la fuente del precio cuando exista.
-
-**RD-81** Una ruta guardada es una copia histórica. No se afirma persistencia de resultados que no se hayan guardado.
-
-**RD-06** Una operación inválida no debe modificar el estado confirmado.
-
-
-### Análisis de escenarios
-
-| **Escenario** | **Sesión válida** | **Resultado calculado** | **Resultado propio** | **Nombre válido** | **Guardado** |
-| --- | --- | --- | --- | --- | --- |
-| E-19-V | Sí | Sí | Sí | Sí | Sí |
-| E-19-I1 | Sí | No (X99 inventado) | No aplica | Sí | No |
-| E-19-I2 | Sí | Sí | No | Sí | No |
-| E-19-I3 | Sí | Sí | Sí | No | No |
-| E-19-I4 | No | Sí | Sí | Sí | No |
-
-Se seleccionan E-19-V como escenario válido y E-19-I1 como escenario inválido para las pruebas de aceptación.
+| **Escenario** | **Entrada o condición** | **Resultado** |
+| --- | --- | --- |
+| E-19-V | Resultado calculado y nombre válido | Ruta guardada |
+| E-19-I1 | Nombre de tres espacios | Ruta no guardada |
+| E-19-I2 | Sin resultado calculado | Guardado no disponible |
 
 | **E-19-V** | **Escenario válido · Prueba PA-19-V** |
 | --- | --- |
 | **Justificación** | comprueba que una ruta calculada puede guardarse para otro momento. |
 | **Análisis** | Recuperar y comparar el trazado, las medidas y la fecha. |
-| **Given** | Ana tiene un resultado real entre Centro y UJI calculado para su cuenta hace menos de una hora |
+| **Given** | Ana tiene un resultado real entre Centro y UJI calculado para su cuenta |
 | **When** | lo guarda con el nombre Camino a clase |
 | **Then** | se crea una ruta propia con ese nombre, geometría, métricas y fecha de cálculo, recuperable en su listado |
 
 | **E-19-I1** | **Escenario inválido · Prueba PA-19-I** |
 | --- | --- |
-| **Justificación** | impide guardar un resultado que no se ha calculado para esa cuenta. |
-| **Análisis** | Repetir con resultado caducado y de otra cuenta. |
-| **Given** | Ana no tiene un resultado calculado con identificador X99 para su cuenta |
-| **When** | intenta guardar el resultado X99 como Camino a clase |
-| **Then** | se rechaza el guardado y la lista de rutas no cambia |
+| **Justificación** | una ruta guardada necesita un nombre no vacío. |
+| **Análisis** | Probar nombre vacío y los límites de longitud. |
+| **Given** | Ana tiene un resultado calculado entre Centro y UJI y ninguna ruta guardada |
+| **When** | intenta guardarlo con un nombre de tres espacios |
+| **Then** | se rechaza el nombre y la lista de rutas sigue vacía |
 
 
 ## HU-20. Consultar rutas guardadas
@@ -948,32 +560,11 @@ Se seleccionan E-19-V como escenario válido y E-19-I1 como escenario inválido 
 
 **Historia** Como usuario quiero consultar mis rutas guardadas para recuperar un trayecto sin volver a calcularlo.
 
-
-### Reglas de dominio aplicables
-
-**RD-82** La consulta de rutas guardadas requiere una sesión válida y solo muestra rutas propias.
-
-**RD-83** Consultar recupera la misma geometría y métricas históricas, sin recalcularlas.
-
-**RD-45** Una lista vacía es un resultado válido.
-
-**RD-84** La indisponibilidad del proveedor de rutas no debe impedir leer una copia almacenada localmente.
-
-**RD-85** El precio histórico debe identificarse como tal aunque esté desactualizado.
-
-
-### Análisis de escenarios
-
-| **Escenario** | **Sesión válida** | **Ruta propia guardada** | **Almacenamiento disponible** | **Proveedor de rutas disponible** | **Resultado** |
-| --- | --- | --- | --- | --- | --- |
-| E-20-V | Sí | Sí | Sí | Sí | Instantánea histórica |
-| E-20-I1 | No | Sí | Sí | No aplica | Acceso denegado |
-| E-20-I2 | Sí | No. Es ajena | Sí | No aplica | Ruta no disponible |
-| E-20-V2 | Sí | Sí | Sí | No | Instantánea histórica |
-| E-20-V3 | Sí | Colección vacía | Sí | No aplica | Lista vacía |
-| E-20-I3 | Sí | Sí | No | No aplica | Fallo de almacenamiento |
-
-Se seleccionan E-20-V como escenario válido y E-20-I1 como escenario inválido para las pruebas de aceptación.
+| **Escenario** | **Entrada o condición** | **Resultado** |
+| --- | --- | --- |
+| E-20-V | Ruta guardada y sesión activa | Mismo trazado y métricas |
+| E-20-I1 | Sin sesión válida | Solicitar acceso |
+| E-20-V2 | Ninguna ruta guardada | Lista vacía |
 
 | **E-20-V** | **Escenario válido · Prueba PA-20-V** |
 | --- | --- |
@@ -998,29 +589,11 @@ Se seleccionan E-20-V como escenario válido y E-20-I1 como escenario inválido 
 
 **Historia** Como usuario quiero eliminar una ruta que no necesito para ordenar mi historial.
 
-
-### Reglas de dominio aplicables
-
-**RD-86** Solo se puede eliminar una ruta guardada propia y tras confirmar la operación.
-
-**RD-87** Eliminar una ruta no modifica los lugares ni vehículos utilizados para calcularla.
-
-**RD-88** Cancelar conserva la ruta. La lista debe actualizarse tras confirmar el borrado.
-
-**RD-06** Una operación inválida no debe modificar el estado confirmado.
-
-
-### Análisis de escenarios
-
-| **Escenario** | **Sesión válida** | **Ruta existente** | **Ruta propia** | **Confirmación** | **Borrado** |
-| --- | --- | --- | --- | --- | --- |
-| E-21-V | Sí | Sí | Sí | Sí | Sí |
-| E-21-I1 | Sí | Sí | No | Sí | No |
-| E-21-I2 | Sí | No | No aplica | Sí | No |
-| E-21-I3 | Sí | Sí | Sí | No | No |
-| E-21-I4 | No | Sí | Sí | Sí | No |
-
-Se seleccionan E-21-V como escenario válido y E-21-I1 como escenario inválido para las pruebas de aceptación.
+| **Escenario** | **Entrada o condición** | **Resultado** |
+| --- | --- | --- |
+| E-21-V | Confirmar borrar Camino a clase | Solo queda Paseo |
+| E-21-I1 | Ruta eliminada antes de confirmar | Aviso, Paseo conservado |
+| E-21-V2 | Cancelar el borrado | Ruta conservada |
 
 | **E-21-V** | **Escenario válido · Prueba PA-21-V** |
 | --- | --- |
@@ -1032,11 +605,11 @@ Se seleccionan E-21-V como escenario válido y E-21-I1 como escenario inválido 
 
 | **E-21-I1** | **Escenario inválido · Prueba PA-21-I** |
 | --- | --- |
-| **Justificación** | impide borrar datos de otra cuenta. |
-| **Análisis** | Repetir con una ruta inexistente y conservar las demás. |
-| **Given** | Camino al trabajo pertenece a Luis |
-| **When** | Ana intenta eliminar esa ruta |
-| **Then** | se rechaza la operación y la ruta de Luis permanece |
+| **Justificación** | una ruta ya eliminada no puede borrarse de nuevo. |
+| **Análisis** | Comprobar que las demás rutas se conservan. |
+| **Given** | Ana tenía Camino a clase y Paseo, pero Camino a clase se ha eliminado desde otra sesión |
+| **When** | confirma eliminar Camino a clase desde la lista anterior |
+| **Then** | se informa de que ya no está disponible y Paseo permanece |
 
 
 ## HU-22. Gestionar favoritos
@@ -1045,33 +618,11 @@ Se seleccionan E-21-V como escenario válido y E-21-I1 como escenario inválido 
 
 **Historia** Como usuario quiero marcar y desmarcar favoritos para encontrar primero los elementos que uso con frecuencia.
 
-
-### Reglas de dominio aplicables
-
-**RD-89** Se pueden marcar y desmarcar favoritos en las listas de lugares, vehículos y rutas.
-
-**RD-90** Solo se pueden modificar las marcas de elementos propios.
-
-**RD-91** Los favoritos aparecen antes que los no favoritos y mantienen un orden secundario estable.
-
-**RD-92** Las marcas deben conservarse al recargar. Todos o ninguno de los elementos pueden ser favoritos.
-
-**RD-93** La estrella debe tener etiqueta accesible y un estado perceptible sin depender del color.
-
-**RD-06** Una operación inválida no debe modificar el estado confirmado.
-
-
-### Análisis de escenarios
-
-| **Escenario** | **Sesión válida** | **Elemento existente** | **Elemento propio** | **Acción** | **Resultado** |
-| --- | --- | --- | --- | --- | --- |
-| E-22-V | Sí | Sí | Sí | Marcar en las tres listas | Favoritos primero. Persisten |
-| E-22-I1 | Sí | Sí | No | Cambiar marca | Rechazo. Marca intacta |
-| E-22-V2 | Sí | Sí | Sí | Desmarcar | Pierde prioridad de favorito |
-| E-22-I2 | Sí | No | No aplica | Cambiar marca | Sin modificación |
-| E-22-I3 | No | Sí | Sí | Cambiar marca | Acceso denegado |
-
-Se seleccionan E-22-V como escenario válido y E-22-I1 como escenario inválido para las pruebas de aceptación.
+| **Escenario** | **Entrada o condición** | **Resultado** |
+| --- | --- | --- |
+| E-22-V | Marcar un elemento de cada lista | Favoritos primero, marcas guardadas |
+| E-22-I1 | Elemento eliminado antes de marcar | Aviso, resto conservado |
+| E-22-V2 | Desmarcar un favorito | Pierde su prioridad |
 
 | **E-22-V** | **Escenario válido · Prueba PA-22-V** |
 | --- | --- |
@@ -1083,11 +634,11 @@ Se seleccionan E-22-V como escenario válido y E-22-I1 como escenario inválido 
 
 | **E-22-I1** | **Escenario inválido · Prueba PA-22-I** |
 | --- | --- |
-| **Justificación** | impide cambiar los favoritos de otra cuenta en las tres listas. |
-| **Análisis** | Repetir por separado para lugar, vehículo y ruta. |
-| **Given** | Estación, Furgoneta y Camino al trabajo pertenecen a Luis |
-| **When** | Ana intenta cambiar el favorito de cada uno |
-| **Then** | cada operación se rechaza y todas las marcas de Luis permanecen intactas |
+| **Justificación** | solo puede marcarse un elemento que todavía exista. |
+| **Análisis** | Aplicar el mismo caso a vehículos y rutas. |
+| **Given** | Ana tenía Centro y UJI, pero Centro se ha eliminado desde otra sesión |
+| **When** | intenta marcar Centro como favorito desde la lista anterior |
+| **Then** | se informa de que Centro ya no está disponible y UJI conserva su marca |
 
 
 ## HU-23. Fijar transporte predeterminado
@@ -1096,33 +647,11 @@ Se seleccionan E-22-V como escenario válido y E-22-I1 como escenario inválido 
 
 **Historia** Como usuario quiero fijar un modo y, si procede, un vehículo por defecto para preparar rutas con menos pasos.
 
-
-### Reglas de dominio aplicables
-
-**RD-55** Los modos previstos son a pie, bicicleta y coche. Se puede consultar solo la ruta o estimar su coste con un vehículo propio o una referencia editable.
-
-**RD-94** Si se fija un vehículo predeterminado para el modo coche, debe pertenecer al usuario.
-
-**RD-95** Los modos a pie y bicicleta no requieren vehículo.
-
-**RD-96** Los valores predeterminados se aplican a una planificación nueva, permitiendo una selección puntual distinta.
-
-**RD-97** Eliminar el vehículo predeterminado limpia su referencia. El valor por defecto se distingue de restaurar el último trayecto.
-
-**RD-06** Una operación inválida no debe modificar el estado confirmado.
-
-
-### Análisis de escenarios
-
-| **Escenario** | **Sesión válida** | **Modo admitido** | **Vehículo propio si procede** | **Guardado** | **Resultado** |
-| --- | --- | --- | --- | --- | --- |
-| E-23-V | Sí | Coche | Sí (Compacto) | Sí | Coche y Compacto por defecto |
-| E-23-I1 | Sí | Coche | No (Furgoneta ajena) | No | Conserva Compacto |
-| E-23-V2 | Sí | A pie | No necesario | Sí | A pie sin vehículo |
-| E-23-I2 | Sí | No | No aplica | No | Conserva preferencia |
-| E-23-I3 | No | Coche | Sí | No | Acceso denegado |
-
-Se seleccionan E-23-V como escenario válido y E-23-I1 como escenario inválido para las pruebas de aceptación.
+| **Escenario** | **Entrada o condición** | **Resultado** |
+| --- | --- | --- |
+| E-23-V | Coche y Compacto disponible | Predeterminados guardados |
+| E-23-I1 | Compacto eliminado antes de guardar | Referencia rechazada |
+| E-23-V2 | A pie o bicicleta | Sin vehículo asociado |
 
 | **E-23-V** | **Escenario válido · Prueba PA-23-V** |
 | --- | --- |
@@ -1134,11 +663,11 @@ Se seleccionan E-23-V como escenario válido y E-23-I1 como escenario inválido 
 
 | **E-23-I1** | **Escenario inválido · Prueba PA-23-I** |
 | --- | --- |
-| **Justificación** | impide referencias a vehículos ajenos. |
-| **Análisis** | Repetir con un vehículo eliminado. |
-| **Given** | Furgoneta pertenece a Luis y Compacto es el vehículo predeterminado de Ana |
-| **When** | Ana intenta establecer Furgoneta como predeterminada |
-| **Then** | se rechaza la referencia y permanece Compacto |
+| **Justificación** | no se puede guardar una referencia a un vehículo eliminado. |
+| **Análisis** | Comprobar que el modo anterior se conserva. |
+| **Given** | Ana usa a pie por defecto y tiene Compacto seleccionado en la configuración, pero el vehículo se elimina desde otra sesión antes de guardar |
+| **When** | intenta guardar coche y Compacto como predeterminados |
+| **Then** | se informa de que Compacto ya no está disponible y se conserva a pie como modo predeterminado |
 
 
 ## HU-24. Fijar criterio predeterminado
@@ -1147,29 +676,11 @@ Se seleccionan E-23-V como escenario válido y E-23-I1 como escenario inválido 
 
 **Historia** Como usuario quiero guardar un criterio de ruta por defecto para no repetir mi preferencia.
 
-
-### Reglas de dominio aplicables
-
-**RD-73** Los criterios admitidos son más rápida, más corta y más económica.
-
-**RD-98** El criterio guardado debe aparecer como valor inicial al abrir una planificación nueva.
-
-**RD-99** Una selección puntual no sobrescribe el criterio predeterminado.
-
-**RD-06** Una operación inválida no debe modificar el estado confirmado.
-
-
-### Análisis de escenarios
-
-| **Escenario** | **Servidor disponible** | **Sesión válida** | **Criterio admitido** | **Guardar preferencia** | **Resultado** |
-| --- | --- | --- | --- | --- | --- |
-| E-24-V | Sí | Sí | Más corta | Sí | Más corta por defecto |
-| E-24-I1 | Sí | Sí | No (panorámica) | Sí | Conserva más corta |
-| E-24-V2 | Sí | Sí | Más económica | Sí | Más económica por defecto |
-| E-24-I2 | Sí | No | Sí | Sí | Acceso denegado |
-| E-24-I3 | No | Sí | Sí | Sí | Sin guardado confirmado |
-
-Se seleccionan E-24-V como escenario válido y E-24-I1 como escenario inválido para las pruebas de aceptación.
+| **Escenario** | **Entrada o condición** | **Resultado** |
+| --- | --- | --- |
+| E-24-V | Guardar más corta | Criterio inicial más corta |
+| E-24-I1 | Almacenamiento no disponible | Error, preferencia conservada |
+| E-24-V2 | Cambiar criterio solo para una consulta | Predeterminado conservado |
 
 | **E-24-V** | **Escenario válido · Prueba PA-24-V** |
 | --- | --- |
@@ -1181,11 +692,11 @@ Se seleccionan E-24-V como escenario válido y E-24-I1 como escenario inválido 
 
 | **E-24-I1** | **Escenario inválido · Prueba PA-24-I** |
 | --- | --- |
-| **Justificación** | comprueba que un criterio desconocido no cambia la preferencia guardada. |
-| **Análisis** | Comprobar que las demás preferencias tampoco cambian. |
-| **Given** | Ana tiene más corta como criterio predeterminado |
-| **When** | intenta guardar panorámica como criterio |
-| **Then** | se rechaza el valor y se conserva más corta |
+| **Justificación** | el fallo de guardado no debe mostrarse como un cambio confirmado. |
+| **Análisis** | Volver a abrir y comprobar la preferencia anterior. |
+| **Given** | Ana tiene más corta como criterio predeterminado y el almacenamiento deja de estar disponible |
+| **When** | intenta guardar más rápida |
+| **Then** | se informa del fallo de guardado y al recuperar el almacenamiento sigue guardado más corta |
 
 
 ## HU-25. Recuperar estado tras un cierre
@@ -1194,35 +705,16 @@ Se seleccionan E-24-V como escenario válido y E-24-I1 como escenario inválido 
 
 **Historia** Como usuario quiero recuperar contenidos y aspecto al volver a abrir la aplicación para evitar reconfigurarla.
 
-
-### Reglas de dominio aplicables
-
-**RD-100** Tras un cierre normal deben recuperarse los contenidos confirmados con sus identificadores, favoritos, tema y selección del último trayecto.
-
-**RD-101** La comprobación de persistencia utiliza almacenamiento en disco y un nuevo proceso.
-
-**RD-102** Una sesión caducada requiere volver a iniciar sesión.
-
-**RD-103** Un fallo de almacenamiento debe mostrarse como error, sin sustituir los datos por una lista vacía.
-
-**RD-104** La recuperación de borradores y resultados no guardados está pendiente de aclarar con el profesorado y no se acredita con el prototipo.
-
-
-### Análisis de escenarios
-
-| **Escenario** | **Datos confirmados** | **Cierre normal** | **Almacenamiento disponible** | **Sesión válida al consultar** | **Resultado** |
-| --- | --- | --- | --- | --- | --- |
-| E-25-V | Sí | Sí | Sí | Sí. Tras iniciar sesión | Estado recuperado |
-| E-25-I1 | Sí | Sí | No | No aplica | Error. No lista vacía ficticia |
-| E-25-I2 | Sí | Sí | Sí | No. Caducada | Solicitar acceso |
-| E-25-V2 | Listas vacías guardadas | Sí | Sí | Sí | Estado vacío real |
-
-Se seleccionan E-25-V como escenario válido y E-25-I1 como escenario inválido para las pruebas de aceptación.
+| **Escenario** | **Entrada o condición** | **Resultado** |
+| --- | --- | --- |
+| E-25-V | Cierre normal con datos guardados | Estado recuperado |
+| E-25-I1 | Almacenamiento inaccesible | Error de carga |
+| E-25-V2 | Listas vacías guardadas | Estado vacío recuperado |
 
 | **E-25-V** | **Escenario válido · Prueba PA-25-V** |
 | --- | --- |
 | **Justificación** | comprueba la conservación del estado confirmado al cerrar y volver a abrir la aplicación. |
-| **Análisis** | Comparar las tres listas y todas las preferencias guardadas. |
+| **Análisis** | Comparar datos, favoritos y preferencias guardados. |
 | **Given** | Ana ha guardado Centro, UJI, Compacto y Camino a clase, ha marcado UJI como favorito y usa tema oscuro y el último trayecto Centro-UJI a pie con criterio más corta |
 | **When** | cierra la aplicación y vuelve a abrirla sobre la misma base de datos, iniciando sesión si es necesario |
 | **Then** | recupera los mismos registros, favoritos, tema y selección del último trayecto |
@@ -1242,28 +734,11 @@ Se seleccionan E-25-V como escenario válido y E-25-I1 como escenario inválido 
 
 **Historia** Como usuario quiero conservar los datos confirmados tras un cierre involuntario para no perder el trabajo guardado.
 
-
-### Reglas de dominio aplicables
-
-**RD-105** Tras una interrupción de proceso deben conservarse íntegros los datos cuya escritura ya se haya confirmado.
-
-**RD-106** Las escrituras se aplican completas o no se aplican. Una transacción interrumpida antes del COMMIT no debe producir un alta parcial.
-
-**RD-107** La recuperación se comprueba reabriendo la misma base de datos en disco desde otro proceso.
-
-**RD-108** La caída de proceso no acredita recuperación ante corte eléctrico o daño físico del disco.
-
-
-### Análisis de escenarios
-
-| **Escenario** | **Centro confirmado** | **Alta de UJI** | **Momento de interrupción** | **Base reabierta** | **Resultado** |
-| --- | --- | --- | --- | --- | --- |
-| E-26-V | Sí | No iniciada | Después del COMMIT de Centro | Sí | Centro íntegro, sin duplicados |
-| E-26-I1 | Sí | Sin COMMIT | Antes del COMMIT de UJI | Sí | Centro sí. UJI no |
-| E-26-V2 | Sí | Confirmada | Después del COMMIT de UJI | Sí | Centro y UJI íntegros |
-| E-26-I2 | Sí | No aplica | Caída de proceso | No disponible | Error. Recuperación no comprobable |
-
-Se seleccionan E-26-V como escenario válido y E-26-I1 como escenario inválido para las pruebas de aceptación.
+| **Escenario** | **Entrada o condición** | **Resultado** |
+| --- | --- | --- |
+| E-26-V | Interrupción tras confirmar Centro | Centro conservado |
+| E-26-I1 | Interrupción antes de confirmar UJI | Centro conservado, UJI ausente |
+| E-26-V2 | Interrupción tras confirmar ambos | Ambos conservados |
 
 | **E-26-V** | **Escenario válido · Prueba PA-26-V** |
 | --- | --- |

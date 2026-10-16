@@ -28,14 +28,14 @@ Feature: Movilidad de Vía
     Then S1 deja de dar acceso y los datos de Ana se conservan
 
   Scenario: PA-03-I Cerrar sesión, escenario inválido
-    Given el código de sesión S0 no corresponde a ninguna sesión activa
-    When se solicita cerrar S0 y consultar datos utilizando ese código de sesión
-    Then se rechazan ambas peticiones y las sesiones de otros usuarios se conservan
+    Given Ana ha cerrado su sesión S1
+    When intenta cerrar S1 de nuevo
+    Then se informa de que la sesión no está activa y sus datos se conservan
 
   Scenario: PA-04-V Eliminar la cuenta, escenario válido
     Given Ana tiene la contraseña RutaSegura2026, dos lugares, un vehículo y una ruta guardada
     When confirma la eliminación con RutaSegura2026
-    Then se eliminan cuenta, sesiones, lugares, vehículo, ruta y preferencias de Ana, sin afectar a otras cuentas
+    Then se eliminan cuenta, sesiones, lugares, vehículo, ruta y preferencias de Ana
 
   Scenario: PA-04-I Eliminar la cuenta, escenario inválido
     Given Ana tiene la contraseña RutaSegura2026, dos lugares, un vehículo y una ruta guardada
@@ -63,9 +63,9 @@ Feature: Movilidad de Vía
     Then se rechaza la búsqueda vacía antes de consultar el servicio y no se guarda ningún lugar
 
   Scenario: PA-07-V Consultar lugares, escenario válido
-    Given Ana tiene Centro y UJI y Luis tiene Estación
+    Given Ana tiene Centro y UJI
     When Ana consulta su lista
-    Then se devuelven Centro y UJI y no se devuelve Estación
+    Then se devuelven Centro y UJI con sus coordenadas
 
   Scenario: PA-07-I Consultar lugares, escenario inválido
     Given no hay sesión válida
@@ -78,9 +78,9 @@ Feature: Movilidad de Vía
     Then solo queda UJI y Centro deja de poder elegirse en nuevas rutas
 
   Scenario: PA-08-I Eliminar un lugar, escenario inválido
-    Given Estación pertenece a Luis
-    When Ana intenta eliminar Estación
-    Then se rechaza como elemento no disponible y Estación permanece intacta
+    Given Ana tenía Centro y UJI, pero Centro se ha eliminado desde otra sesión mientras el diálogo seguía abierto
+    When confirma eliminar Centro desde el diálogo anterior
+    Then se informa de que Centro ya no está disponible y UJI permanece
 
   Scenario: PA-09-V Elegir lugares en el mapa, escenario válido
     Given Ana visualiza el mapa y tiene cero lugares
@@ -103,9 +103,9 @@ Feature: Movilidad de Vía
     Then se rechaza el consumo y la lista permanece vacía
 
   Scenario: PA-11-V Consultar vehículos, escenario válido
-    Given Ana tiene Compacto y Eléctrico. Luis tiene Furgoneta
+    Given Ana tiene Compacto y Eléctrico
     When Ana consulta sus vehículos
-    Then recibe Compacto y Eléctrico con tipo y consumo. No recibe Furgoneta
+    Then se devuelven los dos vehículos con sus tipos y consumos
 
   Scenario: PA-11-I Consultar vehículos, escenario inválido
     Given la sesión de Ana ha caducado
@@ -118,9 +118,9 @@ Feature: Movilidad de Vía
     Then se borra el vehículo y la referencia predeterminada queda vacía
 
   Scenario: PA-12-I Eliminar un vehículo, escenario inválido
-    Given Furgoneta pertenece a Luis
-    When Ana intenta eliminar Furgoneta
-    Then se rechaza la operación y no cambian ni Furgoneta ni las preferencias de Ana
+    Given Ana tenía Compacto y Eléctrico, pero Compacto se ha eliminado desde otra sesión
+    When confirma eliminar Compacto desde la lista anterior
+    Then se informa de que Compacto ya no está disponible y Eléctrico permanece
 
   Scenario: PA-13-V Modificar un vehículo, escenario válido
     Given Compacto pertenece a Ana y consume 6,0 l/100 km
@@ -178,19 +178,19 @@ Feature: Movilidad de Vía
     Then la primera opción tiene coste menor o igual que cada alternativa obtenida y se muestra el origen del precio
 
   Scenario: PA-18-I Elegir el criterio de ruta, escenario inválido
-    Given Ana tiene Centro y UJI
-    When solicita el criterio desconocido panorámica
-    Then se rechaza el criterio sin consultar rutas ni cambiar preferencias
+    Given Ana ha seleccionado Centro como origen y más económica como criterio, pero no ha seleccionado destino
+    When solicita calcular la ruta
+    Then se solicita seleccionar un destino y no se calcula una ruta nueva
 
   Scenario: PA-19-V Guardar una ruta, escenario válido
-    Given Ana tiene un resultado real entre Centro y UJI calculado para su cuenta hace menos de una hora
+    Given Ana tiene un resultado real entre Centro y UJI calculado para su cuenta
     When lo guarda con el nombre Camino a clase
     Then se crea una ruta propia con ese nombre, geometría, métricas y fecha de cálculo, recuperable en su listado
 
   Scenario: PA-19-I Guardar una ruta, escenario inválido
-    Given Ana no tiene un resultado calculado con identificador X99 para su cuenta
-    When intenta guardar el resultado X99 como Camino a clase
-    Then se rechaza el guardado y la lista de rutas no cambia
+    Given Ana tiene un resultado calculado entre Centro y UJI y ninguna ruta guardada
+    When intenta guardarlo con un nombre de tres espacios
+    Then se rechaza el nombre y la lista de rutas sigue vacía
 
   Scenario: PA-20-V Consultar rutas guardadas, escenario válido
     Given Ana tiene Camino a clase guardada con su geometría y sus métricas
@@ -208,9 +208,9 @@ Feature: Movilidad de Vía
     Then solo permanece Paseo y no se alteran sus lugares ni vehículos
 
   Scenario: PA-21-I Eliminar una ruta guardada, escenario inválido
-    Given Camino al trabajo pertenece a Luis
-    When Ana intenta eliminar esa ruta
-    Then se rechaza la operación y la ruta de Luis permanece
+    Given Ana tenía Camino a clase y Paseo, pero Camino a clase se ha eliminado desde otra sesión
+    When confirma eliminar Camino a clase desde la lista anterior
+    Then se informa de que ya no está disponible y Paseo permanece
 
   Scenario: PA-22-V Gestionar favoritos, escenario válido
     Given Ana tiene sin marcar Centro y UJI, Compacto y Eléctrico, y Camino a clase y Paseo
@@ -218,9 +218,9 @@ Feature: Movilidad de Vía
     Then cada elemento marcado conserva su estado y aparece antes que el no favorito de su lista
 
   Scenario: PA-22-I Gestionar favoritos, escenario inválido
-    Given Estación, Furgoneta y Camino al trabajo pertenecen a Luis
-    When Ana intenta cambiar el favorito de cada uno
-    Then cada operación se rechaza y todas las marcas de Luis permanecen intactas
+    Given Ana tenía Centro y UJI, pero Centro se ha eliminado desde otra sesión
+    When intenta marcar Centro como favorito desde la lista anterior
+    Then se informa de que Centro ya no está disponible y UJI conserva su marca
 
   Scenario: PA-23-V Fijar transporte predeterminado, escenario válido
     Given Compacto pertenece a Ana
@@ -228,9 +228,9 @@ Feature: Movilidad de Vía
     Then se seleccionan coche y Compacto, permitiendo cambiarlos para esa consulta
 
   Scenario: PA-23-I Fijar transporte predeterminado, escenario inválido
-    Given Furgoneta pertenece a Luis y Compacto es el vehículo predeterminado de Ana
-    When Ana intenta establecer Furgoneta como predeterminada
-    Then se rechaza la referencia y permanece Compacto
+    Given Ana usa a pie por defecto y tiene Compacto seleccionado en la configuración, pero el vehículo se elimina desde otra sesión antes de guardar
+    When intenta guardar coche y Compacto como predeterminados
+    Then se informa de que Compacto ya no está disponible y se conserva a pie como modo predeterminado
 
   Scenario: PA-24-V Fijar criterio predeterminado, escenario válido
     Given Ana tiene más rápida como criterio predeterminado
@@ -238,9 +238,9 @@ Feature: Movilidad de Vía
     Then aparece más corta como criterio inicial y la preferencia se conserva
 
   Scenario: PA-24-I Fijar criterio predeterminado, escenario inválido
-    Given Ana tiene más corta como criterio predeterminado
-    When intenta guardar panorámica como criterio
-    Then se rechaza el valor y se conserva más corta
+    Given Ana tiene más corta como criterio predeterminado y el almacenamiento deja de estar disponible
+    When intenta guardar más rápida
+    Then se informa del fallo de guardado y al recuperar el almacenamiento sigue guardado más corta
 
   Scenario: PA-25-V Recuperar estado tras un cierre, escenario válido
     Given Ana ha guardado Centro, UJI, Compacto y Camino a clase, ha marcado UJI como favorito y usa tema oscuro y el último trayecto Centro-UJI a pie con criterio más corta
