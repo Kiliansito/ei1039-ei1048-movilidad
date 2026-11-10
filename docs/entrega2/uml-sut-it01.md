@@ -11,6 +11,10 @@ classDiagram
         +registrar(datos: DatosRegistro) ResultadoRegistro
         +iniciarSesion(credenciales: Credenciales) ResultadoSesion
     }
+    class ClienteRegistro {
+        +constructor(urlBase: string)
+        +registrar(datos: DatosRegistro) Promise~ResultadoRegistro~
+    }
     class ServicioLugares {
         +constructor(baseDeDatos: DatabaseSync)
         +guardarPorCoordenadas(token: string, datos: DatosLugar) Lugar
@@ -40,6 +44,7 @@ classDiagram
 | Historia | Operación del SUT | Entrada y resultado |
 | --- | --- | --- |
 | HU-01 | `ServicioCuentas.registrar` | `DatosRegistro` contiene nombre, correo y contraseña. `ResultadoRegistro` devuelve el identificador. |
+| HU-01, E-01-I5 | `ClienteRegistro.registrar` | Recibe los mismos datos de alta. La prueba de conexión comprueba que una interrupción HTTP se comunica como error. |
 | HU-02 | `ServicioCuentas.iniciarSesion` | `Credenciales` contiene correo y contraseña. `ResultadoSesion` devuelve un token y los datos públicos de la cuenta (identificador, nombre y correo). |
 | HU-05 | `ServicioLugares.guardarPorCoordenadas` | Recibe el token de sesión y `DatosLugar` con nombre, latitud y longitud. Devuelve un `Lugar` con identificador, nombre y coordenadas. |
 | HU-07 | `ServicioLugares.consultarLugares` | Recibe el token de sesión y devuelve los lugares de la cuenta. |
