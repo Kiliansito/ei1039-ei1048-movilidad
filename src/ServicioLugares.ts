@@ -10,4 +10,9 @@ export class ServicioLugares {
   guardarPorCoordenadas(_token: string, _datos: Coordenadas & { nombre: string }): Lugar {
     throw new Error("Alta de lugar sin implementar");
   }
+
+  // Devuelve solo los lugares de la cuenta activa.
+  consultarLugares(_token: string): Lugar[] {
+    throw new Error("Consulta de lugares sin implementar");
+  }
 }

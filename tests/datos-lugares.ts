@@ -3,6 +3,7 @@ import { DatabaseSync as BaseDeDatos } from "node:sqlite";
 
 export const tokenDeAna = "token-de-ana";
 export const centro = { nombre: "Centro", latitud: 39.9864, longitud: -0.0513 };
+export const uji = { nombre: "UJI", latitud: 39.9946, longitud: -0.0684 };
 
 export function prepararBaseDeLugares() {
   const base = new BaseDeDatos(":memory:");
