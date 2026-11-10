@@ -3,6 +3,7 @@ import { DatabaseSync as BaseDeDatos } from "node:sqlite";
 import { beforeEach as antesDeCadaPrueba, test as prueba } from "node:test";
 import { ServicioCuentas } from "../src/ServicioCuentas.ts";
 
+// Datos ficticios para los dos escenarios.
 const datosDeAna = {
   nombre: "Ana",
   correo: "ana@example.com",
@@ -11,6 +12,7 @@ const datosDeAna = {
 
 let baseDeDatos: BaseDeDatos;
 
+// Cada prueba empieza con una base vacía.
 antesDeCadaPrueba((contexto) => {
   baseDeDatos = new BaseDeDatos(":memory:");
   contexto.after(() => baseDeDatos.close());
@@ -25,10 +27,13 @@ antesDeCadaPrueba((contexto) => {
 });
 
 prueba("PA-01-V: un correo nuevo permite registrar una cuenta", () => {
+  // Dado un correo sin registrar.
   const servicio = new ServicioCuentas(baseDeDatos);
 
+  // Cuando Ana se registra.
   const resultado = servicio.registrar(datosDeAna);
 
+  // Entonces se guarda una cuenta y se devuelve su identificador.
   const cuentas = baseDeDatos.prepare("SELECT identificador, correo FROM cuentas").all();
   comprobarIgualdad(cuentas.length, 1);
   comprobarIgualdad(cuentas[0]?.correo, datosDeAna.correo);
@@ -36,6 +41,7 @@ prueba("PA-01-V: un correo nuevo permite registrar una cuenta", () => {
 });
 
 prueba("PA-01-I: un correo duplicado se rechaza sin crear otra cuenta", () => {
+  // Dado que Ana ya tiene una cuenta.
   baseDeDatos.prepare("INSERT INTO cuentas VALUES (?, ?, ?, ?)").run(
     "cuenta-ana",
     datosDeAna.nombre,
@@ -44,8 +50,10 @@ prueba("PA-01-I: un correo duplicado se rechaza sin crear otra cuenta", () => {
   );
   const servicio = new ServicioCuentas(baseDeDatos);
 
+  // Cuando repite el alta, se rechaza por correo duplicado.
   comprobarError(() => servicio.registrar(datosDeAna), /correo duplicado/i);
 
+  // Entonces sigue existiendo solo la cuenta original.
   const cuentas = baseDeDatos.prepare("SELECT identificador FROM cuentas").all();
   comprobarIgualdad(cuentas.length, 1);
   comprobarIgualdad(cuentas[0]?.identificador, "cuenta-ana");
