@@ -40,7 +40,7 @@ antesDeCadaPrueba((contexto) => {
   insertarCuenta.run("cuenta-luis", "Luis", "luis@example.com", `${sal}:${clave}`);
 });
 
-prueba("PA-02-V: las credenciales correctas crean una sesión para Ana", () => {
+prueba("H02_E02-V (PA-02-V): las credenciales correctas crean una sesión para Ana", () => {
   // Dadas las cuentas de Ana y Luis.
   const servicio = new ServicioCuentas(baseDeDatos);
 
@@ -57,7 +57,7 @@ prueba("PA-02-V: las credenciales correctas crean una sesión para Ana", () => {
   comprobarIgualdad(sesiones[0]?.identificador_cuenta, cuentaDeAna.identificador);
 });
 
-prueba("PA-02-I: una contraseña incorrecta no crea una sesión", () => {
+prueba("H02_E02-I1 (PA-02-I): una contraseña incorrecta no crea una sesión", () => {
   // Dada la cuenta de Ana.
   const servicio = new ServicioCuentas(baseDeDatos);
 
