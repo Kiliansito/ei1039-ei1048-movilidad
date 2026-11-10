@@ -9,4 +9,12 @@ export class ServicioCuentas {
     // Fallo esperado en la fase roja de ATDD.
     throw new Error("Registro sin implementar");
   }
+
+  // La sesión devolverá un token y los datos públicos de la cuenta.
+  iniciarSesion(_credenciales: { correo: string; contrasena: string }): {
+    token: string;
+    cuenta: { identificador: string; nombre: string; correo: string };
+  } {
+    throw new Error("Inicio de sesión sin implementar");
+  }
 }
