@@ -22,10 +22,10 @@
 {\LARGE\bfseries Iteración 1: pruebas y SUT}\par
 {\large Apartados 2 y 3 de la Entrega 2}\par
 
-\section*{Alcance y estado}
-La propuesta de IT1 comprende HU-01 (registro), HU-02 (inicio de sesión), HU-05 (alta de lugares por coordenadas), HU-07 (consulta de lugares) y HU-14 (cálculo de rutas). Su distribución definitiva en la planificación global se acordará con el equipo.
+\section*{Trabajo de la primera iteración}
+Para la primera iteración hemos escogido cinco historias: registrar una cuenta (HU-01), iniciar sesión (HU-02), guardar lugares por coordenadas (HU-05), consultar los lugares guardados (HU-07) y calcular una ruta (HU-14). Con ellas empezamos por el recorrido básico de la aplicación. Esta selección se revisará al cerrar la planificación con el equipo.
 
-Se han programado 25 pruebas para los escenarios identificados en la Entrega 1. El SUT mínimo define constructores, métodos, tipos y dependencias para poder ejecutarlas. Los métodos nuevos lanzan un error de funcionalidad pendiente. Esta ejecución documenta la fase roja de ATDD; la implementación funcional y la fase verde corresponden al desarrollo posterior.
+Hemos escrito una prueba para cada uno de los 25 escenarios de estas historias que identificamos en la Entrega 1. También hemos creado las clases y los métodos necesarios para ejecutarlas. Por ahora, esos métodos lanzan un error que indica que falta implementarlos. Por eso las pruebas quedan en rojo, tal como se pide en esta entrega. Cuando desarrollemos las funcionalidades, deberán pasar a verde.
 
 \begin{center}
 \begin{tabularx}{\linewidth}{l c X}
@@ -43,18 +43,18 @@ Total & 25 & Resultado de ejecución: 0 pasan, 25 fallan.\\
 \end{tabularx}
 \end{center}
 
-\section*{Ejecución reproducible y evidencia}
-Desde la raíz del repositorio, con Node.js compatible con los módulos y la transformación TypeScript usados por el spike, ejecutar en PowerShell:
+\section*{Cómo ejecutar las pruebas}
+Las pruebas se ejecutan desde la carpeta principal del repositorio con los siguientes comandos de PowerShell. Usamos Node.js y su opción de transformación de TypeScript, necesaria para cargar el adaptador que reutilizamos del spike.
 \begin{lstlisting}
 $pruebas = Get-ChildItem tests -Filter '*.aceptacion.test.ts' | Select-Object -ExpandProperty FullName
 node --experimental-transform-types --env-file-if-exists=entrega1/02_Spike/.env --test-reporter=spec --test $pruebas
 \end{lstlisting}
 
-La evidencia conserva versión de Node, fecha UTC, commit de código y salida completa. Se verificó que las 25 pruebas se ejecutan, que el proceso devuelve código 1 y que los fallos proceden de los métodos pendientes, sin errores de carga o sintaxis. \href{https://github.com/Kiliansito/ei1039-ei1048-movilidad/blob/h-14/docs/entrega2/evidencias/pruebas-it01-rojo.txt}{Ver evidencia de ejecución}.
+En la ejecución guardada, las 25 pruebas fallan al llamar a los métodos que todavía están sin implementar. El proceso termina con código 1. Hemos guardado la salida completa junto con la versión de Node, la fecha y el commit utilizado para poder comprobar el resultado. \href{https://github.com/Kiliansito/ei1039-ei1048-movilidad/blob/h-14/docs/entrega2/evidencias/pruebas-it01-rojo.txt}{Consultar la ejecución guardada}.
 
-\textbf{Dependencias.} Las pruebas de datos usan SQLite real en memoria y preparan sus propios datos. El caso válido de ruta recibe el adaptador real de ORS y necesitará \texttt{ORS\_API\_KEY} al implementar el servicio. En la fase roja todavía no llega a consultar ORS.
+Cada prueba prepara sus datos en una base SQLite en memoria. Para el caso válido de ruta usamos el adaptador de OpenRouteService del spike. Cuando implementemos el cálculo, este caso necesitará la clave \texttt{ORS\_API\_KEY}. Actualmente falla antes de llegar a consultar la API.
 
-\textbf{Indisponibilidad.} Los casos de conexión preparan un servidor HTTP local que corta la conexión. En E-14-I3 se redirige la dependencia HTTP del adaptador a ese servidor; se trata de una comprobación de integración con el fallo controlado de un sustituto del proveedor. Esta clasificación debe conservarse en la documentación de pruebas.
+Para probar los fallos de conexión levantamos un servidor HTTP local que corta la conexión al recibir la petición. En E-14-I3 dirigimos las llamadas HTTP del adaptador a ese servidor para simular que el proveedor de rutas está caído. Este caso es una prueba de integración con un sustituto del proveedor.
 
 \textbf{Código completo.}
 \codigo{tests/registro.aceptacion.test.ts}{HU-01: registro};
@@ -65,19 +65,21 @@ La evidencia conserva versión de Node, fecha UTC, commit de código y salida co
 
 \newpage
 {\LARGE\bfseries Ejemplos de pruebas de aceptación}\par
-Los ejemplos siguientes reproducen dos pruebas de la HU-01. Antes de cada prueba se crea una base SQLite vacía con la tabla \texttt{cuentas}. \texttt{datosDeAna} contiene nombre Ana, correo \texttt{ana@example.com} y contraseña \texttt{RutaSegura2026}. Los imports, el esquema y la preparación completa están en el archivo enlazado.
+A continuación mostramos las dos primeras pruebas del registro. Cada una empieza con una base SQLite vacía y su tabla \texttt{cuentas}. Los datos de Ana son el nombre Ana, el correo \texttt{ana@example.com} y la contraseña \texttt{RutaSegura2026}. El archivo enlazado incluye también los imports y la preparación de la base de datos.
 
 \section*{PA-01-V: registro válido}
 \lstinputlisting[firstline=34,lastline=48]{../../tests/registro.aceptacion.test.ts}
 
-Se comprueban la creación de una única cuenta, su correo y que la respuesta contiene únicamente el identificador de la cuenta guardada.
+Esta prueba comprueba que se guarda una sola cuenta con el correo de Ana y que el registro devuelve únicamente su identificador.
 
 \section*{PA-01-I: correo duplicado}
 \lstinputlisting[firstline=50,lastline=68]{../../tests/registro.aceptacion.test.ts}
 
-Se prepara una cuenta existente, se intenta repetir el alta y se exige un error de correo duplicado. La comprobación final conserva una sola cuenta con su identificador original. Cada prueba prepara su estado; la prueba inválida utiliza una inserción directa para evitar depender de que funcione el registro.
+Aquí guardamos primero una cuenta de Ana e intentamos registrarla otra vez. Esperamos el error de correo duplicado y comprobamos que sigue habiendo una sola cuenta, con el mismo identificador. La cuenta inicial se inserta directamente en la base de datos para que esta prueba pueda ejecutarse por separado.
 
-Los nombres siguen \texttt{metodoBajoPruebas\_escenario\_comportamientoEsperado}. Los comentarios separan Dado, Cuando y Entonces. En la fase actual ambas pruebas fallan al alcanzar \texttt{registrar}, que lanza \texttt{Registro sin implementar}.
+Para nombrar las pruebas seguimos la convención del material de JUnit.
+\par\texttt{metodoBajoPruebas\_escenario\_comportamientoEsperado}\par
+Los comentarios indican los pasos Dado, Cuando y Entonces. Ambas pruebas fallan al llamar a \texttt{registrar}, que por ahora lanza \texttt{Registro sin implementar}.
 
 \newpage
 {\LARGE\bfseries UML del sistema bajo prueba}\par
@@ -86,7 +88,7 @@ Las clases se corresponden con \codigo{src/ServicioCuentas.ts}{ServicioCuentas},
 \codigo{src/ServicioRutas.ts}{ServicioRutas},
 \codigo{src/ClienteCuentas.ts}{ClienteCuentas} y
 \codigo{src/ClienteLugares.ts}{ClienteLugares}.
-Las flechas discontinuas representan dependencias; la punta triangular vacía indica implementación de la interfaz.
+Las flechas discontinuas muestran las dependencias. La flecha con punta triangular vacía indica que una clase implementa una interfaz.
 
 \begin{center}
 \begin{tikzpicture}
@@ -116,7 +118,7 @@ Las flechas discontinuas representan dependencias; la punta triangular vacía in
 \texttt{Lugar} contiene identificador, nombre, latitud y longitud.
 \texttt{SolicitudRuta} contiene los identificadores de origen y destino y el modo.
 \texttt{RutaCalculada} contiene geometría, distancia en metros y duración en segundos.
-Estos nombres abrevian los tipos definidos en línea en el código.
+Hemos abreviado los nombres de los tipos escritos en línea en el código para que el diagrama sea más fácil de leer.
 
-Los constructores reciben las dependencias que preparan las pruebas. Las dependencias de los clientes a los servicios son referencias de tipos. El adaptador y su contrato se reutilizan del spike. Los métodos del SUT nuevo permanecen pendientes de implementación; el diagrama muestra sus firmas y las dependencias declaradas.
+Las pruebas pasan la base de datos y el proveedor a los constructores. Los clientes HTTP usan tipos de los servicios, de ahí sus flechas hacia ellos. El adaptador y la interfaz de rutas proceden del spike. El diagrama recoge las clases y las firmas que tenemos preparadas para esta entrega.
 \end{document}
