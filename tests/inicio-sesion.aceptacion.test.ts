@@ -1,12 +1,15 @@
 import {
   deepEqual as comprobarIgualdad,
   ok as comprobar,
+  rejects as comprobarRechazo,
   throws as comprobarError,
 } from "node:assert/strict";
 import { createHash as crearHash, scryptSync } from "node:crypto";
 import { DatabaseSync as BaseDeDatos } from "node:sqlite";
 import { beforeEach as antesDeCadaPrueba, test as prueba } from "node:test";
 import { ServicioCuentas } from "../src/ServicioCuentas.ts";
+import { ClienteCuentas } from "../src/ClienteCuentas.ts";
+import { prepararServidorNoDisponible } from "./servidor-no-disponible.ts";
 
 const cuentaDeAna = { identificador: "cuenta-ana", nombre: "Ana", correo: "ana@example.com" };
 const credencialesDeAna = { correo: cuentaDeAna.correo, contrasena: "RutaSegura2026" };
@@ -72,4 +75,52 @@ prueba("iniciarSesion_contrasenaIncorrecta_rechazaAccesoSinCrearSesion", () => {
   // Entonces no queda ninguna sesion guardada.
   const sesiones = baseDeDatos.prepare("SELECT hash_token FROM sesiones").all();
   comprobarIgualdad(sesiones.length, 0);
+});
+
+// E-02-I2.
+prueba("iniciarSesion_correoInexistente_rechazaAccesoSinCrearSesion", () => {
+  // Dadas las cuentas de Ana y Luis.
+  const servicio = new ServicioCuentas(baseDeDatos);
+
+  // Cuando se usa un correo desconocido, se rechaza el acceso.
+  comprobarError(
+    () => servicio.iniciarSesion({ ...credencialesDeAna, correo: "nadie@example.com" }),
+    /credenciales incorrectas/i,
+  );
+
+  // Entonces no se guarda ninguna sesion.
+  comprobarIgualdad(baseDeDatos.prepare("SELECT hash_token FROM sesiones").all(), []);
+});
+
+// E-02-I3.
+prueba("iniciarSesion_camposVacios_rechazaAccesoSinCrearSesion", () => {
+  // Dada la cuenta de Ana.
+  const servicio = new ServicioCuentas(baseDeDatos);
+
+  // Cuando se deja vacio cualquiera de los campos, se deniega el acceso.
+  for (const credenciales of [
+    { ...credencialesDeAna, correo: "" },
+    { ...credencialesDeAna, contrasena: "" },
+  ]) {
+    comprobarError(() => servicio.iniciarSesion(credenciales), /credenciales incorrectas|campos obligatorios/i);
+  }
+
+  // Entonces no se guarda ninguna sesion.
+  comprobarIgualdad(baseDeDatos.prepare("SELECT hash_token FROM sesiones").all(), []);
+});
+
+// E-02-I4.
+prueba("iniciarSesion_servidorNoDisponible_informaDelFalloDeConexion", async (contexto) => {
+  // Dado un servidor que corta la conexion.
+  const servidor = await prepararServidorNoDisponible(contexto);
+  const cliente = new ClienteCuentas(servidor.url);
+
+  // Cuando Ana inicia sesion, se informa del fallo de conexion.
+  await comprobarRechazo(
+    () => cliente.iniciarSesion(credencialesDeAna),
+    /no se puede conectar con el servidor/i,
+  );
+
+  // Entonces se confirma el intento de conexion.
+  comprobarIgualdad(servidor.contarIntentos(), 1);
 });
