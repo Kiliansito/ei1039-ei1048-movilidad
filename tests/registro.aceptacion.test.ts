@@ -26,7 +26,7 @@ antesDeCadaPrueba((contexto) => {
   `);
 });
 
-prueba("PA-01-V: un correo nuevo permite registrar una cuenta", () => {
+prueba("H01_E01-V (PA-01-V): un correo nuevo permite registrar una cuenta", () => {
   // Dado un correo sin registrar.
   const servicio = new ServicioCuentas(baseDeDatos);
 
@@ -40,7 +40,7 @@ prueba("PA-01-V: un correo nuevo permite registrar una cuenta", () => {
   comprobarIgualdad(resultado, { identificador: cuentas[0]?.identificador });
 });
 
-prueba("PA-01-I: un correo duplicado se rechaza sin crear otra cuenta", () => {
+prueba("H01_E01-I1 (PA-01-I): un correo duplicado se rechaza sin crear otra cuenta", () => {
   // Dado que Ana ya tiene una cuenta.
   baseDeDatos.prepare("INSERT INTO cuentas VALUES (?, ?, ?, ?)").run(
     "cuenta-ana",
