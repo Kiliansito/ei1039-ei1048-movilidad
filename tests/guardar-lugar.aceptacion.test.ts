@@ -34,41 +34,44 @@ prueba("guardarPorCoordenadas_latitudFueraDeRango_rechazaAltaSinGuardarLugar", (
   comprobarIgualdad(base.prepare("SELECT identificador FROM lugares").all(), []);
 });
 
-const altasInvalidas = [
-  {
-    escenario: "E-05-I2",
-    nombre: "guardarPorCoordenadas_longitudFueraDeRango_rechazaAltaSinGuardarLugar",
-    token: tokenDeAna,
-    datos: { ...centro, longitud: 181 },
-    error: /longitud/i,
-  },
-  {
-    escenario: "E-05-I3",
-    nombre: "guardarPorCoordenadas_nombreVacio_rechazaAltaSinGuardarLugar",
-    token: tokenDeAna,
-    datos: { ...centro, nombre: "" },
-    error: /nombre/i,
-  },
-  {
-    escenario: "E-05-I4",
-    nombre: "guardarPorCoordenadas_sesionInvalida_deniegaAltaSinGuardarLugar",
-    token: "token-invalido",
-    datos: centro,
-    error: /sesión no válida/i,
-  },
-];
+// E-05-I2.
+prueba("guardarPorCoordenadas_longitudFueraDeRango_rechazaAltaSinGuardarLugar", (contexto) => {
+  // Dada Ana sin lugares.
+  const base = prepararBaseDeLugares();
+  contexto.after(() => base.close());
+  const servicio = new ServicioLugares(base);
 
-for (const { escenario, nombre, token, datos, error } of altasInvalidas) {
-  prueba(nombre, (contexto) => {
-    // Dada Ana sin lugares.
-    const base = prepararBaseDeLugares();
-    contexto.after(() => base.close());
-    const servicio = new ServicioLugares(base);
+  // Cuando usa longitud 181, se rechaza el alta.
+  comprobarError(() => servicio.guardarPorCoordenadas(tokenDeAna, { ...centro, longitud: 181 }), /longitud/i);
 
-    // Cuando intenta el alta, se rechaza por el motivo del escenario.
-    comprobarError(() => servicio.guardarPorCoordenadas(token, datos), error, escenario);
+  // Entonces la lista sigue vacia.
+  comprobarIgualdad(base.prepare("SELECT identificador FROM lugares").all(), []);
+});
 
-    // Entonces la lista sigue vacia.
-    comprobarIgualdad(base.prepare("SELECT identificador FROM lugares").all(), []);
-  });
-}
+// E-05-I3.
+prueba("guardarPorCoordenadas_nombreVacio_rechazaAltaSinGuardarLugar", (contexto) => {
+  // Dada Ana sin lugares.
+  const base = prepararBaseDeLugares();
+  contexto.after(() => base.close());
+  const servicio = new ServicioLugares(base);
+
+  // Cuando deja el nombre vacio, se rechaza el alta.
+  comprobarError(() => servicio.guardarPorCoordenadas(tokenDeAna, { ...centro, nombre: "" }), /nombre/i);
+
+  // Entonces la lista sigue vacia.
+  comprobarIgualdad(base.prepare("SELECT identificador FROM lugares").all(), []);
+});
+
+// E-05-I4.
+prueba("guardarPorCoordenadas_sesionInvalida_deniegaAltaSinGuardarLugar", (contexto) => {
+  // Dada Ana sin lugares.
+  const base = prepararBaseDeLugares();
+  contexto.after(() => base.close());
+  const servicio = new ServicioLugares(base);
+
+  // Cuando usa un token invalido, se rechaza el alta.
+  comprobarError(() => servicio.guardarPorCoordenadas("token-invalido", centro), /sesión no válida/i);
+
+  // Entonces la lista sigue vacia.
+  comprobarIgualdad(base.prepare("SELECT identificador FROM lugares").all(), []);
+});
