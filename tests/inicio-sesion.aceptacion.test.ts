@@ -31,7 +31,8 @@ antesDeCadaPrueba((contexto) => {
     );
   `);
 
-  // Usa el mismo formato scrypt que el spike.
+  // La sal se combina con la contrasena al calcular el hash.
+  // Aqui es fija para la prueba. En el spike se genera al azar por cuenta.
   const sal = "sal-de-prueba";
   const clave = scryptSync(credencialesDeAna.contrasena, sal, 64).toString("hex");
   const insertarCuenta = baseDeDatos.prepare("INSERT INTO cuentas VALUES (?, ?, ?, ?)");
