@@ -12,7 +12,7 @@ const datosDeAna = {
 
 let baseDeDatos: BaseDeDatos;
 
-// Cada prueba empieza con una base vacía.
+// Cada prueba empieza con una base vacia.
 antesDeCadaPrueba((contexto) => {
   baseDeDatos = new BaseDeDatos(":memory:");
   contexto.after(() => baseDeDatos.close());

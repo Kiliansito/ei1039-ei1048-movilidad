@@ -43,7 +43,7 @@ prueba("PA-02-V: las credenciales correctas crean una sesión para Ana", () => {
   // Dadas las cuentas de Ana y Luis.
   const servicio = new ServicioCuentas(baseDeDatos);
 
-  // Cuando Ana inicia sesión.
+  // Cuando Ana inicia sesion.
   const resultado = servicio.iniciarSesion(credencialesDeAna);
 
   // Entonces recibe solo sus datos y un token vinculado a su cuenta.
@@ -60,13 +60,13 @@ prueba("PA-02-I: una contraseña incorrecta no crea una sesión", () => {
   // Dada la cuenta de Ana.
   const servicio = new ServicioCuentas(baseDeDatos);
 
-  // Cuando usa otra contraseña, se rechaza el acceso.
+  // Cuando usa otra contrasena, se rechaza el acceso.
   comprobarError(
     () => servicio.iniciarSesion({ correo: cuentaDeAna.correo, contrasena: "OtraClave2026" }),
     /credenciales incorrectas/i,
   );
 
-  // Entonces no queda ninguna sesión guardada.
+  // Entonces no queda ninguna sesion guardada.
   const sesiones = baseDeDatos.prepare("SELECT hash_token FROM sesiones").all();
   comprobarIgualdad(sesiones.length, 0);
 });
