@@ -1,0 +1,682 @@
+Ejecucion de pruebas IT1
+Fecha UTC: 2026-11-10T22:50:55.0147528Z
+Commit del codigo: 7c37466aa97d10c36ed44c14b1a38cc1df2a5633
+Node: v24.14.1
+Codigo de salida: 1
+Comando: node --experimental-transform-types --env-file-if-exists=entrega1/02_Spike/.env --test-reporter=spec --test tests/*.aceptacion.test.ts
+
+(node:20112) ExperimentalWarning: Transform Types is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:20112) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/Usuario/Paradigmas%20y%20Dise%C3%B1o/ei1039-ei1048-movilidad/tests/calcular-ruta.aceptacion.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\package.json.
+(node:20112) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+✖ calcularRuta_extremosDistintos_devuelveTrayectoDistanciaYDuracion (7.7131ms)
+✖ calcularRuta_extremosCoincidentes_rechazaRutaSinGuardarCambios (5.5343ms)
+✖ calcularRuta_destinoInexistente_rechazaRutaSinGuardarCambios (3.4573ms)
+✖ calcularRuta_proveedorNoDisponible_informaDelFalloSinGuardarCambios (59.2011ms)
+✖ calcularRuta_sesionInvalida_deniegaAccesoSinGuardarCambios (1.9492ms)
+(node:31752) ExperimentalWarning: Transform Types is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:31752) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/Usuario/Paradigmas%20y%20Dise%C3%B1o/ei1039-ei1048-movilidad/tests/consultar-lugares.aceptacion.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\package.json.
+(node:31752) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+✖ consultarLugares_sesionDeAna_devuelveSoloSusLugares (9.2814ms)
+✖ consultarLugares_sesionInvalida_deniegaAcceso (4.5903ms)
+✖ consultarLugares_cuentaSinLugares_devuelveListaVacia (1.9356ms)
+✖ consultarLugares_servidorNoDisponible_informaDelFalloDeConexion (52.3483ms)
+(node:1488) ExperimentalWarning: Transform Types is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:1488) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/Usuario/Paradigmas%20y%20Dise%C3%B1o/ei1039-ei1048-movilidad/tests/guardar-lugar.aceptacion.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\package.json.
+(node:1488) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+✖ guardarPorCoordenadas_coordenadasValidas_guardaLugarDeAna (6.9325ms)
+✖ guardarPorCoordenadas_latitudFueraDeRango_rechazaAltaSinGuardarLugar (4.6352ms)
+✖ guardarPorCoordenadas_longitudFueraDeRango_rechazaAltaSinGuardarLugar (3.1597ms)
+✖ guardarPorCoordenadas_nombreVacio_rechazaAltaSinGuardarLugar (3.7578ms)
+✖ guardarPorCoordenadas_sesionInvalida_deniegaAltaSinGuardarLugar (3.4099ms)
+(node:26316) ExperimentalWarning: Transform Types is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:26316) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/Usuario/Paradigmas%20y%20Dise%C3%B1o/ei1039-ei1048-movilidad/tests/inicio-sesion.aceptacion.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\package.json.
+(node:26316) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+✖ iniciarSesion_credencialesCorrectas_creaSesionParaAna (73.6346ms)
+✖ iniciarSesion_contrasenaIncorrecta_rechazaAccesoSinCrearSesion (70.3111ms)
+✖ iniciarSesion_correoInexistente_rechazaAccesoSinCrearSesion (77.1491ms)
+✖ iniciarSesion_camposVacios_rechazaAccesoSinCrearSesion (78.3428ms)
+✖ iniciarSesion_servidorNoDisponible_informaDelFalloDeConexion (111.0018ms)
+(node:11720) ExperimentalWarning: Transform Types is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:11720) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/Usuario/Paradigmas%20y%20Dise%C3%B1o/ei1039-ei1048-movilidad/tests/registro.aceptacion.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\package.json.
+(node:11720) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+✖ registrar_correoNuevo_creaCuentaYDevuelveIdentificador (5.1804ms)
+✖ registrar_correoDuplicado_rechazaAltaSinCrearCuenta (5.4158ms)
+✖ registrar_contrasenaCorta_rechazaAltaSinCrearCuenta (1.7996ms)
+✖ registrar_correoInvalido_rechazaAltaSinCrearCuenta (1.988ms)
+✖ registrar_nombreVacio_rechazaAltaSinCrearCuenta (1.6758ms)
+✖ registrar_servidorNoDisponible_informaDelFalloDeConexion (43.6507ms)
+ℹ tests 25
+ℹ suites 0
+ℹ pass 0
+ℹ fail 25
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1028.1901
+
+✖ failing tests:
+
+test at tests\calcular-ruta.aceptacion.test.ts:18:1
+✖ calcularRuta_extremosDistintos_devuelveTrayectoDistanciaYDuracion (7.7131ms)
+  Error: Calculo de ruta sin implementar
+      at ServicioRutas.calcularRuta (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\src\ServicioRutas.ts:19:11)
+      at TestContext.<anonymous> (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\tests\calcular-ruta.aceptacion.test.ts:24:31)
+      at Test.runInAsyncScope (node:async_hooks:228:14)
+      at Test.run (node:internal/test_runner/test:1118:25)
+      at Test.start (node:internal/test_runner/test:1015:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:358:17)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+
+test at tests\calcular-ruta.aceptacion.test.ts:37:1
+✖ calcularRuta_extremosCoincidentes_rechazaRutaSinGuardarCambios (5.5343ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /extremos coincidentes/i. Input:
+
+  'Error: Calculo de ruta sin implementar'
+
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\tests\calcular-ruta.aceptacion.test.ts:48:3)
+      at async Test.run (node:internal/test_runner/test:1125:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: Calculo de ruta sin implementar
+        at ServicioRutas.calcularRuta (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\src\ServicioRutas.ts:19:11)
+        at <anonymous> (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\tests\calcular-ruta.aceptacion.test.ts:49:20)
+        at waitForActual (node:assert:632:21)
+        at rejects (node:assert:769:31)
+        at TestContext.<anonymous> (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\tests\calcular-ruta.aceptacion.test.ts:48:9)
+        at Test.runInAsyncScope (node:async_hooks:228:14)
+        at Test.run (node:internal/test_runner/test:1118:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:787:18)
+        at Test.postRun (node:internal/test_runner/test:1247:19)
+        at Test.run (node:internal/test_runner/test:1175:12),
+    expected: /extremos coincidentes/i,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at tests\calcular-ruta.aceptacion.test.ts:58:1
+✖ calcularRuta_destinoInexistente_rechazaRutaSinGuardarCambios (3.4573ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /(?:destino|extremos?|lugar).*(?:no (?:existe|encontrad)|inválid|no válid)/i. Input:
+
+  'Error: Calculo de ruta sin implementar'
+
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\tests\calcular-ruta.aceptacion.test.ts:66:3)
+      at async Test.run (node:internal/test_runner/test:1125:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: Calculo de ruta sin implementar
+        at ServicioRutas.calcularRuta (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\src\ServicioRutas.ts:19:11)
+        at <anonymous> (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\tests\calcular-ruta.aceptacion.test.ts:67:20)
+        at waitForActual (node:assert:632:21)
+        at rejects (node:assert:769:31)
+        at TestContext.<anonymous> (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\tests\calcular-ruta.aceptacion.test.ts:66:9)
+        at Test.runInAsyncScope (node:async_hooks:228:14)
+        at Test.run (node:internal/test_runner/test:1118:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:787:18)
+        at Test.postRun (node:internal/test_runner/test:1247:19)
+        at Test.run (node:internal/test_runner/test:1175:12),
+    expected: /(?:destino|extremos?|lugar).*(?:no (?:existe|encontrad)|inválid|no válid)/i,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at tests\calcular-ruta.aceptacion.test.ts:76:1
+✖ calcularRuta_proveedorNoDisponible_informaDelFalloSinGuardarCambios (59.2011ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /no se puede conectar con el servicio|proveedor.*no .*disponible/i. Input:
+
+  'Error: Calculo de ruta sin implementar'
+
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\tests\calcular-ruta.aceptacion.test.ts:90:3)
+      at async Test.run (node:internal/test_runner/test:1125:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: Calculo de ruta sin implementar
+        at ServicioRutas.calcularRuta (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\src\ServicioRutas.ts:19:11)
+        at <anonymous> (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\tests\calcular-ruta.aceptacion.test.ts:91:20)
+        at waitForActual (node:assert:632:21)
+        at rejects (node:assert:769:31)
+        at TestContext.<anonymous> (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\tests\calcular-ruta.aceptacion.test.ts:90:9)
+        at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+        at async Test.run (node:internal/test_runner/test:1125:7)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:787:7),
+    expected: /no se puede conectar con el servicio|proveedor.*no .*disponible/i,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at tests\calcular-ruta.aceptacion.test.ts:101:1
+✖ calcularRuta_sesionInvalida_deniegaAccesoSinGuardarCambios (1.9492ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /sesión no válida/i. Input:
+
+  'Error: Calculo de ruta sin implementar'
+
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\tests\calcular-ruta.aceptacion.test.ts:109:3)
+      at async Test.run (node:internal/test_runner/test:1125:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: Calculo de ruta sin implementar
+        at ServicioRutas.calcularRuta (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\src\ServicioRutas.ts:19:11)
+        at <anonymous> (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\tests\calcular-ruta.aceptacion.test.ts:110:20)
+        at waitForActual (node:assert:632:21)
+        at rejects (node:assert:769:31)
+        at TestContext.<anonymous> (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\tests\calcular-ruta.aceptacion.test.ts:109:9)
+        at Test.runInAsyncScope (node:async_hooks:228:14)
+        at Test.run (node:internal/test_runner/test:1118:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:787:18)
+        at Test.postRun (node:internal/test_runner/test:1247:19)
+        at Test.run (node:internal/test_runner/test:1175:12),
+    expected: /sesión no válida/i,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at tests\consultar-lugares.aceptacion.test.ts:13:1
+✖ consultarLugares_sesionDeAna_devuelveSoloSusLugares (9.2814ms)
+  Error: Consulta de lugares sin implementar
+      at ServicioLugares.consultarLugares (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\src\ServicioLugares.ts:16:11)
+      at TestContext.<anonymous> (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\tests\consultar-lugares.aceptacion.test.ts:25:28)
+      at Test.runInAsyncScope (node:async_hooks:228:14)
+      at Test.run (node:internal/test_runner/test:1118:25)
+      at Test.start (node:internal/test_runner/test:1015:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:358:17)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+
+test at tests\consultar-lugares.aceptacion.test.ts:32:1
+✖ consultarLugares_sesionInvalida_deniegaAcceso (4.5903ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /sesión no válida/i. Input:
+
+  'Error: Consulta de lugares sin implementar'
+
+      at TestContext.<anonymous> (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\tests\consultar-lugares.aceptacion.test.ts:41:3)
+      at Test.runInAsyncScope (node:async_hooks:228:14)
+      at Test.run (node:internal/test_runner/test:1118:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:787:18)
+      at Test.postRun (node:internal/test_runner/test:1247:19)
+      at Test.run (node:internal/test_runner/test:1175:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:358:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: Consulta de lugares sin implementar
+        at ServicioLugares.consultarLugares (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\src\ServicioLugares.ts:16:11)
+        at <anonymous> (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\tests\consultar-lugares.aceptacion.test.ts:41:33)
+        at getActual (node:assert:611:5)
+        at throws (node:assert:759:24)
+        at TestContext.<anonymous> (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\tests\consultar-lugares.aceptacion.test.ts:41:3)
+        at Test.runInAsyncScope (node:async_hooks:228:14)
+        at Test.run (node:internal/test_runner/test:1118:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:787:18)
+        at Test.postRun (node:internal/test_runner/test:1247:19)
+        at Test.run (node:internal/test_runner/test:1175:12),
+    expected: /sesión no válida/i,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at tests\consultar-lugares.aceptacion.test.ts:45:1
+✖ consultarLugares_cuentaSinLugares_devuelveListaVacia (1.9356ms)
+  Error: Consulta de lugares sin implementar
+      at ServicioLugares.consultarLugares (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\src\ServicioLugares.ts:16:11)
+      at TestContext.<anonymous> (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\tests\consultar-lugares.aceptacion.test.ts:55:28)
+      at Test.runInAsyncScope (node:async_hooks:228:14)
+      at Test.run (node:internal/test_runner/test:1118:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:787:18)
+      at Test.postRun (node:internal/test_runner/test:1247:19)
+      at Test.run (node:internal/test_runner/test:1175:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7)
+
+test at tests\consultar-lugares.aceptacion.test.ts:62:1
+✖ consultarLugares_servidorNoDisponible_informaDelFalloDeConexion (52.3483ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /no se puede conectar con el servidor/i. Input:
+
+  'Error: Cliente de lugares sin implementar'
+
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\tests\consultar-lugares.aceptacion.test.ts:68:3)
+      at async Test.run (node:internal/test_runner/test:1125:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: Cliente de lugares sin implementar
+        at ClienteLugares.consultarLugares (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\src\ClienteLugares.ts:8:11)
+        at <anonymous> (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\tests\consultar-lugares.aceptacion.test.ts:68:40)
+        at waitForActual (node:assert:632:21)
+        at rejects (node:assert:769:31)
+        at TestContext.<anonymous> (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\tests\consultar-lugares.aceptacion.test.ts:68:9)
+        at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+        at async Test.run (node:internal/test_runner/test:1125:7)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:787:7),
+    expected: /no se puede conectar con el servidor/i,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at tests\guardar-lugar.aceptacion.test.ts:7:1
+✖ guardarPorCoordenadas_coordenadasValidas_guardaLugarDeAna (6.9325ms)
+  Error: Alta de lugar sin implementar
+      at ServicioLugares.guardarPorCoordenadas (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\src\ServicioLugares.ts:11:11)
+      at TestContext.<anonymous> (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\tests\guardar-lugar.aceptacion.test.ts:14:12)
+      at Test.runInAsyncScope (node:async_hooks:228:14)
+      at Test.run (node:internal/test_runner/test:1118:25)
+      at Test.start (node:internal/test_runner/test:1015:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:358:17)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+
+test at tests\guardar-lugar.aceptacion.test.ts:24:1
+✖ guardarPorCoordenadas_latitudFueraDeRango_rechazaAltaSinGuardarLugar (4.6352ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /latitud/i. Input:
+
+  'Error: Alta de lugar sin implementar'
+
+      at TestContext.<anonymous> (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\tests\guardar-lugar.aceptacion.test.ts:31:3)
+      at Test.runInAsyncScope (node:async_hooks:228:14)
+      at Test.run (node:internal/test_runner/test:1118:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:787:18)
+      at Test.postRun (node:internal/test_runner/test:1247:19)
+      at Test.run (node:internal/test_runner/test:1175:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:358:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: Alta de lugar sin implementar
+        at ServicioLugares.guardarPorCoordenadas (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\src\ServicioLugares.ts:11:11)
+        at <anonymous> (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\tests\guardar-lugar.aceptacion.test.ts:31:33)
+        at getActual (node:assert:611:5)
+        at throws (node:assert:759:24)
+        at TestContext.<anonymous> (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\tests\guardar-lugar.aceptacion.test.ts:31:3)
+        at Test.runInAsyncScope (node:async_hooks:228:14)
+        at Test.run (node:internal/test_runner/test:1118:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:787:18)
+        at Test.postRun (node:internal/test_runner/test:1247:19)
+        at Test.run (node:internal/test_runner/test:1175:12),
+    expected: /latitud/i,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at tests\guardar-lugar.aceptacion.test.ts:38:1
+✖ guardarPorCoordenadas_longitudFueraDeRango_rechazaAltaSinGuardarLugar (3.1597ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /longitud/i. Input:
+
+  'Error: Alta de lugar sin implementar'
+
+      at TestContext.<anonymous> (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\tests\guardar-lugar.aceptacion.test.ts:45:3)
+      at Test.runInAsyncScope (node:async_hooks:228:14)
+      at Test.run (node:internal/test_runner/test:1118:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:787:18)
+      at Test.postRun (node:internal/test_runner/test:1247:19)
+      at Test.run (node:internal/test_runner/test:1175:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: Alta de lugar sin implementar
+        at ServicioLugares.guardarPorCoordenadas (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\src\ServicioLugares.ts:11:11)
+        at <anonymous> (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\tests\guardar-lugar.aceptacion.test.ts:45:33)
+        at getActual (node:assert:611:5)
+        at throws (node:assert:759:24)
+        at TestContext.<anonymous> (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\tests\guardar-lugar.aceptacion.test.ts:45:3)
+        at Test.runInAsyncScope (node:async_hooks:228:14)
+        at Test.run (node:internal/test_runner/test:1118:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:787:18)
+        at Test.postRun (node:internal/test_runner/test:1247:19)
+        at Test.run (node:internal/test_runner/test:1175:12),
+    expected: /longitud/i,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at tests\guardar-lugar.aceptacion.test.ts:52:1
+✖ guardarPorCoordenadas_nombreVacio_rechazaAltaSinGuardarLugar (3.7578ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /nombre/i. Input:
+
+  'Error: Alta de lugar sin implementar'
+
+      at TestContext.<anonymous> (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\tests\guardar-lugar.aceptacion.test.ts:59:3)
+      at Test.runInAsyncScope (node:async_hooks:228:14)
+      at Test.run (node:internal/test_runner/test:1118:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:787:18)
+      at Test.postRun (node:internal/test_runner/test:1247:19)
+      at Test.run (node:internal/test_runner/test:1175:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: Alta de lugar sin implementar
+        at ServicioLugares.guardarPorCoordenadas (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\src\ServicioLugares.ts:11:11)
+        at <anonymous> (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\tests\guardar-lugar.aceptacion.test.ts:59:33)
+        at getActual (node:assert:611:5)
+        at throws (node:assert:759:24)
+        at TestContext.<anonymous> (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\tests\guardar-lugar.aceptacion.test.ts:59:3)
+        at Test.runInAsyncScope (node:async_hooks:228:14)
+        at Test.run (node:internal/test_runner/test:1118:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:787:18)
+        at Test.postRun (node:internal/test_runner/test:1247:19)
+        at Test.run (node:internal/test_runner/test:1175:12),
+    expected: /nombre/i,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at tests\guardar-lugar.aceptacion.test.ts:66:1
+✖ guardarPorCoordenadas_sesionInvalida_deniegaAltaSinGuardarLugar (3.4099ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /sesión no válida/i. Input:
+
+  'Error: Alta de lugar sin implementar'
+
+      at TestContext.<anonymous> (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\tests\guardar-lugar.aceptacion.test.ts:73:3)
+      at Test.runInAsyncScope (node:async_hooks:228:14)
+      at Test.run (node:internal/test_runner/test:1118:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:787:18)
+      at Test.postRun (node:internal/test_runner/test:1247:19)
+      at Test.run (node:internal/test_runner/test:1175:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: Alta de lugar sin implementar
+        at ServicioLugares.guardarPorCoordenadas (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\src\ServicioLugares.ts:11:11)
+        at <anonymous> (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\tests\guardar-lugar.aceptacion.test.ts:73:33)
+        at getActual (node:assert:611:5)
+        at throws (node:assert:759:24)
+        at TestContext.<anonymous> (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\tests\guardar-lugar.aceptacion.test.ts:73:3)
+        at Test.runInAsyncScope (node:async_hooks:228:14)
+        at Test.run (node:internal/test_runner/test:1118:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:787:18)
+        at Test.postRun (node:internal/test_runner/test:1247:19)
+        at Test.run (node:internal/test_runner/test:1175:12),
+    expected: /sesión no válida/i,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at tests\inicio-sesion.aceptacion.test.ts:47:1
+✖ iniciarSesion_credencialesCorrectas_creaSesionParaAna (73.6346ms)
+  Error: Inicio de sesión sin implementar
+      at ServicioCuentas.iniciarSesion (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\src\ServicioCuentas.ts:18:11)
+      at TestContext.<anonymous> (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\tests\inicio-sesion.aceptacion.test.ts:52:30)
+      at Test.runInAsyncScope (node:async_hooks:228:14)
+      at Test.run (node:internal/test_runner/test:1118:25)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:358:3)
+
+test at tests\inicio-sesion.aceptacion.test.ts:65:1
+✖ iniciarSesion_contrasenaIncorrecta_rechazaAccesoSinCrearSesion (70.3111ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /credenciales incorrectas/i. Input:
+
+  'Error: Inicio de sesión sin implementar'
+
+      at TestContext.<anonymous> (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\tests\inicio-sesion.aceptacion.test.ts:70:3)
+      at Test.runInAsyncScope (node:async_hooks:228:14)
+      at Test.run (node:internal/test_runner/test:1118:25)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: Inicio de sesión sin implementar
+        at ServicioCuentas.iniciarSesion (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\src\ServicioCuentas.ts:18:11)
+        at <anonymous> (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\tests\inicio-sesion.aceptacion.test.ts:71:20)
+        at getActual (node:assert:611:5)
+        at throws (node:assert:759:24)
+        at TestContext.<anonymous> (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\tests\inicio-sesion.aceptacion.test.ts:70:3)
+        at Test.runInAsyncScope (node:async_hooks:228:14)
+        at Test.run (node:internal/test_runner/test:1118:25)
+        at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:787:7),
+    expected: /credenciales incorrectas/i,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at tests\inicio-sesion.aceptacion.test.ts:81:1
+✖ iniciarSesion_correoInexistente_rechazaAccesoSinCrearSesion (77.1491ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /credenciales incorrectas/i. Input:
+
+  'Error: Inicio de sesión sin implementar'
+
+      at TestContext.<anonymous> (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\tests\inicio-sesion.aceptacion.test.ts:86:3)
+      at Test.runInAsyncScope (node:async_hooks:228:14)
+      at Test.run (node:internal/test_runner/test:1118:25)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: Inicio de sesión sin implementar
+        at ServicioCuentas.iniciarSesion (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\src\ServicioCuentas.ts:18:11)
+        at <anonymous> (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\tests\inicio-sesion.aceptacion.test.ts:87:20)
+        at getActual (node:assert:611:5)
+        at throws (node:assert:759:24)
+        at TestContext.<anonymous> (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\tests\inicio-sesion.aceptacion.test.ts:86:3)
+        at Test.runInAsyncScope (node:async_hooks:228:14)
+        at Test.run (node:internal/test_runner/test:1118:25)
+        at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:787:7),
+    expected: /credenciales incorrectas/i,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at tests\inicio-sesion.aceptacion.test.ts:96:1
+✖ iniciarSesion_camposVacios_rechazaAccesoSinCrearSesion (78.3428ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /credenciales incorrectas|campos obligatorios/i. Input:
+
+  'Error: Inicio de sesión sin implementar'
+
+      at TestContext.<anonymous> (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\tests\inicio-sesion.aceptacion.test.ts:105:5)
+      at Test.runInAsyncScope (node:async_hooks:228:14)
+      at Test.run (node:internal/test_runner/test:1118:25)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: Inicio de sesión sin implementar
+        at ServicioCuentas.iniciarSesion (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\src\ServicioCuentas.ts:18:11)
+        at <anonymous> (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\tests\inicio-sesion.aceptacion.test.ts:105:35)
+        at getActual (node:assert:611:5)
+        at throws (node:assert:759:24)
+        at TestContext.<anonymous> (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\tests\inicio-sesion.aceptacion.test.ts:105:5)
+        at Test.runInAsyncScope (node:async_hooks:228:14)
+        at Test.run (node:internal/test_runner/test:1118:25)
+        at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:787:7),
+    expected: /credenciales incorrectas|campos obligatorios/i,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at tests\inicio-sesion.aceptacion.test.ts:113:1
+✖ iniciarSesion_servidorNoDisponible_informaDelFalloDeConexion (111.0018ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /no se puede conectar con el servidor/i. Input:
+
+  'Error: Cliente de inicio de sesión sin implementar'
+
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\tests\inicio-sesion.aceptacion.test.ts:119:3)
+      at async Test.run (node:internal/test_runner/test:1125:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: Cliente de inicio de sesión sin implementar
+        at ClienteCuentas.iniciarSesion (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\src\ClienteCuentas.ts:18:11)
+        at <anonymous> (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\tests\inicio-sesion.aceptacion.test.ts:120:19)
+        at waitForActual (node:assert:632:21)
+        at rejects (node:assert:769:31)
+        at TestContext.<anonymous> (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\tests\inicio-sesion.aceptacion.test.ts:119:9)
+        at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+        at async Test.run (node:internal/test_runner/test:1125:7)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:787:7),
+    expected: /no se puede conectar con el servidor/i,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at tests\registro.aceptacion.test.ts:36:1
+✖ registrar_correoNuevo_creaCuentaYDevuelveIdentificador (5.1804ms)
+  Error: Registro sin implementar
+      at ServicioCuentas.registrar (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\src\ServicioCuentas.ts:10:11)
+      at TestContext.<anonymous> (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\tests\registro.aceptacion.test.ts:41:30)
+      at Test.runInAsyncScope (node:async_hooks:228:14)
+      at Test.run (node:internal/test_runner/test:1118:25)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:358:3)
+
+test at tests\registro.aceptacion.test.ts:51:1
+✖ registrar_correoDuplicado_rechazaAltaSinCrearCuenta (5.4158ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /correo duplicado/i. Input:
+
+  'Error: Registro sin implementar'
+
+      at TestContext.<anonymous> (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\tests\registro.aceptacion.test.ts:62:3)
+      at Test.runInAsyncScope (node:async_hooks:228:14)
+      at Test.run (node:internal/test_runner/test:1118:25)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: Registro sin implementar
+        at ServicioCuentas.registrar (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\src\ServicioCuentas.ts:10:11)
+        at <anonymous> (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\tests\registro.aceptacion.test.ts:62:33)
+        at getActual (node:assert:611:5)
+        at throws (node:assert:759:24)
+        at TestContext.<anonymous> (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\tests\registro.aceptacion.test.ts:62:3)
+        at Test.runInAsyncScope (node:async_hooks:228:14)
+        at Test.run (node:internal/test_runner/test:1118:25)
+        at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:787:7),
+    expected: /correo duplicado/i,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at tests\registro.aceptacion.test.ts:71:1
+✖ registrar_contrasenaCorta_rechazaAltaSinCrearCuenta (1.7996ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /contraseña/i. Input:
+
+  'Error: Registro sin implementar'
+
+      at TestContext.<anonymous> (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\tests\registro.aceptacion.test.ts:76:3)
+      at Test.runInAsyncScope (node:async_hooks:228:14)
+      at Test.run (node:internal/test_runner/test:1118:25)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: Registro sin implementar
+        at ServicioCuentas.registrar (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\src\ServicioCuentas.ts:10:11)
+        at <anonymous> (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\tests\registro.aceptacion.test.ts:76:33)
+        at getActual (node:assert:611:5)
+        at throws (node:assert:759:24)
+        at TestContext.<anonymous> (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\tests\registro.aceptacion.test.ts:76:3)
+        at Test.runInAsyncScope (node:async_hooks:228:14)
+        at Test.run (node:internal/test_runner/test:1118:25)
+        at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:787:7),
+    expected: /contraseña/i,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at tests\registro.aceptacion.test.ts:83:1
+✖ registrar_correoInvalido_rechazaAltaSinCrearCuenta (1.988ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /correo/i. Input:
+
+  'Error: Registro sin implementar'
+
+      at TestContext.<anonymous> (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\tests\registro.aceptacion.test.ts:88:3)
+      at Test.runInAsyncScope (node:async_hooks:228:14)
+      at Test.run (node:internal/test_runner/test:1118:25)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: Registro sin implementar
+        at ServicioCuentas.registrar (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\src\ServicioCuentas.ts:10:11)
+        at <anonymous> (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\tests\registro.aceptacion.test.ts:88:33)
+        at getActual (node:assert:611:5)
+        at throws (node:assert:759:24)
+        at TestContext.<anonymous> (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\tests\registro.aceptacion.test.ts:88:3)
+        at Test.runInAsyncScope (node:async_hooks:228:14)
+        at Test.run (node:internal/test_runner/test:1118:25)
+        at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:787:7),
+    expected: /correo/i,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at tests\registro.aceptacion.test.ts:95:1
+✖ registrar_nombreVacio_rechazaAltaSinCrearCuenta (1.6758ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /nombre/i. Input:
+
+  'Error: Registro sin implementar'
+
+      at TestContext.<anonymous> (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\tests\registro.aceptacion.test.ts:100:3)
+      at Test.runInAsyncScope (node:async_hooks:228:14)
+      at Test.run (node:internal/test_runner/test:1118:25)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: Registro sin implementar
+        at ServicioCuentas.registrar (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\src\ServicioCuentas.ts:10:11)
+        at <anonymous> (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\tests\registro.aceptacion.test.ts:100:33)
+        at getActual (node:assert:611:5)
+        at throws (node:assert:759:24)
+        at TestContext.<anonymous> (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\tests\registro.aceptacion.test.ts:100:3)
+        at Test.runInAsyncScope (node:async_hooks:228:14)
+        at Test.run (node:internal/test_runner/test:1118:25)
+        at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:787:7),
+    expected: /nombre/i,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at tests\registro.aceptacion.test.ts:107:1
+✖ registrar_servidorNoDisponible_informaDelFalloDeConexion (43.6507ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /no se puede conectar con el servidor/i. Input:
+
+  'Error: Cliente de registro sin implementar'
+
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\tests\registro.aceptacion.test.ts:113:3)
+      at async Test.run (node:internal/test_runner/test:1125:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: Cliente de registro sin implementar
+        at ClienteCuentas.registrar (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\src\ClienteCuentas.ts:12:11)
+        at <anonymous> (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\tests\registro.aceptacion.test.ts:113:40)
+        at waitForActual (node:assert:632:21)
+        at rejects (node:assert:769:31)
+        at TestContext.<anonymous> (C:\Users\Usuario\Paradigmas y Diseño\ei1039-ei1048-movilidad\tests\registro.aceptacion.test.ts:113:9)
+        at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+        at async Test.run (node:internal/test_runner/test:1125:7)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:787:7),
+    expected: /no se puede conectar con el servidor/i,
+    operator: 'rejects',
+    diff: 'simple'
+  }
