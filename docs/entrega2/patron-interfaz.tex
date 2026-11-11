@@ -1,0 +1,51 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[spanish]{babel}
+\usepackage[margin=1.7cm]{geometry}
+\usepackage{hyperref,fancyhdr}
+\hypersetup{hidelinks}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{Vía · EI1039 / EI1048}
+\fancyhead[R]{Entrega 2 · Patrón de interfaz}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\newcommand{\spike}[2]{\href{https://github.com/Kiliansito/ei1039-ei1048-movilidad/blob/c170fd7/entrega1/02_Spike/#1}{\texttt{#2}}}
+\begin{document}
+\setcounter{page}{9}
+{\LARGE\bfseries MVVM en la interfaz de Vía}\par
+
+Hemos elegido MVVM porque el planificador necesita mostrar varios estados durante la misma acción. Mientras se pide una ruta, la pantalla indica que está calculando. Después muestra el trayecto o un mensaje de error. En el spike, un \texttt{ViewModel} guarda ese estado y React lo usa para actualizar el formulario y los resultados.
+
+\section*{Qué hace cada parte}
+
+\textbf{Modelo.} En el servidor, \texttt{MobilityService.plan} comprueba los datos de la solicitud, consulta al proveedor de rutas y calcula las estimaciones. La API devuelve el resultado al navegador.
+
+\textbf{Vista.} \texttt{Calculator} recoge el origen, el destino, el transporte y el criterio de ruta. \texttt{Result} muestra la alternativa seleccionada y pasa el trazado a \texttt{MapView}. La vista también guarda decisiones locales, como qué alternativa está seleccionada.
+
+\textbf{ViewModel.} \texttt{vm.plan} solicita la planificación a la API y guarda el resultado. \texttt{vm.run} indica que hay una operación en curso y recoge sus errores. Los componentes leen el estado con \texttt{useApp}, que enlaza la suscripción del modelo con React mediante \texttt{useSyncExternalStore}.
+
+\section*{Del formulario al mapa}
+
+\begin{enumerate}
+    \item El usuario pulsa \textbf{Calcular ruta}. El formulario comprueba que ha elegido un origen y un destino y llama a \texttt{vm.plan} con los datos.
+    \item El \texttt{ViewModel} borra el resultado anterior y envía un \texttt{POST} a \texttt{/api/plan}. Para calcular las rutas que devuelve la API, el servidor usa \texttt{MobilityService.plan}.
+    \item El \texttt{ViewModel} actualiza su estado y avisa a los componentes suscritos. El formulario navega a la pantalla de resultados cuando la operación termina bien. Allí, \texttt{Result} lee la ruta guardada y la muestra en el mapa. Si la petición falla, el mensaje queda en \texttt{error} y el usuario puede seguir en el formulario.
+\end{enumerate}
+
+\section*{Por qué encaja con el planificador}
+
+El estado observable permite que el formulario, los avisos y el mapa lean el resultado de la misma operación. Un controlador de eventos en un enfoque MVC también podría coordinar la petición. En el flujo actual de React nos resulta más directo que cada vista lea el estado que necesita del \texttt{ViewModel}. Cuando ese estado cambia, React se encarga de actualizar la vista.
+
+La separación todavía es parcial en el spike. El formulario decide cuándo navegar y también modifica directamente parte del estado del modelo con \texttt{vm.set}. En el diseño previsto, el \texttt{ViewModel} se encarga del estado que comparten las pantallas y las vistas conservan el estado propio de sus controles.
+
+Aquí usamos Observer para avisar de los cambios de estado. MVVM describe cómo se reparten las responsabilidades entre el modelo, la vista y el \texttt{ViewModel}. Por eso lo tratamos en el apartado de interfaz.
+
+\textbf{Código del spike.} \spike{web/main.tsx}{Vistas de React},
+\spike{web/model.ts}{ViewModel},
+\spike{src/http.ts}{API} y
+\spike{src/services.ts}{servicio de planificación}.
+\end{document}
