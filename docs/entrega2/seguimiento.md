@@ -54,7 +54,7 @@ node --experimental-transform-types --env-file-if-exists=entrega1/02_Spike/.env 
 - [x] Incluir instrucciones para repetir las pruebas. La ejecución guardada identifica el commit de código `690589d`.
 - [x] Verificar que el repositorio es público. La invitación individual al profesorado no aplica.
 - [x] Incluir la URL principal del repositorio en el PDF (página 5).
-- [ ] Fijar el commit de entrega e incluir su identificador o enlace en el PDF.
+- [x] Incluir en la página 5 el [commit de entrega `2bb27bb`](https://github.com/Kiliansito/ei1039-ei1048-movilidad/commit/2bb27bb3dfb6a1a910ce6df1e172908a8fbdfe14).
 
 ## 7. Aspectos adicionales no funcionales · página 14
 
