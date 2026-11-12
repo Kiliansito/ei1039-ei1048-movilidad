@@ -1,0 +1,126 @@
+import {
+  deepEqual as comprobarIgualdad,
+  ok as comprobar,
+  rejects as comprobarRechazo,
+  throws as comprobarError,
+} from "node:assert/strict";
+import { createHash as crearHash, scryptSync } from "node:crypto";
+import { DatabaseSync as BaseDeDatos } from "node:sqlite";
+import { beforeEach as antesDeCadaPrueba, test as prueba } from "node:test";
+import { ServicioCuentas } from "../src/ServicioCuentas.ts";
+import { ClienteCuentas } from "../src/ClienteCuentas.ts";
+import { prepararServidorNoDisponible } from "./servidor-no-disponible.ts";
+
+const cuentaDeAna = { identificador: "cuenta-ana", nombre: "Ana", correo: "ana@example.com" };
+const credencialesDeAna = { correo: cuentaDeAna.correo, contrasena: "RutaSegura2026" };
+
+let baseDeDatos: BaseDeDatos;
+
+// Prepara las cuentas sin depender de la prueba de registro.
+antesDeCadaPrueba((contexto) => {
+  baseDeDatos = new BaseDeDatos(":memory:");
+  contexto.after(() => baseDeDatos.close());
+  baseDeDatos.exec(`
+    CREATE TABLE cuentas (
+      identificador TEXT PRIMARY KEY,
+      nombre TEXT NOT NULL,
+      correo TEXT NOT NULL UNIQUE,
+      hash_contrasena TEXT NOT NULL
+    );
+    CREATE TABLE sesiones (
+      hash_token TEXT PRIMARY KEY,
+      identificador_cuenta TEXT NOT NULL REFERENCES cuentas(identificador),
+      caducidad INTEGER NOT NULL
+    );
+  `);
+
+  // La sal se combina con la contrasena al calcular el hash.
+  // Aqui es fija para la prueba. En el spike se genera al azar por cuenta.
+  const sal = "sal-de-prueba";
+  const clave = scryptSync(credencialesDeAna.contrasena, sal, 64).toString("hex");
+  const insertarCuenta = baseDeDatos.prepare("INSERT INTO cuentas VALUES (?, ?, ?, ?)");
+  insertarCuenta.run(cuentaDeAna.identificador, cuentaDeAna.nombre, cuentaDeAna.correo, `${sal}:${clave}`);
+  insertarCuenta.run("cuenta-luis", "Luis", "luis@example.com", `${sal}:${clave}`);
+});
+
+// PA-02-V (E-02-V).
+prueba("iniciarSesion_credencialesCorrectas_creaSesionParaAna", () => {
+  // Dadas las cuentas de Ana y Luis.
+  const servicio = new ServicioCuentas(baseDeDatos);
+
+  // Cuando Ana inicia sesion.
+  const resultado = servicio.iniciarSesion(credencialesDeAna);
+
+  // Entonces recibe solo sus datos y un token vinculado a su cuenta.
+  comprobarIgualdad(resultado.cuenta, cuentaDeAna);
+  comprobar(resultado.token.length > 0);
+  const hashToken = crearHash("sha256").update(resultado.token).digest("hex");
+  const sesiones = baseDeDatos.prepare("SELECT hash_token, identificador_cuenta FROM sesiones").all();
+  comprobarIgualdad(sesiones.length, 1);
+  comprobarIgualdad(sesiones[0]?.hash_token, hashToken);
+  comprobarIgualdad(sesiones[0]?.identificador_cuenta, cuentaDeAna.identificador);
+});
+
+// PA-02-I (E-02-I1).
+prueba("iniciarSesion_contrasenaIncorrecta_rechazaAccesoSinCrearSesion", () => {
+  // Dada la cuenta de Ana.
+  const servicio = new ServicioCuentas(baseDeDatos);
+
+  // Cuando usa otra contrasena, se rechaza el acceso.
+  comprobarError(
+    () => servicio.iniciarSesion({ correo: cuentaDeAna.correo, contrasena: "OtraClave2026" }),
+    /credenciales incorrectas/i,
+  );
+
+  // Entonces no queda ninguna sesion guardada.
+  const sesiones = baseDeDatos.prepare("SELECT hash_token FROM sesiones").all();
+  comprobarIgualdad(sesiones.length, 0);
+});
+
+// E-02-I2.
+prueba("iniciarSesion_correoInexistente_rechazaAccesoSinCrearSesion", () => {
+  // Dadas las cuentas de Ana y Luis.
+  const servicio = new ServicioCuentas(baseDeDatos);
+
+  // Cuando se usa un correo desconocido, se rechaza el acceso.
+  comprobarError(
+    () => servicio.iniciarSesion({ ...credencialesDeAna, correo: "nadie@example.com" }),
+    /credenciales incorrectas/i,
+  );
+
+  // Entonces no se guarda ninguna sesion.
+  comprobarIgualdad(baseDeDatos.prepare("SELECT hash_token FROM sesiones").all(), []);
+});
+
+// E-02-I3.
+prueba("iniciarSesion_camposVacios_rechazaAccesoSinCrearSesion", () => {
+  // Dada la cuenta de Ana.
+  const servicio = new ServicioCuentas(baseDeDatos);
+
+  // Cuando se deja vacio cualquiera de los campos, se deniega el acceso.
+  for (const credenciales of [
+    { ...credencialesDeAna, correo: "" },
+    { ...credencialesDeAna, contrasena: "" },
+  ]) {
+    comprobarError(() => servicio.iniciarSesion(credenciales), /credenciales incorrectas|campos obligatorios/i);
+  }
+
+  // Entonces no se guarda ninguna sesion.
+  comprobarIgualdad(baseDeDatos.prepare("SELECT hash_token FROM sesiones").all(), []);
+});
+
+// E-02-I4.
+prueba("iniciarSesion_servidorNoDisponible_informaDelFalloDeConexion", async (contexto) => {
+  // Dado un servidor que corta la conexion.
+  const servidor = await prepararServidorNoDisponible(contexto);
+  const cliente = new ClienteCuentas(servidor.url);
+
+  // Cuando Ana inicia sesion, se informa del fallo de conexion.
+  await comprobarRechazo(
+    () => cliente.iniciarSesion(credencialesDeAna),
+    /no se puede conectar con el servidor/i,
+  );
+
+  // Entonces se confirma el intento de conexion.
+  comprobarIgualdad(servidor.contarIntentos(), 1);
+});

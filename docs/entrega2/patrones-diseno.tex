@@ -1,0 +1,218 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[spanish]{babel}
+\usepackage[margin=1.7cm]{geometry}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning}
+\usepackage{hyperref,fancyhdr}
+\hypersetup{hidelinks}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{Vía · EI1039 / EI1048}
+\fancyhead[R]{Entrega 2 · Patrones de diseño}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\tikzset{
+ box/.style={draw,rounded corners=1pt,align=center,text width=3.7cm,font=\small,inner sep=5pt,fill=blue!3},
+ dep/.style={dashed,-{Stealth[length=2mm]}},
+ real/.style={dashed,-{Triangle[open,length=2.5mm]}},
+ link/.style={-{Stealth[length=2mm]}},
+ lab/.style={font=\scriptsize,fill=white,inner sep=2pt}
+}
+\newcommand{\titulo}[2]{{\LARGE\bfseries #1. #2}\par}
+\newcommand{\apartado}[1]{\section*{\large #1}}
+\newcommand{\fuente}[2]{\href{https://github.com/Kiliansito/ei1039-ei1048-movilidad/blob/dce2b57/entrega1/02_Spike/#1}{\texttt{\small #2}}}
+\begin{document}
+
+\titulo{1}{Adapter}
+Para calcular una ruta necesitamos enviar los datos a OpenRouteService y leer su respuesta en GeoJSON. Esos formatos son propios de la API, así que usamos un adaptador para convertirlos a los tipos con los que trabaja Vía.
+
+El servicio usa la interfaz \texttt{RoutingPort}, que define la operación de consultar rutas. \texttt{OrsAdapter} cumple esa interfaz y se encarga de la comunicación con ORS. Ya lo utilizamos en el spike y lo hemos pasado a \texttt{ServicioRutas} en las pruebas de la HU-14. También tiene las operaciones de geocodificación necesarias para buscar lugares.
+
+\apartado{UML genérico}
+\begin{center}\begin{tikzpicture}
+\node[box] (cli) at (0,0) {\textbf{Cliente}};
+\node[box] (target) at (5.1,0) {$\ll$interface$\gg$\\\textbf{Objetivo}\\operacion()};
+\node[box] (adapter) at (5.1,-2.1) {\textbf{Adaptador}\\operacion()};
+\node[box] (external) at (10.2,-2.1) {\textbf{Servicio externo}\\operacionEspecifica()};
+\draw[dep] (cli) -- (target);
+\draw[real] (adapter) -- (target);
+\draw[link] (adapter) -- (external);
+\end{tikzpicture}\end{center}
+
+\apartado{UML aplicado a Vía}
+\begin{center}\begin{tikzpicture}
+\node[box] (cli) at (0,0) {\textbf{ServicioRutas}\\calcularRuta()};
+\node[box] (target) at (5.1,0) {$\ll$interface$\gg$\\\textbf{RoutingPort}\\routes()};
+\node[box] (adapter) at (5.1,-2.1) {\textbf{OrsAdapter}\\routes()};
+\node[box] (external) at (10.2,-2.1) {$\ll$servicio externo$\gg$\\\textbf{OpenRouteService}\\HTTP / GeoJSON};
+\draw[dep] (cli) -- (target);
+\draw[real] (adapter) -- (target);
+\draw[link] (adapter) -- (external);
+\end{tikzpicture}\end{center}
+
+\textbf{Ventajas.} Los detalles de ORS quedan dentro del adaptador. Si cambiamos de proveedor, podemos escribir otro adaptador que ofrezca la misma interfaz y mantener las llamadas de \texttt{ServicioRutas}.
+
+\textbf{Inconvenientes.} Tenemos que mantener las conversiones de datos y errores. Además, la interfaz debe recoger lo que necesita Vía para poder usarla con otros proveedores.
+
+\textbf{Alternativa.} Podríamos hacer las llamadas a ORS dentro del servicio de rutas. Eso ahorraría una clase, pero obligaría al servicio a conocer las peticiones HTTP y el formato GeoJSON. Hemos elegido Adapter para concentrar esa parte en un sitio.
+
+\textbf{Código.} \texttt{OrsAdapter} está en \fuente{src/adapters/providers.ts}{src/adapters/providers.ts} y \texttt{RoutingPort} en \fuente{src/domain/types.ts}{src/domain/types.ts}. En estos diagramas mostramos las operaciones de rutas.
+
+\newpage
+\titulo{2}{Strategy}
+La estimación del viaje depende del transporte. Para un coche calculamos el gasto con la distancia, el consumo del vehículo y el precio del combustible o de la electricidad. Al ir en bicicleta o a pie, calculamos calorías a partir de la duración, el peso y el MET de la actividad.
+
+Usamos Strategy para escoger el cálculo según el modo de transporte. En el spike, \texttt{estimate} selecciona una de las funciones del objeto \texttt{strategies}. Todas devuelven coste y calorías. Queremos mantener esta organización al desarrollar las HU-15, HU-16 y HU-17.
+
+\apartado{UML genérico}
+\begin{center}\begin{tikzpicture}
+\node[box] (context) at (0,0) {\textbf{Contexto}\\ejecutar()};
+\node[box] (strategy) at (5.1,0) {$\ll$interface$\gg$\\\textbf{Estrategia}\\calcular(datos)};
+\node[box] (a) at (2.5,-2.2) {\textbf{Estrategia A}\\calcular(datos)};
+\node[box] (b) at (7.7,-2.2) {\textbf{Estrategia B}\\calcular(datos)};
+\draw[link] (context) -- node[lab,above]{usa} (strategy);
+\draw[real] (a.north) -- (strategy.south);
+\draw[real] (b.north) -- (strategy.south);
+\end{tikzpicture}\end{center}
+
+\apartado{UML aplicado a Vía}
+\begin{center}\begin{tikzpicture}
+\node[box] (estimate) at (0,0) {$\ll$función$\gg$\\\textbf{estimate(mode, datos)}};
+\node[box] (contract) at (5.1,0) {$\ll$contrato funcional$\gg$\\\textbf{EstrategiaEstimacion}\\datos $\rightarrow$ coste, calorias};
+\node[box] (car) at (0,-2.3) {$\ll$función$\gg$\\\textbf{strategies.car}\\distancia, consumo, precio};
+\node[box] (bike) at (5.1,-2.3) {$\ll$función$\gg$\\\textbf{strategies.bike}\\duración, peso, MET bici};
+\node[box] (foot) at (10.2,-2.3) {$\ll$función$\gg$\\\textbf{strategies.foot}\\duración, peso, MET a pie};
+\draw[link] (estimate) -- node[lab,above]{selecciona} (contract);
+\draw[real] (car.north) -- (contract.south);
+\draw[real] (bike.north) -- (contract.south);
+\draw[real] (foot.north) -- (contract.east);
+\end{tikzpicture}\end{center}
+
+\textbf{Ventajas.} Podemos leer y probar las fórmulas de cada transporte por separado. El planificador llama a la misma operación y recibe el resultado del cálculo elegido.
+
+\textbf{Inconvenientes.} Las estrategias deben aceptar los datos necesarios y devolver un resultado común. Conviene mantener juntas las fórmulas que apenas cambian para evitar repetir cálculos.
+
+\textbf{Alternativa.} Un condicional en el planificador permitiría elegir la fórmula, pero haría crecer ese método al añadir cálculos. En nuestro caso, la separación se hace por transporte. Combustible y electricidad usan la misma fórmula, distancia/100 $\times$ consumo $\times$ precio, con unidades distintas.
+
+\textbf{Código.} Los cálculos están en \fuente{src/domain/cost.ts}{src/domain/cost.ts}. En el UML llamamos \texttt{EstrategiaEstimacion} a la firma común de esas funciones.
+
+\newpage
+\titulo{3}{Facade}
+Cuando el usuario pide un viaje, hay que comprobar el origen y el destino, recuperar sus preferencias y su vehículo, consultar rutas y precios, calcular el gasto y ordenar las alternativas. Necesitamos coordinar todos esos pasos antes de devolver el resultado.
+
+La fachada ofrece una operación de planificación que reúne ese trabajo. En el spike, el manejador HTTP llama a \texttt{MobilityService.plan} y este coordina el repositorio, el proveedor de rutas, los precios y los cálculos. Este diseño cubre el cálculo de ruta de la HU-14 y las estimaciones y criterios de las HU-15 a HU-18.
+
+\apartado{UML genérico}
+\begin{center}\begin{tikzpicture}
+\node[box] (client) at (0,0) {\textbf{Cliente}};
+\node[box] (facade) at (5.1,0) {\textbf{Fachada}\\operacionCompleta()};
+\node[box] (a) at (0,-2.2) {\textbf{Subsistema A}};
+\node[box] (b) at (5.1,-2.2) {\textbf{Subsistema B}};
+\node[box] (c) at (10.2,-2.2) {\textbf{Subsistema C}};
+\draw[dep] (client) -- (facade);
+\draw[dep] (facade) -- (a);
+\draw[dep] (facade) -- (b);
+\draw[dep] (facade) -- (c);
+\end{tikzpicture}\end{center}
+
+\apartado{UML aplicado a Vía}
+\begin{center}\begin{tikzpicture}
+\node[box] (client) at (0,0) {$\ll$módulo$\gg$\\\textbf{createApi}\\atiende /api/plan};
+\node[box] (facade) at (5.1,0) {\textbf{MobilityService}\\plan()};
+\node[box] (repo) at (0,-2.2) {$\ll$interface$\gg$\\\textbf{RepositoryPort}\\preferencias y vehículo};
+\node[box] (routing) at (5.1,-2.2) {$\ll$interface$\gg$\\\textbf{RoutingPort}\\routes()};
+\node[box] (price) at (10.2,-2.2) {$\ll$interface$\gg$\\\textbf{PricePort}\\current()};
+\node[box] (calc) at (5.1,-4.1) {$\ll$función$\gg$\\\textbf{estimate}\\coste y calorías};
+\draw[dep] (client) -- (facade);
+\draw[dep] (facade) -- (repo);
+\draw[dep] (facade) -- (routing);
+\draw[dep] (facade) -- (price);
+\draw[dep] (facade.east) -- ++(6.4,0) |- (calc.east);
+\end{tikzpicture}\end{center}
+
+\textbf{Ventajas.} Desde el manejador HTTP basta con llamar a \texttt{plan}. La fachada establece el orden de los pasos y cada servicio realiza su consulta o cálculo.
+
+\textbf{Inconvenientes.} La fachada puede acabar haciendo demasiado. En el spike, \texttt{MobilityService} ya reúne muchas operaciones. Al desarrollar el proyecto tendremos que mantener los cálculos y las consultas en sus componentes para que la fachada se centre en coordinarlos.
+
+\textbf{Alternativa.} Podríamos coordinar estos pasos desde el manejador HTTP, aunque eso haría más difícil reutilizar la planificación desde otro punto. Con la fachada, esa operación queda disponible para otros clientes.
+
+\textbf{Código.} El método \texttt{plan} está en \fuente{src/services.ts}{src/services.ts} y se llama desde \fuente{src/http.ts}{src/http.ts}. El diagrama recoge las dependencias de esa operación.
+
+\newpage
+\titulo{4}{Observer}
+Las vistas muestran datos del mismo usuario y de la misma planificación. Por ejemplo, cuando llega una ruta calculada, la vista de resultados debe actualizarse. Para ello, el modelo guarda las funciones de aviso de las vistas suscritas y las llama cuando cambia el estado.
+
+En el spike, los componentes \texttt{App}, \texttt{Calculator} y \texttt{Result} se suscriben mediante \texttt{useApp}. Este hook conecta React con \texttt{ViewModel.subscribe}. Cuando \texttt{set} cambia el estado, el modelo ejecuta los avisos y React actualiza los componentes. \texttt{subscribe} también devuelve una función para cancelar la suscripción.
+
+\apartado{UML genérico}
+\begin{center}\begin{tikzpicture}
+\node[box] (subject) at (0,0) {\textbf{Sujeto}\\suscribir(observador)\\cancelar(observador)\\notificar()};
+\node[box] (observer) at (5.1,0) {$\ll$interface$\gg$\\\textbf{Observador}\\actualizar()};
+\node[box] (concrete) at (5.1,-2.3) {\textbf{Observador concreto}\\actualizar()};
+\draw[link] (subject) -- node[lab,above]{avisa a 0..*} (observer);
+\draw[real] (concrete) -- (observer);
+\end{tikzpicture}\end{center}
+
+\apartado{UML aplicado a Vía}
+\begin{center}\begin{tikzpicture}
+\node[box] (model) at (0,0) {\textbf{ViewModel}\\listeners: Set de callbacks\\subscribe(fn)\\set(estado)};
+\node[box] (callback) at (5.1,0) {$\ll$callback$\gg$\\\textbf{Aviso de React}\\fn()};
+\node[box] (hook) at (5.1,-2.3) {$\ll$hook$\gg$\\\textbf{useApp}\\useSyncExternalStore()};
+\node[box] (views) at (0,-4.2) {$\ll$componentes$\gg$\\\textbf{App}\\\textbf{Calculator}\\\textbf{Result}};
+\draw[link] (model) -- (callback);
+\draw[dep] (hook) -- node[lab,right]{registra el aviso} (callback);
+\draw[dep] (hook.west) -- ++(-.6,0) -| node[lab,pos=.35,above]{lee getSnapshot} (model.south);
+\draw[dep] (views) -- (hook);
+\end{tikzpicture}\end{center}
+
+\textbf{Ventajas.} El modelo puede avisar de un cambio a todas las vistas interesadas sin conocer qué componente representa cada una. Esto permite que varias partes de la pantalla sigan el mismo estado.
+
+\textbf{Inconvenientes.} Hay que cancelar las suscripciones cuando se desmontan los componentes. Además, si todos escuchan el mismo estado, un cambio pequeño puede hacer que se actualicen más vistas de las necesarias.
+
+\textbf{Alternativa.} Podríamos guardar el estado en un componente padre y pasarlo a sus hijos mediante propiedades. Esa solución serviría para una interfaz pequeña. Queremos aprovechar el modelo observable del spike porque ya permite compartir los cambios con las tres vistas.
+
+\textbf{Código.} \texttt{ViewModel} y \texttt{useApp} están en \fuente{web/model.ts}{web/model.ts}. Los componentes que los usan están en \fuente{web/main.tsx}{web/main.tsx}. En el UML hemos señalado qué elementos son funciones.
+
+\newpage
+\titulo{5}{Decorator}
+Si el usuario vuelve a pedir la misma ruta, podemos aprovechar el resultado reciente para ahorrar otra llamada a la API. También nos interesa evitar que dos peticiones iguales que llegan a la vez provoquen dos consultas al proveedor.
+
+Para añadir ese comportamiento usamos \texttt{CachedRouting}, que envuelve al proveedor y ofrece el mismo método \texttt{routes}. En el spike conserva hasta cien resultados durante tres minutos y agrupa las peticiones simultáneas iguales. Queremos mantener esta caché en el proyecto para reducir las consultas repetidas.
+
+\apartado{UML genérico}
+\begin{center}\begin{tikzpicture}
+\node[box] (interface) at (5.1,0) {$\ll$interface$\gg$\\\textbf{Componente}\\operacion()};
+\node[box] (base) at (0,-2.2) {\textbf{Componente concreto}\\operacion()};
+\node[box] (decorator) at (10.2,-2.2) {\textbf{Decorador concreto}\\componente: Componente\\operacion()};
+\draw[real] (base) -- (interface);
+\draw[real] (decorator) -- (interface);
+\draw[link] (decorator.east) -- ++(.5,0) |- node[lab,pos=.75,above]{envuelve y delega} (interface.east);
+\end{tikzpicture}\end{center}
+
+\apartado{UML aplicado a Vía}
+\begin{center}\begin{tikzpicture}
+\node[box] (interface) at (5.1,0) {$\ll$interface$\gg$\\\textbf{RoutingPort}\\routes()};
+\node[box] (base) at (0,-2.3) {\textbf{OrsAdapter}\\routes()};
+\node[box] (decorator) at (10.2,-2.3) {\textbf{CachedRouting}\\source: RoutingPort\\cache, pending, ttl\\routes()};
+\draw[real] (base) -- (interface);
+\draw[real] (decorator) -- (interface);
+\draw[link] (decorator.east) -- ++(.5,0) |- node[lab,pos=.75,above]{delegación} (interface.east);
+\end{tikzpicture}\end{center}
+
+El servidor lo configura con \texttt{new CachedRouting(ors)}. Al consultar una ruta, el decorador busca las coordenadas de origen y destino y el modo de transporte en su caché. Si el resultado tiene menos de tres minutos, devuelve una copia. Si falta o ha caducado, consulta al proveedor. Los errores se descartan para que una nueva petición pueda volver a intentarlo.
+
+\textbf{Ventajas.} Ahorramos llamadas a la API y reducimos la espera en consultas repetidas. Los servicios pueden seguir usando \texttt{routes} con la misma interfaz.
+
+\textbf{Inconvenientes.} La caché ocupa memoria y puede conservar una ruta que haya cambiado en el proveedor. Por eso limitamos el número de resultados y su duración.
+
+\textbf{Alternativa.} Podríamos guardar la caché dentro de \texttt{OrsAdapter}. Con un decorador podemos usar la misma caché alrededor de otro proveedor que cumpla \texttt{RoutingPort}, y decidir al crear el servicio si queremos activarla.
+
+\textbf{Código.} \texttt{CachedRouting} está en \fuente{src/adapters/providers.ts}{src/adapters/providers.ts} y se configura en \fuente{src/server.ts}{src/server.ts}. Sus pruebas están en \fuente{tests/adapters.test.ts}{tests/adapters.test.ts}.
+
+\vfill
+{\small Este apartado recoge los cinco patrones que prevemos usar, a partir de las historias y del spike. El SUT de la IT1 sigue en fase roja. El patrón de interfaz se explica en un apartado propio del informe.}
+\end{document}

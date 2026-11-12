@@ -16,6 +16,23 @@ La entrega está organizada en [`entrega1/`](entrega1/README.md).
 - [Mockups editables](entrega1/03_Mockups/), [escenarios de aceptación](entrega1/04_Pruebas/aceptacion.feature) y [trazabilidad](entrega1/04_Pruebas/trazabilidad.md).
 - [Material docente](entrega1/05_Material_docente/) y [resultados de comprobación](entrega1/06_Comprobaciones/).
 
+## Entrega 2
+
+- [Informe de la Entrega 2 (PDF)](output/pdf/Avance_Entrega2.pdf)
+- [Commit de entrega `2bb27bb`](https://github.com/Kiliansito/ei1039-ei1048-movilidad/commit/2bb27bb3dfb6a1a910ce6df1e172908a8fbdfe14)
+- [Seguimiento de la entrega](docs/entrega2/seguimiento.md) y [evidencia de ejecución](docs/entrega2/evidencias/pruebas-it01-rojo.txt)
+
+### Pruebas de la iteración 1
+
+Desde la raíz del repositorio, ejecuta estos comandos en PowerShell con Node.js 24:
+
+```powershell
+$pruebas = Get-ChildItem tests -Filter '*.aceptacion.test.ts' | Select-Object -ExpandProperty FullName
+node --experimental-transform-types --env-file-if-exists=entrega1/02_Spike/.env --test-reporter=spec --test $pruebas
+```
+
+El resultado esperado para esta entrega es de **26 pruebas en rojo** y código de salida 1. Los métodos del SUT mínimo lanzan un error de falta de implementación, tal como pide la fase roja de ATDD.
+
 ## Ejecutar
 
 Requiere Node.js 24.16 o superior. Desde la raíz.
