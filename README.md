@@ -16,6 +16,10 @@ La entrega está organizada en [`entrega1/`](entrega1/README.md).
 - [Mockups editables](entrega1/03_Mockups/), [escenarios de aceptación](entrega1/04_Pruebas/aceptacion.feature) y [trazabilidad](entrega1/04_Pruebas/trazabilidad.md).
 - [Material docente](entrega1/05_Material_docente/) y [resultados de comprobación](entrega1/06_Comprobaciones/).
 
+## Entrega 2
+
+- [Último commit de `h-14` (`37cab2a`)](https://github.com/Kiliansito/ei1039-ei1048-movilidad/commit/37cab2ab8ee6a00b221abc99e9710d54b2b075b3)
+
 ## Ejecutar
 
 Requiere Node.js 24.16 o superior. Desde la raíz.
