@@ -18,8 +18,8 @@ La entrega está organizada en [`entrega1/`](entrega1/README.md).
 
 ## Entrega 2
 
-- [Informe definitivo de la Entrega 2 (PDF)](https://github.com/Kiliansito/ei1039-ei1048-movilidad/blob/3977d1553350271131646bd5d31f99c2f5499b09/output/pdf/Entrega2_Via.pdf)
-- [Commit de la Entrega 2 en `h-14` (`3977d15`)](https://github.com/Kiliansito/ei1039-ei1048-movilidad/commit/3977d1553350271131646bd5d31f99c2f5499b09)
+- [Informe definitivo de la Entrega 2 (PDF)](https://github.com/Kiliansito/ei1039-ei1048-movilidad/blob/b899138ee83c37c11b482bc3e613f97482766c7f/output/pdf/Entrega2_Via.pdf)
+- [Commit de la Entrega 2 en `h-14` (`b899138`)](https://github.com/Kiliansito/ei1039-ei1048-movilidad/commit/b899138ee83c37c11b482bc3e613f97482766c7f)
 
 ## Ejecutar
 
