@@ -17,15 +17,16 @@
 \setlength{\parskip}{6pt}
 \lstset{basicstyle=\ttfamily\fontsize{8}{9.5}\selectfont,breaklines=true,columns=fullflexible,keepspaces=true,showstringspaces=false,frame=single,rulecolor=\color{black!25},backgroundcolor=\color{black!2},aboveskip=5pt,belowskip=8pt}
 \tikzset{box/.style={draw,align=center,text width=6.0cm,font=\small,inner sep=5pt,fill=blue!3},dep/.style={dashed,-{Stealth[length=2mm]}},real/.style={dashed,-{Triangle[open,length=2.5mm]}},lab/.style={font=\scriptsize,fill=white,inner sep=2pt}}
-\newcommand{\codigo}[2]{\href{https://github.com/Kiliansito/ei1039-ei1048-movilidad/blob/7c37466/#1}{\texttt{\small #2}}}
+\newcommand{\codigo}[2]{\href{https://github.com/Kiliansito/ei1039-ei1048-movilidad/blob/690589d1720a82e6f1e3c92eddd7acc4274bda91/#1}{\texttt{\small #2}}}
 \begin{document}
+\setcounter{page}{5}
 {\LARGE\bfseries Iteración 1: pruebas y SUT}\par
 {\large Apartados 2 y 3 de la Entrega 2}\par
 
 \section*{Trabajo de la primera iteración}
-Para la primera iteración hemos escogido cinco historias: registrar una cuenta (HU-01), iniciar sesión (HU-02), guardar lugares por coordenadas (HU-05), consultar los lugares guardados (HU-07) y calcular una ruta (HU-14). Con ellas empezamos por el recorrido básico de la aplicación. Esta selección se revisará al cerrar la planificación con el equipo.
+La planificación asigna cinco historias a la primera iteración: registrar una cuenta (HU-01), iniciar sesión (HU-02), guardar lugares por coordenadas (HU-05), consultar los lugares guardados (HU-07) y calcular una ruta (HU-14). Con ellas empezamos por el recorrido básico de la aplicación.
 
-Hemos escrito una prueba para cada uno de los 25 escenarios de estas historias que identificamos en la Entrega 1. También hemos creado las clases y los métodos necesarios para ejecutarlas. Por ahora, esos métodos lanzan un error que indica que falta implementarlos. Por eso las pruebas quedan en rojo, tal como se pide en esta entrega. Cuando desarrollemos las funcionalidades, deberán pasar a verde.
+Hemos escrito 26 pruebas. Cubren los 25 escenarios de la Entrega 1 y añaden una variante válida de la HU-14 para calcular entre dos puntos temporales sin guardarlos como lugares (RD-54). Los métodos del SUT todavía lanzan un error de falta de implementación. Así podemos ejecutar las pruebas y comprobar que quedan en rojo, tal como pide esta entrega.
 
 \begin{center}
 \begin{tabularx}{\linewidth}{l c X}
@@ -36,9 +37,9 @@ HU-01 & 6 & Un registro válido y cinco escenarios inválidos.\\
 HU-02 & 5 & Un acceso válido y cuatro escenarios inválidos.\\
 HU-05 & 5 & Un alta válida y cuatro escenarios inválidos.\\
 HU-07 & 4 & Dos consultas válidas y dos escenarios inválidos.\\
-HU-14 & 5 & Un trayecto válido y cuatro escenarios inválidos.\\
+HU-14 & 6 & Dos trayectos válidos y cuatro escenarios inválidos.\\
 \midrule
-Total & 25 & Resultado de ejecución: 0 pasan, 25 fallan.\\
+Total & 26 & Resultado de ejecución: 0 pasan, 26 fallan.\\
 \bottomrule
 \end{tabularx}
 \end{center}
@@ -50,9 +51,9 @@ $pruebas = Get-ChildItem tests -Filter '*.aceptacion.test.ts' | Select-Object -E
 node --experimental-transform-types --env-file-if-exists=entrega1/02_Spike/.env --test-reporter=spec --test $pruebas
 \end{lstlisting}
 
-En la ejecución guardada, las 25 pruebas fallan al llamar a los métodos que todavía están sin implementar. El proceso termina con código 1. Hemos guardado la salida completa junto con la versión de Node, la fecha y el commit utilizado para poder comprobar el resultado. \href{https://github.com/Kiliansito/ei1039-ei1048-movilidad/blob/h-14/docs/entrega2/evidencias/pruebas-it01-rojo.txt}{Consultar la ejecución guardada}.
+En la ejecución guardada, las 26 pruebas fallan al llamar a los métodos que todavía están sin implementar. El proceso termina con código 1. Hemos guardado la salida completa junto con la versión de Node, la fecha y el commit utilizado para poder comprobar el resultado. \href{https://github.com/Kiliansito/ei1039-ei1048-movilidad/blob/h-14/docs/entrega2/evidencias/pruebas-it01-rojo.txt}{Consultar la ejecución guardada}.
 
-Cada prueba prepara sus datos en una base SQLite en memoria. Para el caso válido de ruta usamos el adaptador de OpenRouteService del spike. Cuando implementemos el cálculo, este caso necesitará la clave \texttt{ORS\_API\_KEY}. Actualmente falla antes de llegar a consultar la API.
+Cada prueba prepara sus datos en una base SQLite en memoria. Los casos válidos de ruta usan el adaptador de OpenRouteService del spike. Cuando implementemos el cálculo, necesitarán la clave \texttt{ORS\_API\_KEY}. Actualmente fallan antes de consultar la API.
 
 Para probar los fallos de conexión levantamos un servidor HTTP local que corta la conexión al recibir la petición. En E-14-I3 dirigimos las llamadas HTTP del adaptador a ese servidor para simular que el proveedor de rutas está caído. Este caso es una prueba de integración con un sustituto del proveedor.
 
@@ -116,7 +117,7 @@ Las flechas discontinuas muestran las dependencias. La flecha con punta triangul
 \texttt{Credenciales} agrupa correo y contraseña.
 \texttt{ResultadoSesion} devuelve token y cuenta pública.
 \texttt{Lugar} contiene identificador, nombre, latitud y longitud.
-\texttt{SolicitudRuta} contiene los identificadores de origen y destino y el modo.
+\texttt{SolicitudRuta} contiene el origen, el destino y el modo. Cada extremo admite un identificador de lugar guardado o un objeto con latitud y longitud.
 \texttt{RutaCalculada} contiene geometría, distancia en metros y duración en segundos.
 Hemos abreviado los nombres de los tipos escritos en línea en el código para que el diagrama sea más fácil de leer.
 
