@@ -53,7 +53,8 @@ node --experimental-transform-types --env-file-if-exists=entrega1/02_Spike/.env 
 - [x] Publicar las pruebas, el SUT mínimo, la evidencia y el PDF actualizado en la rama [h-14](https://github.com/Kiliansito/ei1039-ei1048-movilidad/tree/h-14).
 - [x] Incluir instrucciones para repetir las pruebas. La ejecución guardada identifica el commit de código `690589d`.
 - [x] Verificar que el repositorio es público. La invitación individual al profesorado no aplica.
-- [ ] Fijar el commit que se citará como versión de entrega e incluir en el PDF la URL principal del repositorio y ese identificador o enlace.
+- [x] Incluir la URL principal del repositorio en el PDF (página 5).
+- [ ] Fijar el commit de entrega e incluir su identificador o enlace en el PDF.
 
 ## 7. Aspectos adicionales no funcionales · página 14
 
