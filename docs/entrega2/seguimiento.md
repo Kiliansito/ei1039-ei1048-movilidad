@@ -38,7 +38,7 @@ node --experimental-transform-types --env-file-if-exists=entrega1/02_Spike/.env 
 - [x] Mostrar dónde se aplica con el recorrido de «Calcular ruta».
 - [x] Explicar sus ventajas y los límites del prototipo.
 - [x] Compararlo con MVC y justificar la elección.
-- [ ] Indicar expresamente si MVVM se usará de forma uniforme o si se combinará con otros patrones de interfaz.
+- [x] Indicar que MVVM se aplicará de forma uniforme en la interfaz de Vía. Observer complementa el patrón al avisar de los cambios de estado.
 
 ## 5. Patrones de diseño · páginas 8–12
 

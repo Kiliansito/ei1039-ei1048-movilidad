@@ -15,7 +15,7 @@
 \setlength{\parskip}{6pt}
 \newcommand{\spike}[2]{\href{https://github.com/Kiliansito/ei1039-ei1048-movilidad/blob/c170fd7/entrega1/02_Spike/#1}{\texttt{#2}}}
 \begin{document}
-\setcounter{page}{9}
+\setcounter{page}{13}
 {\LARGE\bfseries MVVM en la interfaz de Vía}\par
 
 Hemos elegido MVVM porque el planificador necesita mostrar varios estados durante la misma acción. Mientras se pide una ruta, la pantalla indica que está calculando. Después muestra el trayecto o un mensaje de error. En el spike, un \texttt{ViewModel} guarda ese estado y React lo usa para actualizar el formulario y los resultados.
@@ -40,9 +40,11 @@ Hemos elegido MVVM porque el planificador necesita mostrar varios estados durant
 
 El estado observable permite que el formulario, los avisos y el mapa lean el resultado de la misma operación. Un controlador de eventos en un enfoque MVC también podría coordinar la petición. En el flujo actual de React nos resulta más directo que cada vista lea el estado que necesita del \texttt{ViewModel}. Cuando ese estado cambia, React se encarga de actualizar la vista.
 
-La separación todavía es parcial en el spike. El formulario decide cuándo navegar y también modifica directamente parte del estado del modelo con \texttt{vm.set}. En el diseño previsto, el \texttt{ViewModel} se encarga del estado que comparten las pantallas y las vistas conservan el estado propio de sus controles.
+La separación todavía es parcial en el spike. El formulario decide cuándo navegar y también modifica directamente parte del estado del modelo con \texttt{vm.set}.
 
-Aquí usamos Observer para avisar de los cambios de estado. MVVM describe cómo se reparten las responsabilidades entre el modelo, la vista y el \texttt{ViewModel}. Por eso lo tratamos en el apartado de interfaz.
+\section*{Aplicación en toda la interfaz}
+
+Aplicaremos MVVM de forma uniforme en la interfaz de Vía, incluidas las pantallas de cuenta, lugares y planificación de rutas. Las vistas de React recogen las acciones del usuario y muestran los resultados. El \texttt{ViewModel} coordina las peticiones a la API y mantiene el estado que comparten las pantallas, mientras que las reglas de negocio se ejecutan en el servidor. Cada vista conserva el estado de sus propios controles, como la alternativa de ruta seleccionada. Usamos Observer para avisar a las vistas cuando cambia el estado del \texttt{ViewModel}.
 
 \textbf{Código del spike.} \spike{web/main.tsx}{Vistas de React},
 \spike{web/model.ts}{ViewModel},
