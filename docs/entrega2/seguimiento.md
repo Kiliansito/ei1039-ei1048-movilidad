@@ -64,7 +64,6 @@ node --experimental-transform-types --env-file-if-exists=entrega1/02_Spike/.env 
 
 - [x] Incluir la declaración GAIDeT, la herramienta declarada y las tareas en las que intervino.
 - [x] Analizar los beneficios, las limitaciones y las correcciones realizadas.
-- [x] Documentar una interacción real con el contexto, el prompt, la respuesta y su valoración.
 - [ ] Recoger una recomendación de uso para el resto del proyecto, como propone la lista de Isma.
 
 ## 9. Revisión y entrega
