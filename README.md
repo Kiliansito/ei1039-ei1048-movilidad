@@ -18,8 +18,7 @@ La entrega está organizada en [`entrega1/`](entrega1/README.md).
 
 ## Entrega 2
 
-- [Informe de la Entrega 2 (PDF)](output/pdf/Avance_Entrega2.pdf)
-- [Commit de entrega `2bb27bb`](https://github.com/Kiliansito/ei1039-ei1048-movilidad/commit/2bb27bb3dfb6a1a910ce6df1e172908a8fbdfe14)
+- [Informe definitivo de la Entrega 2 (PDF)](output/pdf/Entrega2_Via.pdf)
 - [Seguimiento de la entrega](docs/entrega2/seguimiento.md) y [evidencia de ejecución](docs/entrega2/evidencias/pruebas-it01-rojo.txt)
 
 ### Pruebas de la iteración 1
