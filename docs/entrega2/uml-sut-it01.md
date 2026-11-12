@@ -57,6 +57,6 @@ classDiagram
 | HU-05 | `ServicioLugares.guardarPorCoordenadas` | Recibe el token de sesión y `DatosLugar` con nombre, latitud y longitud. Devuelve un `Lugar` con identificador, nombre y coordenadas. |
 | HU-07 | `ServicioLugares.consultarLugares` | Recibe el token de sesión y devuelve los lugares de la cuenta. |
 | HU-07, E-07-I2 | `ClienteLugares.consultarLugares` | Recibe el token de sesión. La prueba distingue un fallo de conexión de una lista vacía. |
-| HU-14 | `ServicioRutas.calcularRuta` | Recibe el token de sesión y `SolicitudRuta` con los identificadores de origen y destino y el modo (`aPie`, `bicicleta` o `coche`). `RutaCalculada` contiene la geometría, la distancia en metros y la duración en segundos. |
+| HU-14 | `ServicioRutas.calcularRuta` | Recibe el token de sesión y `SolicitudRuta` con el origen, el destino y el modo (`aPie`, `bicicleta` o `coche`). Cada extremo es un identificador de lugar guardado o un objeto `Coordenadas` con latitud y longitud. `RutaCalculada` contiene la geometría, la distancia en metros y la duración en segundos. |
 
 Los nombres de los tipos definidos en línea en TypeScript se abrevian en el diagrama para facilitar la lectura. `OrsAdapter` es el adaptador de OpenRouteService del spike que se pasa a `ServicioRutas` en las pruebas.

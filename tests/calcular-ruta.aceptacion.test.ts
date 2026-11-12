@@ -33,6 +33,27 @@ prueba("calcularRuta_extremosDistintos_devuelveTrayectoDistanciaYDuracion", asyn
   comprobar(Number.isFinite(ruta.duracionSegundos) && ruta.duracionSegundos > 0);
 });
 
+// Variante de E-14-V con puntos directos (RD-54).
+prueba("calcularRuta_puntosTemporales_devuelveTrayectoSinGuardarLugares", async (contexto) => {
+  // Dada una sesion de Ana sin lugares guardados.
+  const base = prepararBaseDeLugares();
+  contexto.after(() => base.close());
+  const servicio = new ServicioRutas(base, new AdaptadorORS(process.env.ORS_API_KEY ?? ""));
+
+  // Cuando Ana solicita una ruta entre dos puntos de Explorar.
+  const ruta = await servicio.calcularRuta(tokenDeAna, {
+    origen: { latitud: centro.latitud, longitud: centro.longitud },
+    destino: { latitud: uji.latitud, longitud: uji.longitud },
+    modo: "aPie",
+  });
+
+  // Entonces recibe un trayecto y los puntos siguen sin guardarse.
+  comprobar(ruta.geometria.length >= 2);
+  comprobar(ruta.distanciaMetros > 0 && ruta.distanciaMetros < 100_000);
+  comprobar(Number.isFinite(ruta.duracionSegundos) && ruta.duracionSegundos > 0);
+  comprobarIgualdad(base.prepare("SELECT identificador FROM lugares").all(), []);
+});
+
 // PA-14-I (E-14-I1).
 prueba("calcularRuta_extremosCoincidentes_rechazaRutaSinGuardarCambios", async (contexto) => {
   // Dado el lugar Centro de Ana.
